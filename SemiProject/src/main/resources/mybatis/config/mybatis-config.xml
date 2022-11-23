@@ -10,7 +10,18 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 	
-	
+	<typeAliases>
+		<typeAlias type="com.gdu.semi.domain.UsersDTO" alias="UsersDTO" />
+		<typeAlias type="com.gdu.semi.domain.SleepUsersDTO" alias="SleepUsersDTO" />
+		<typeAlias type="com.gdu.semi.domain.RetireUsersDTO" alias="RetireUsersDTO" />
+		<typeAlias type="com.gdu.semi.domain.AccessLogDTO" alias="AccessLogDTO" />
+		<typeAlias type="com.gdu.semi.domain.BbsDTO" alias="BbsDTO" />
+		<typeAlias type="com.gdu.semi.domain.GalleryDTO" alias="GalleryDTO" />
+		<typeAlias type="com.gdu.semi.domain.CommentDTO" alias="CommentDTO" />
+		<typeAlias type="com.gdu.semi.domain.LikeDTO" alias="LikeDTO" />
+		<typeAlias type="com.gdu.semi.domain.UploadDTO" alias="UploadDTO" />
+		<typeAlias type="com.gdu.semi.domain.AttachDTO" alias="AttachDTO" />
+	</typeAliases>
 	
 	
 
