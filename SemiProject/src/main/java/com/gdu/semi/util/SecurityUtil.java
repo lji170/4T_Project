@@ -2,8 +2,8 @@ package com.gdu.semi.util;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.util.Base64;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
