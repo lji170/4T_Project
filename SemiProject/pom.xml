@@ -16,10 +16,10 @@
 		<org.aspectj-version>1.9.6</org.aspectj-version>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
 	</properties>
-
+	
 	<dependencies>
-
-		<!-- 파일 처리 2개(commons-io, commons-fileupload) -->
+	
+		<!-- 14장 추가 : 파일 첨부를 위한 jar 2개(commons-io, commons-fileupload) -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 		    <groupId>commons-io</groupId>
@@ -34,7 +34,8 @@
 		    <version>1.4</version>
 		</dependency>
 
-		<!-- 썸네일 처리 -->
+		<!-- # 14장 추가 : 썸네일 처리 -->
+		<!--  - 기능 : 파일의 메모리상 사이즈 자체를 줄여서 게시글에서 첨부파일을 간략히 볼 수 있음 -->
 		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
 		<dependency>
 		    <groupId>net.coobird</groupId>
@@ -42,6 +43,54 @@
 		    <version>0.4.13</version>
 		</dependency>
 
+	
+	
+		<!--  13장 추가 : json -->
+		<!--  네이버 api 응답 데이터 처리를 위해 사용-->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20220924</version>
+		</dependency>
+				
+	
+	
+
+		<!-- 회원가입 13장 추가 : 암호화/복호화 -->
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.15</version>
+		</dependency>
+
+		<!-- 회원가입 13장 추가 : 랜덤 String -->	
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.11</version>
+		</dependency>
+	
+		<!--  * 메일전송에 필요한 jar 2가지 : javax.mail, spring-context-support -->
+		<!-- 메일전송 13장 추가 : javax.mail -->
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+
+		<!-- 메일전송 13장 추가 : spring-context-support -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- 5장 ajax 추가 jar : jackson Databind -->
+		<!--  - 자바객체나 map을 json/xml로 바꿔줄 수 있다  -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -49,6 +98,8 @@
 		    <version>2.12.1</version>
 		</dependency>
 		
+		<!--  # 9장 추가 : mybatis -->
+		<!--  - 버전 : 3.5.6 -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -56,6 +107,9 @@
 		    <version>3.5.6</version>
 		</dependency>
 		
+		
+		<!--  # 9장 추가 : spring + mybatis -->
+		<!--  - 버전 : 2.0.6 -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -63,6 +117,9 @@
 		    <version>2.0.6</version>
 		</dependency>
 		
+		<!--  # 9장 추가 : hikaricp (스프링 부트에서 사용되는 커넥션 풀-cp)-->
+		<!--  * 검색 : hikaricp -->
+		<!--  - 버전 : 2.0.6 -->
 		<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
 		    <groupId>com.zaxxer</groupId>
@@ -70,6 +127,11 @@
 		    <version>3.4.5</version>
 		</dependency>
 
+		<!--  # 8장 추가 : 스프링jdbc -->
+		<!--  - 용도 : 스프링 전용 jdbc  -->
+		<!--  - 주소 : https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<!--  - 버전 : 5.3.3버전(spring과 동일하게) -->
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -113,19 +175,25 @@
 				 </exclusion>
 			</exclusions>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
-		<!-- AspectJ -->
+				
+		<!-- 8장추가 : AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
 		
+		<!--  # 8장 추가 : aspect weaver -->
+		<!--  - 용도 : 기존의aop(aspectj)에 추가  -->
+		<!--  - 주소 : https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<!--  - 버전 : 1.9.6버전(aspect과 동일하게) -->
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 		<dependency>
 		    <groupId>org.aspectj</groupId>
@@ -141,11 +209,17 @@
 			<version>${org.slf4j-version}</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+
+		
+		<!-- # 9장 수정 : logback : log4j보다 10배 더 빠르다 -->
+		<!--  https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
 		<dependency>
 		    <groupId>ch.qos.logback</groupId>
 		    <artifactId>logback-classic</artifactId>
 		    <version>1.2.3</version>
+		    
+		  
+		    
 		</dependency>
 
 		<!-- @Inject -->

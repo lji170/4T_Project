@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<!-- Appenders -->
+	<!--
+		%date{패턴} : 로그기록시간(SimpleDateFormat과 동일한 패턴)
+		%thread     : 동작하는 스레드
+		%level      : 로그레벨(FATAL, ERROR, WARN, INFO, DEBUG, TRACE), %-5level은 5자리로 글자폭을 맞춤
+		%logger     : 로거이름(로그 찍는 클래스), %logger{36}는 최대 글자 수가 36자
+		%msg        : 로그메시지
+		%n          : new line
+	-->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{HH:mm:ss.SSS, Asia/Seoul} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<!--
+		로그레벨 (로그가 찍히는 상황)
+		1. FATAL : 프로그램이 종료될 수 있는 심각한 에러
+		2. ERROR : FATAL보다는 덜 심각한 에러
+		3. WARN  : 잠재적 문제
+		4. INFO  : 프로그램이 진행되는 상황
+		5. DEBUG : 디버깅
+		6. TRACE : DEBUG보다 세밀한 정보
+	-->
+
+	<!-- Root Logger -->
+	<root level="INFO">
+		<appender-ref ref="console" />
+	</root>
+	
+</configuration>

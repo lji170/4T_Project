@@ -1,4 +1,4 @@
-package com.gdu.app14.config;
+package com.gdu.semi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

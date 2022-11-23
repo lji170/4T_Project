@@ -1,4 +1,4 @@
-package com.gdu.app14.util;
+package com.gdu.semi.util;
 
 import java.io.File;
 import java.util.Calendar;

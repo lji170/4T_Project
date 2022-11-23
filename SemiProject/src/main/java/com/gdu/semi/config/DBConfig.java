@@ -1,4 +1,4 @@
-package com.gdu.app14.config;
+package com.gdu.semi.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@MapperScan(basePackages = {"com.gdu.app14.mapper"})
+@MapperScan(basePackages = {"com.gdu.semi.mapper"})
 @PropertySource(value = {"classpath:mybatis/config/mybatis.properties"})
 @EnableTransactionManagement
 @Configuration
