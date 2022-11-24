@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GalleryController {
 	
 	@GetMapping("/gallery/list")
-	public String galleryList() {
+	public String list() {
 		return "gallery/list";
+	}
+	
+	@GetMapping("galley/detail")
+	public String detail() {
+		return "gallery/detail";
 	}
 }

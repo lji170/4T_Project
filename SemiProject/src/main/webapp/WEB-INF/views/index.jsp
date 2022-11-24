@@ -108,6 +108,7 @@
 		</div>
 	
 	</div>
+	<a href="${contextPath}/gallery/list">갤러리로 가기</a>
 
 
 
