@@ -19,7 +19,7 @@
 	
 	<select id="selectGalleryListByMap" parameterType="Map" resultType="GalleryDTO">
 		SELECT A.ROW_NUM, A.GAL_NO, A.ID, A.GAL_TITLE, A.GAL_CONTENT, A.GAL_CREATE_DATE, A.GAL_LAST_MODIFY_DATE, A.GAL_HIT, A.LIKE_COUNT, A.IP
-		  FROM (GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GAL_NO DESC) AS ROW_NUM, GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP
 		  		FROM GALLERY) A
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
@@ -32,5 +32,31 @@
 			(GALLERY_SEQ.NEXTVAL, #{id}, #{galTitle}, #{galContent}, SYSDATE, SYSDATE, 0, 0, #{ip})
 	</insert>
 	
+	
+	<!-- 상세보기
+		1. 조회수 + 1
+		2. 디테일 보여주기
+	-->
+	<update id="updateHit" parameterType="int">
+		UPDATE GALLERY
+		   SET GAL_HIT = GAL_HIT + 1
+		 WHERE GAL_NO = #{galNo}
+	</update>
+		<select id="selectGalleryByNo" parameterType="int" resultType="GalleryDTO">
+		SELECT GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT
+		  FROM GALLERY
+		 WHERE GAL_NO = #{galNo}
+	</select>
+	<update id="updateGallery" parameterType="GalleryDTO">
+		UPDATE GALLERY
+		   SET GAL_TITLE = #{galTitle}, GAL_CONTENT = #{galContent}, MODIFY_DATE = SYSDATE
+		 WHERE GAL_NO = #{galNo}
+	</update>
+	
+	
+	<delete id="deleteGallery" parameterType="int">
+		DELETE FROM GALLERY
+		 WHERE GAL_NO = #{galNo}
+	</delete>
 	
 </mapper>

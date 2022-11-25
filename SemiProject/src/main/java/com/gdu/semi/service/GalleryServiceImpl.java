@@ -106,25 +106,34 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	@Override
 	public int increseGalleryHit(int galNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return galleryMapper.updateHit(galNo);
 	}
 	
 	@Override
 	public GalleryDTO getGalleryByNo(int galNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return galleryMapper.selectGalleryByNo(galNo);
 	}
 	
 	@Override
 	public void modifyGallery(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		// 파라미터
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		String galTitle = request.getParameter("galTitle");
+		String galContent = request.getParameter("galContent");
+		
+		GalleryDTO gallery = GalleryDTO.builder()
+				.galNo(galNo)
+				.galTitle(galTitle)
+				.galContent(galContent)
+				.build();
+		galleryMapper.updateGallery(gallery);
 		
 	}
 	
 	@Override
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		galleryMapper.deleteGallery(galNo);
 		
 	}
 }

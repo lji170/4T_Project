@@ -14,5 +14,9 @@ public interface GalleryMapper {
 	public List<GalleryDTO> selectGalleryList();
 	public List<GalleryDTO> selectGalleryListByMap(Map<String, Object> map);
 	public int insertGallery(GalleryDTO gallery);
+	public int updateHit(int galNo);
+	public GalleryDTO selectGalleryByNo(int galNo);
+	public int updateGallery(GalleryDTO gallery);
+	public int deleteGallery(int galNo);
 	
 }

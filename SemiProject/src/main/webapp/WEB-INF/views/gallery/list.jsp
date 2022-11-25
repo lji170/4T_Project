@@ -11,6 +11,15 @@
 <script>
 	$(function(){
 	
+		if('${recordPerPage}' != ''){
+			$('#recordPerPage').val(${recordPerPage});
+		} else {
+			$('#recordPerPage').val(10);
+		}
+		$('#recordPerPage').change(function(){
+			location.href = '${contextPath}/gallery/recordPerPage=' + $(this).val();
+		});
+		
 	});
 	
 </script>
@@ -47,16 +56,16 @@
 				<c:forEach items="${galleryList}" var="gallery" varStatus="vs">
 					<tr>
 						<td>${beginNo - vs.index}</td>
-						<td><a href="${contextPath}/gallery/increse/hit?galleryNo=${gallery.galleryNo}">${gallery.title}</a></td>
-						<td>${gallery.hit}</td>
-						<td>${gallery.writer}</td>
-						<td>${gallery.createDate}</td>
+						<td><a href="${contextPath}/gallery/increse/hit?galNo=${gallery.galNo}">${gallery.galTitle}</a></td>
+						<td>${gallery.galHit}</td>
+						<td>${gallery.id}</td>
+						<td>${gallery.galCreateDate}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4">
+					<td colspan="5">
 						${paging}
 					</td>
 				</tr>

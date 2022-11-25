@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.semi.service.GalleryService;
 
@@ -38,4 +39,39 @@ public class GalleryController {
 	public void insertGallery(HttpServletRequest request, HttpServletResponse response) {
 		galleryService.addGallery(request, response);
 	}
+	
+	@GetMapping("/gallery/increse/hit")
+	public String increseHit(@RequestParam (value="galNo", required=false, defaultValue="0") int galNo) {
+		int result = galleryService.increseGalleryHit(galNo);
+		if (result > 0) {	// 조회수 증가에 성공하면 상세보기로 이동
+			return "redirect:/gallery/detail?galNo=" + galNo;
+		} else {
+			return "redirect:/gallery/list";
+		}
+	}
+	
+	@GetMapping("/gallery/detail")
+	public String detail(@RequestParam (value="galNo", required=false, defaultValue="0") int galNo, Model model) {
+		model.addAttribute("gallery", galleryService.getGalleryByNo(galNo));
+		return "gallery/detail";
+	}
+	
+	@PostMapping("/gallery/edit")
+	public String edit(int galNo, Model model) {
+		model.addAttribute("gallery", galleryService.getGalleryByNo(galNo));
+		return "gallery/edit";
+	}
+	
+	@PostMapping("/gallery/modify")
+	public String modify(HttpServletRequest request, HttpServletResponse response) {
+		galleryService.modifyGallery(request, response);	// 수정 후 상세보기로
+		return "redirect:/gallery/detail?galNo=" + request.getParameter("galNo");
+	}
+	
+	@PostMapping("/gallery/remove")
+	public String remove(HttpServletRequest request, HttpServletResponse response) {
+		galleryService.removeGallery(request, response);	// 수정 후 상세보기로
+		return "redirect:/gallery/list";
+	}
+	
 }

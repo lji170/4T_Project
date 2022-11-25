@@ -5,32 +5,32 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <jsp:include page="layout/header.jsp">
-	<jsp:param value="${gallery.galleryNo}번 블로그" name="title"/>
+	<jsp:param value="${gallery.galNo}번 블로그" name="title"/>
 </jsp:include>
 
 <div>
 
-	<h1>${gallery.title}</h1>
+	<h1>${gallery.galTitle}</h1>
 	
 	<div>
-		<span>▷ 작성일 <fmt:formatDate value="${gallery.createDate}" pattern="yyyy. M. d HH:mm" /></span>
+		<span>▷ 작성일 <fmt:formatDate value="${gallery.galCreateDate}" pattern="yyyy. M. d HH:mm" /></span>
 		&nbsp;&nbsp;&nbsp;
-		<span>▷ 수정일 <fmt:formatDate value="${gallery.modifyDate}" pattern="yyyy. M. d HH:mm" /></span>
+		<span>▷ 수정일 <fmt:formatDate value="${gallery.galLastModifyDate}" pattern="yyyy. M. d HH:mm" /></span>
 	</div>
 	
 	<div>
-		<span>조회수 <fmt:formatNumber value="${gallery.hit}" pattern="#,##0" /></span>
+		<span>조회수 <fmt:formatNumber value="${gallery.galHit}" pattern="#,##0" /></span>
 	</div>
 	
 	<hr>
 	
 	<div>
-		${gallery.content}
+		${gallery.galContent}
 	</div>
 	
 	<div>
 		<form id="frm_btn" method="post">
-			<input type="hidden" name="galleryNo" value="${gallery.galleryNo}">
+			<input type="hidden" name="galleryNo" value="${gallery.galNo}">
 			<input type="button" value="수정" id="btn_edit_gallery">
 			<input type="button" value="삭제" id="btn_remove_gallery">
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
