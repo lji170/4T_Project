@@ -60,6 +60,12 @@
 
 	</update>
 	<insert id="insertAccessLog" parameterType="String">
+		INSERT INTO ACCESS_LOG
+			(ACCESS_LOG_NO, ID, LAST_LOGIN_DATE)
+		VALUES
+			(ACCESS_LOG_SEQ.NEXTVAL, #{id}, SYSDATE)
+	
+	
 
 	</insert>
 	
