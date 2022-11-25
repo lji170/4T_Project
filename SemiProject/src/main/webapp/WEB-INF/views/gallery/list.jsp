@@ -8,15 +8,30 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
+<script>
+	$(function(){
+	
+	});
+	
+</script>
+
 </head>
 <body>
 
 	<h1>갤러리 게시판에 오신 것을 환영합니다.</h1>
 	
 	<div>
-		<input type="button" value="갤러리 작성하기">
+		<form method="post" action="${contextPath}/gallery/write">
+			<button>갤러리 작성하기</button>
+		</form>
 	</div>
-	
+	<div>
+		<select name="recordPerPage" id="recordPerPage">
+			<option value="10">10</option>
+			<option value="15">15</option>
+			<option value="20">20</option>
+		</select>
+	</div>
 	<div>
 		<table border="1">
 			<thead>
@@ -28,7 +43,7 @@
 					<td>작성일</td>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="galleryList">
 				<c:forEach items="${galleryList}" var="gallery" varStatus="vs">
 					<tr>
 						<td>${beginNo - vs.index}</td>

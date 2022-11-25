@@ -1,10 +1,18 @@
 package com.gdu.semi.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import com.gdu.semi.domain.GalleryDTO;
 
 @Mapper
 public interface GalleryMapper {
 	
 	public int selectGalleryListCount();
+	public List<GalleryDTO> selectGalleryList();
+	public List<GalleryDTO> selectGalleryListByMap(Map<String, Object> map);
+	public int insertGallery(GalleryDTO gallery);
 	
 }

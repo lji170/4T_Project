@@ -94,13 +94,13 @@
 	<form id="frm_write" action="${contextPath}/gallery/add" method="post">
 	
 		<div>
-			<label for="title">제목</label>
-			<input type="text" name="title" id="title">
+			<label for="galTitle">제목</label>
+			<input type="text" name="galTitle" id="galTitle">
 		</div>
 		
 		<div>
-			<label for="content">내용</label>
-			<textarea name="content" id="content"></textarea>				
+			<label for="galContent">내용</label>
+			<textarea name="galContent" id="galContent"></textarea>				
 		</div>
 		
 		<div>

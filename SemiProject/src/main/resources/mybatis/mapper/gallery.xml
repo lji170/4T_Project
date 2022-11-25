@@ -8,8 +8,29 @@
 
 	<select id="selectGalleryListCount" resultType="int">
 		SELECT COUNT(*)
-		  FROM BLOG
+		  FROM GALLERY
 	</select>
+	
+	
+	<select id="selectGalleryList" resultType="GalleryDTO">
+		SELECT GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP
+		  FROM GALLERY
+	</select>
+	
+	<select id="selectGalleryListByMap" parameterType="Map" resultType="GalleryDTO">
+		SELECT A.ROW_NUM, A.GAL_NO, A.ID, A.GAL_TITLE, A.GAL_CONTENT, A.GAL_CREATE_DATE, A.GAL_LAST_MODIFY_DATE, A.GAL_HIT, A.LIKE_COUNT, A.IP
+		  FROM (GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP
+		  		FROM GALLERY) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	<insert id="insertGallery" parameterType="GalleryDTO">
+		INSERT INTO GALLERY
+			(GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP )
+		VALUES
+			(GALLERY_SEQ.NEXTVAL, #{id}, #{galTitle}, #{galContent}, SYSDATE, SYSDATE, 0, 0, #{ip})
+	</insert>
 	
 	
 </mapper>

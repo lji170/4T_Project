@@ -11,8 +11,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.gdu.semi.domain.GalleryDTO;
 
 public interface GalleryService {
-	public void getGalleryList(Model model);
-	public void savegallery(HttpServletRequest request, HttpServletResponse response);
+	public void getGalleryList(HttpServletRequest request, Model model);
+	public void addGallery(HttpServletRequest request, HttpServletResponse response);
 	public Map<String, Object> saveSummernoteImage(MultipartHttpServletRequest multipartRequest);
 	public int increseGalleryHit(int galNo);
 	public GalleryDTO getGalleryByNo(int galNo);
