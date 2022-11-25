@@ -62,10 +62,12 @@ public class UserServiceImpl implements UserService {
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
+		System.out.println("유저서비스 id : "+id);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isUser", userMapper.selectUserByMap(map) != null);
 		result.put("isRetireUser", userMapper.selectRetireUserById(id) != null);
+		System.out.println("유저서비스"+result);
 		return result;
 		
 	}

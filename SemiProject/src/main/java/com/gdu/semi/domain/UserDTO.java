@@ -33,5 +33,5 @@ public class UserDTO {
 	private Date infoModifyDate;
 	private String sessionId;
 	private Date sessionLimitDate;
-	private int number;
+	private int ponint;
 }
