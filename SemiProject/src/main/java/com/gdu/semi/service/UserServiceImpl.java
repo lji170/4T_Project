@@ -62,12 +62,10 @@ public class UserServiceImpl implements UserService {
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
-		System.out.println("유저서비스 id : "+id);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isUser", userMapper.selectUserByMap(map) != null);
 		result.put("isRetireUser", userMapper.selectRetireUserById(id) != null);
-		System.out.println("유저서비스"+result);
 		return result;
 		
 	}
@@ -152,6 +150,7 @@ public class UserServiceImpl implements UserService {
 		String pw = request.getParameter("pw");
 		String name = request.getParameter("name");
 		String gender = request.getParameter("gender");
+		String email = request.getParameter("email");
 		String mobile = request.getParameter("mobile");
 		String birthyear = request.getParameter("birthyear");
 		String birthmonth = request.getParameter("birthmonth");
@@ -161,7 +160,6 @@ public class UserServiceImpl implements UserService {
 		String jibunAddress = request.getParameter("jibunAddress");
 		String detailAddress = request.getParameter("detailAddress");
 		String extraAddress = request.getParameter("extraAddress");
-		String email = request.getParameter("email");
 		String location = request.getParameter("location");
 		String promotion = request.getParameter("promotion");
 		

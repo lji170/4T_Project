@@ -224,7 +224,7 @@
 	//    1) 입력된 이메일이 회원 정보에 있는지 체크하는 ajax
 	//    2) 입력된 이메일로 인증번호를 보내는 ajax
 	function fn_emailCheck(){
-		
+	
 		$('#btn_getAuthCode').click(function(){
 			
 			// 인증코드를 입력할 수 있는 상태로 변경함
