@@ -22,6 +22,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -324,14 +325,26 @@ public class UserServiceImpl implements UserService {
 			request.getSession().setAttribute("loginUser", loginUser);
 
 			// 로그인 기록 남기기
-			int updateResult = userMapper.updateAccessLog(id);
+			int updateResult = userMapper.updateAccessLog(id);  // 여기까지응답옴
 			if(updateResult == 0) {
 				userMapper.insertAccessLog(id);
 			}
 			
+			
 			// 이동 (로그인페이지 이전 페이지로 되돌아가기)
 			try {
-				response.sendRedirect(url);
+				//response.sendRedirect(url);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('로그인에 성공하였습니다.');");
+				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("</script>");
+				
+				out.close();
+				
+	
 			} catch(IOException e) {
 				e.printStackTrace();
 			}

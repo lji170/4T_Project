@@ -78,7 +78,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/login")
-	public void login(HttpServletRequest request, HttpServletResponse response) {
+	public void login(HttpServletRequest request, HttpServletResponse response){
 		userService.login(request, response);
 	}
 	

@@ -48,6 +48,10 @@
 	
 	<!-- 네이버아이디로그인 회원가입 -->
 	<insert id="insertNaverUser" parameterType="UserDTO">
+	
+	
+	
+	
 
 	</insert>
 	
@@ -71,22 +75,34 @@
 	
 	<!-- 회원탈퇴1 : USERS 테이블에서 제거 -->
 	<delete id="deleteUser" parameterType="int">
-
+		DELETE
+		  FROM USERS
+		 WHERE USER_NO = #{userNo}
+		 
 	</delete>
 	
 	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
 	<insert id="insertRetireUser" parameterType="RetireUserDTO">
-
+		INSERT INTO RETIRE_USERS
+			(RETIRE_NO, ID, JOIN_DATE, RETIRE_DATE)
+		VALUES
+			(#{retireNo}, #{id}, #{joinDate}, SYSDATE)
 	</insert>
 	
 	<!-- 로그인 유지를 위한 SESSION_ID/SESSION_LIMIT_DATE 업데이트 -->
 	<update id="updateSessionInfo" parameterType="UserDTO">
-
+		UPDATE USERS
+		   SET SESSION_ID = #{sessionId}
+		     , SESSION_LIMIT_DATE = #{sessionLimitDate}
+		 WHERE ID = #{id}
 	</update>
 	
 	<!-- 마이페이지 : 비밀번호 수정 -->
 	<update id="updateUserPassword" parameterType="UserDTO">
-
+		UPDATE USERS
+		   SET PW = #{pw}
+		     , PW_MODIFY_DATE = SYSDATE
+		 WHERE USER_NO = #{userNo}
 	</update>
 	
 	<!-- 휴면처리1 : 1년 이상 로그인 기록이 없으면 휴면테이블에 저장 -->
