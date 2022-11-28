@@ -20,6 +20,7 @@
 	
 	<div>
 		<span>조회수 <fmt:formatNumber value="${gallery.galHit}" pattern="#,##0" /></span>
+		<span>좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" /></span>
 	</div>
 	
 	<hr>
@@ -30,12 +31,27 @@
 	
 	<div>
 		<form id="frm_btn" method="post">
-			<input type="hidden" name="galleryNo" value="${gallery.galNo}">
+			<input type="hidden" name="galNo" value="${gallery.galNo}">
+			<input type="button" id="btn_like" name="likeCount" value="${gallery.likeCount}">
 			<input type="button" value="수정" id="btn_edit_gallery">
 			<input type="button" value="삭제" id="btn_remove_gallery">
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
+			$('#btn_like').click(function(){
+				$.ajax ({
+					type: 'post',
+					url : '${contextPath}/gallery/likeCount',
+					data: "galNo=" + ${gallery.galNo},
+					dataType : 'json',
+					success : function(resData) {
+						alert('게시글 추천 성공')
+					},
+					error : function(jqXHR) {
+						alert('게시글 추천 실패')
+					}
+				});
+			});				
 			$('#btn_edit_gallery').click(function(){
 				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
 				$('#frm_btn').submit();

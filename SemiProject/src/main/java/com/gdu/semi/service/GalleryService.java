@@ -17,5 +17,6 @@ public interface GalleryService {
 	public int increseGalleryHit(int galNo);
 	public GalleryDTO getGalleryByNo(int galNo);
 	public void modifyGallery(HttpServletRequest request, HttpServletResponse response);
+	public int increaseGalleryLikeCount(int galNo);
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response);
 }

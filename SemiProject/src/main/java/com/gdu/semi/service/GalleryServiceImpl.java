@@ -131,6 +131,11 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	
 	@Override
+	public int increaseGalleryLikeCount(int galNo) {
+		return galleryMapper.updateGalleryLikeCount(galNo);
+	}
+	
+	@Override
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
 		galleryMapper.deleteGallery(galNo);

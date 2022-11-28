@@ -36,6 +36,7 @@
 	<!-- 상세보기
 		1. 조회수 + 1
 		2. 디테일 보여주기
+		3. 좋아요 + 1
 	-->
 	<update id="updateHit" parameterType="int">
 		UPDATE GALLERY
@@ -49,7 +50,12 @@
 	</select>
 	<update id="updateGallery" parameterType="GalleryDTO">
 		UPDATE GALLERY
-		   SET GAL_TITLE = #{galTitle}, GAL_CONTENT = #{galContent}, MODIFY_DATE = SYSDATE
+		   SET GAL_TITLE = #{galTitle}, GAL_CONTENT = #{galContent}, GAL_LAST_MODIFY_DATE = SYSDATE
+		 WHERE GAL_NO = #{galNo}
+	</update>
+	<update id="updateGalleryLikeCount" parameterType="int">
+		UPDATE GALLERY
+		   SET LIKE_COUNT = LIKE_COUNT + 1
 		 WHERE GAL_NO = #{galNo}
 	</update>
 	
@@ -58,5 +64,7 @@
 		DELETE FROM GALLERY
 		 WHERE GAL_NO = #{galNo}
 	</delete>
+	
+	
 	
 </mapper>

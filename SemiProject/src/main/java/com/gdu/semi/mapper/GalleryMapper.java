@@ -17,6 +17,7 @@ public interface GalleryMapper {
 	public int updateHit(int galNo);
 	public GalleryDTO selectGalleryByNo(int galNo);
 	public int updateGallery(GalleryDTO gallery);
+	public int updateGalleryLikeCount(int galNo);
 	public int deleteGallery(int galNo);
 	
 }

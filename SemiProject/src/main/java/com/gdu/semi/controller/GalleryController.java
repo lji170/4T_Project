@@ -4,12 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gdu.semi.domain.GalleryDTO;
 import com.gdu.semi.service.GalleryService;
 
 @Controller
@@ -67,6 +70,14 @@ public class GalleryController {
 		galleryService.modifyGallery(request, response);	// 수정 후 상세보기로
 		return "redirect:/gallery/detail?galNo=" + request.getParameter("galNo");
 	}
+	
+	@ResponseBody
+	@PostMapping("/gallery/likeCount")
+	public String likeCount (int galNo) {
+		System.out.println("galNo:" + galNo);
+		galleryService.increaseGalleryLikeCount(galNo);
+		return "redirect:/gallery/detail?galNo=" + galNo;
+ 	}
 	
 	@PostMapping("/gallery/remove")
 	public String remove(HttpServletRequest request, HttpServletResponse response) {
