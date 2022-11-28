@@ -148,6 +148,12 @@
 	</delete>
 	
 	
+	<select id="findId" parameterMap="Map" resultType="String">
+		SELECT ID
+			FORM SLEEP_USERS
+			WHERE EMAIL
+	</select>
+	
 	
 	
 	

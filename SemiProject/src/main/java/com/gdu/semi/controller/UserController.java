@@ -144,7 +144,12 @@ public class UserController {
 		userService.restoreUser(request, response);
 	}
 	
-
+	
+	//아이디찾기. index.jsp
+	@GetMapping("/user/findId")
+	public String findId() {
+		return "user/findId";
+	}
 	
 	
 	
