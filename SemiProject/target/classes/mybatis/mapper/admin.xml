@@ -6,17 +6,32 @@
 
 <mapper namespace="com.gdu.semi.mapper.AdminMapper">
 
-	<!-- 회원관리 리스트 -->
-	<select id="selectAllUsers" resultType="UserDTO">
-		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, POINT
+	<!-- 전체 회원수 -->
+	<select id="selectUserListCount" resultType="int">
+		SELECT COUNT(*)
 		  FROM USERS
 	</select>
-	
+	<!--
+	SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, POINT
+		  FROM USERS  -->
+	<!-- 회원관리 리스트 -->
+	<select id="selectUserListByMap" parameterType="Map" resultType="UserDTO">
+		SELECT A.ROW_NUM, A.USER_NO, A.ID, A.NAME, A.JOIN_DATE, A.PW_MODIFY_DATE, A.INFO_MODIFY_DATE, A.POINT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS ROW_NUM, USER_NO, ID, PW, NAME, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, POINT
+			  	  FROM USERS) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	<!-- 회원 상세보기 -->
+	<select id="selectUserByNo" parameterType="int" resultType="UserDTO">
+		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, POINT
+		  FROM USERS
+		 WHERE USER_NO = #{userNo}
+	</select>
 	<!-- 회원 강제 탈퇴 -->
-	<delete id="deleteUserById" parameterType="String">
+	<delete id="deleteUserByNo" parameterType="int">
 		DELETE
 		  FROM USERS
-		 WHERE ID = #{id}
+		 WHERE USER_NO in (#{userNo})
 	</delete>
 	
 	
