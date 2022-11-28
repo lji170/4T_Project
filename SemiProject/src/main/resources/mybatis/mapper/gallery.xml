@@ -53,7 +53,7 @@
 		   SET GAL_TITLE = #{galTitle}, GAL_CONTENT = #{galContent}, GAL_LAST_MODIFY_DATE = SYSDATE
 		 WHERE GAL_NO = #{galNo}
 	</update>
-	<update id="updateGalleryLikeCount" parameterType="int">
+	<update id="updateGalleryLikeCount" parameterType="GalleryDTO">
 		UPDATE GALLERY
 		   SET LIKE_COUNT = LIKE_COUNT + 1
 		 WHERE GAL_NO = #{galNo}

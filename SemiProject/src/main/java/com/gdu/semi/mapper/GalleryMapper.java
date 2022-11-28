@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 
 import com.gdu.semi.domain.GalleryDTO;
 
@@ -17,7 +18,7 @@ public interface GalleryMapper {
 	public int updateHit(int galNo);
 	public GalleryDTO selectGalleryByNo(int galNo);
 	public int updateGallery(GalleryDTO gallery);
-	public int updateGalleryLikeCount(int galNo);
+	public int updateGalleryLikeCount(GalleryDTO gallery);
 	public int deleteGallery(int galNo);
 	
 }

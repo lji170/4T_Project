@@ -1,5 +1,7 @@
 package com.gdu.semi.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.GalleryDTO;
 import com.gdu.semi.service.GalleryService;
@@ -43,6 +46,12 @@ public class GalleryController {
 		galleryService.addGallery(request, response);
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/gallery/uploadImage", produces="application/json")
+	public Map<String, Object> uploadImage(MultipartHttpServletRequest multipartRequest) {
+		return galleryService.saveSummernoteImage(multipartRequest);
+	}
+	
 	@GetMapping("/gallery/increse/hit")
 	public String increseHit(@RequestParam (value="galNo", required=false, defaultValue="0") int galNo) {
 		int result = galleryService.increseGalleryHit(galNo);
@@ -72,11 +81,9 @@ public class GalleryController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/gallery/likeCount")
-	public String likeCount (int galNo) {
-		System.out.println("galNo:" + galNo);
-		galleryService.increaseGalleryLikeCount(galNo);
-		return "redirect:/gallery/detail?galNo=" + galNo;
+	@GetMapping("/gallery/likeCount")
+	public ResponseEntity<GalleryDTO> likeCount (HttpServletRequest request) {
+		return galleryService.increaseGalleryLikeCount(request);
  	}
 	
 	@PostMapping("/gallery/remove")

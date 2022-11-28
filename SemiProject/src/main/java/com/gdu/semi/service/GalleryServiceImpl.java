@@ -1,5 +1,6 @@
 package com.gdu.semi.service;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.GalleryDTO;
+import com.gdu.semi.domain.SummernoteImageDTO;
 import com.gdu.semi.mapper.GalleryMapper;
 import com.gdu.semi.util.MyFileUtil;
 import com.gdu.semi.util.PageUtil;
@@ -86,6 +91,19 @@ public class GalleryServiceImpl implements GalleryService {
 			
 			out.println("<script>");
 			if (result > 0) {
+				// 파라미터 summernoteImageNames
+				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
+				
+				// DB에 SummernoteImage 저장
+				if(summernoteImageNames !=  null) {
+					for(String filesystem : summernoteImageNames) {
+						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
+								.blogNo(blog.getBlogNo())
+								.filesystem(filesystem)
+								.build();
+						blogMapper.insertSummernoteImage(summernoteImage);
+					}
+				}
 				out.println("alert('갤러리 삽입 성공');");
 				out.println("location.href='"+ request.getContextPath() +"/gallery/list';");
 			} else {
@@ -101,7 +119,39 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	@Override
 	public Map<String, Object> saveSummernoteImage(MultipartHttpServletRequest multipartRequest) {
-		return null;
+		// 파라미터 file
+		MultipartFile multipartFile = multipartRequest.getFile("file");
+		
+		// 저장 경로
+		String path = "C:" + File.separator + "summernoteImage";
+		
+		// 저장할 파일명
+		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
+		
+		// 저장 경로가 없으면 만들기
+		File dir = new File(path);
+		if(dir.exists() == false) {
+			dir.mkdirs();
+		}
+		
+		// 저장할 File 객체
+		File file = new File(path, filesystem);  // new File(dir, filesystem)도 가능
+		
+		// HDD에 File 객체 저장하기
+		try {
+			multipartFile.transferTo(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// 저장된 파일을 확인할 수 있는 매핑을 반환
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("src", multipartRequest.getContextPath() + "/load/image/" + filesystem);  // 이미지 mapping값을 반환
+		map.put("filesystem", filesystem);  // HDD에 저장된 파일명 반환
+		return map;
+		
+		// 저장된 파일이 aaa.jpg라고 가정하면
+		// src=${contextPath}/load/image/aaa.jpg 이다
 	}
 	
 	@Override
@@ -131,8 +181,22 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	
 	@Override
-	public int increaseGalleryLikeCount(int galNo) {
-		return galleryMapper.updateGalleryLikeCount(galNo);
+	public ResponseEntity<GalleryDTO> increaseGalleryLikeCount(HttpServletRequest request) {
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		String id = "인절미";
+		GalleryDTO gallery = GalleryDTO.builder()
+				.galNo(galNo)
+				.id(id)
+				.build();
+				
+		int result = galleryMapper.updateGalleryLikeCount(gallery);
+		ResponseEntity<GalleryDTO> entity = null;
+		if (result > 0) {
+			entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
 	}
 	
 	@Override

@@ -19,7 +19,7 @@
 	$(document).ready(function(){
 		
 		// summernote
-		$('#content').summernote({
+		$('#galContent').summernote({
 			width: 800,
 			height: 400,
 			lang: 'ko-KR',
@@ -34,36 +34,25 @@
 			    ['insert', ['link', 'picture', 'video']]
 			],
 			callbacks: {
-				// summernote 편집기에 이미지를 로드할 때 이미지는 function의 매개변수 files로 전달됨 
 				onImageUpload: function(files){
-					// 이미지를 ajax를 이용해서 서버로 보낼 때 가상 form 데이터 사용 
-					var formData = new FormData();
-					formData.append('file', files[0]);  // 파라미터 file, summernote 편집기에 추가된 이미지가 files[0]임
-					// 이미지를 HDD에 저장하고 경로를 받아오는 ajax
-					$.ajax({
-						type: 'post',
-						url: getContextPath() + '/gallery/uploadImage',
-						data: formData,
-						contentType: false,  // ajax 이미지 첨부용
-						processData: false,  // ajax 이미지 첨부용
-						dataType: 'json',    // HDD에 저장된 이미지의 경로를 json으로 받아옴
-						success: function(resData){
-							
-							$('#content').summernote('insertImage', resData.src);
-							
-							/*
-								src=${contextPath}/load/image/aaa.jpg 값이 넘어온 경우
-								summernote는
-								<img src="${contextPath}/load/image/aaa.jpg"> 태그를 만든다.
+					for(let i = 0; i < files.length; i++) {
+						var formData = new FormData();
+						formData.append('file', files[i]);  // 파라미터 file, summernote 편집기에 추가된 이미지가 files[i]임						
+						// 이미지를 HDD에 저장하고 경로를 받아오는 ajax
+						$.ajax({
+							type: 'post',
+							url: getContextPath() + '/gallery/uploadImage',
+							data: formData,
+							contentType: false,  // ajax 이미지 첨부용
+							processData: false,  // ajax 이미지 첨부용
+							dataType: 'json',    // HDD에 저장된 이미지의 경로를 json으로 받아옴
+							success: function(resData){
+								$('#galContent').summernote('insertImage', resData.src);
+								$('#summernote_image_list').append($('<input type="hidden" name="summernoteImageNames" value="' + resData.filesystem + '">'))
 								
-								mapping=${contextPath}/load/image/aaa.jpg인 파일의 실제 위치는
-								location=C:\\upload\\aaa.jpg이다.
-								
-								스프링에서 정적 자원 표시하는 방법은 servlet-context.xml에 있다.
-								이미지(정적 자원)의 mapping과 location을 servlet-context.xml에 작성해야 한다.
-							*/
-						}
-					});  // ajax
+							}
+						});  // ajax
+					}  // for
 				}  // onImageUpload
 			}  // callbacks
 		});
@@ -75,7 +64,7 @@
 		
 		// 서브밋
 		$('#frm_write').submit(function(event){
-			if($('#title').val() == ''){
+			if($('#galTitle').val() == ''){
 				alert('제목은 필수입니다.');
 				event.preventDefault();  // 서브밋 취소
 				return;  // 더 이상 코드 실행할 필요 없음

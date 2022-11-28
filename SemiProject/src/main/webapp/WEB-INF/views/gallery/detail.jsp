@@ -8,6 +8,29 @@
 	<jsp:param value="${gallery.galNo}번 블로그" name="title"/>
 </jsp:include>
 
+<script>
+	$(function(){
+		fn_likeCount();
+	});
+	
+	function fn_likeCount(){
+		$('#btn_like').click(function(){
+			$.ajax ({
+				type: 'get',
+				url : '${contextPath}/gallery/likeCount',
+				data: "galNo=" + ${gallery.galNo},
+				dataType : 'json',
+				success : function(resData) {
+					alert('게시글 추천 성공')
+				},
+				error : function(jqXHR) {
+					alert('게시글 추천 실패')
+				}
+			});
+		});				
+	}
+	
+</script>
 <style>
 	.blind {
 		display : none;
@@ -44,20 +67,7 @@
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
-			$('#btn_like').click(function(){
-				$.ajax ({
-					type: 'post',
-					url : '${contextPath}/gallery/likeCount',
-					data: "galNo=" + ${gallery.galNo},
-					dataType : 'json',
-					success : function(resData) {
-						alert('게시글 추천 성공')
-					},
-					error : function(jqXHR) {
-						alert('게시글 추천 실패')
-					}
-				});
-			});				
+			
 			$('#btn_edit_gallery').click(function(){
 				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
 				$('#frm_btn').submit();
@@ -68,6 +78,8 @@
 					$('#frm_btn').submit();
 				}
 			});
+			
+			
 		</script> 
 	</div>
 	
