@@ -23,6 +23,29 @@
 	
 	<context:component-scan base-package="com.gdu.semi" />
 	
+	<!-- interceptor -->
+	
+	<beans:bean id="keepLoginInterceptor" class="com.gdu.semi.interceptor.KeepLoginInterceptor" />
+	
+	<interceptors>
+		<!-- KeepLoginInterceptor : bean 태그로 컨테이너에 등록 -->
+		<interceptor>
+			<mapping path="/**" />
+			<beans:ref bean="keepLoginInterceptor" />
+		</interceptor>
+		<!-- PreventLoginInterceptor : @Component로 컨테이너에 등록 -->
+		<interceptor>
+			<mapping path="/user/login/form"/>
+			<mapping path="/user/join/write"/>
+			<mapping path="/user/agree"/>
+			<beans:bean class="com.gdu.semi.interceptor.PreventLoginInterceptor" />
+		</interceptor>
+		<!-- SleepUserCheckingInterceptor : @Component로 컨테이너에 등록 -->
+		<interceptor>
+			<mapping path="/user/login"/>
+			<beans:bean class="com.gdu.semi.interceptor.SleepUserCheckingInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 	
 </beans:beans>

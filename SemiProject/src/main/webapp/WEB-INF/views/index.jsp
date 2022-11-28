@@ -68,7 +68,7 @@
 		
 		<h1>로그인</h1>
 		
-		<form id="frm_login" action="${contextPath}/user/login" method="post">
+		<form id="frm_login" action="${contextPath}/index" method="post">
 			
 			<!-- 컨트롤러에서 넘겨준 값 : 로그인 후 이동할 주소가 있음 -->
 			<input type="hidden" name="url" value="${url}">
@@ -115,7 +115,7 @@
 		
 			<a href="${contextPath}/user/agree">회원가입하러가기</a>
 	
-		</div>
+		</div>                                                  
 		
 		</c:if>
 	

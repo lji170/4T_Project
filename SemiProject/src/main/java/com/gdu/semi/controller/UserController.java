@@ -64,7 +64,7 @@ public class UserController {
 		userService.retire(request, response);
 	}
 	
-	@GetMapping("/user/login/form")
+	@GetMapping("/index/form")
 	public String loginForm(HttpServletRequest request, Model model) {
 		
 		// 요청 헤더 referer : 이전 페이지의 주소가 저장
@@ -73,7 +73,7 @@ public class UserController {
 		// 네이버 로그인
 		model.addAttribute("apiURL", userService.getNaverLoginApiURL(request));
 		
-		return "user/login";
+		return "index";
 		
 	}
 	

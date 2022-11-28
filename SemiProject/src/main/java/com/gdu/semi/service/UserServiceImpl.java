@@ -624,7 +624,7 @@ public class UserServiceImpl implements UserService {
 		
 		try {
 			
-			String clientId = "ZuA2Hxw8DnfFAdWjRSk4";
+			String clientId = "_48qz3Z7EcTkgD6lEtVx";
 			String redirectURI = URLEncoder.encode("http://localhost:9090" + request.getContextPath() + "/user/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성한 주소 입력 
 			SecureRandom random = new SecureRandom();
 			String state = new BigInteger(130, random).toString();
@@ -650,8 +650,8 @@ public class UserServiceImpl implements UserService {
 		
 		// access_token 받기
 		
-		String clientId = "ZuA2Hxw8DnfFAdWjRSk4";
-		String clientSecret = "aSF2zE3ZRQ";
+		String clientId = "_48qz3Z7EcTkgD6lEtVx";
+		String clientSecret = "_fp9SsfDX0";
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
 		
