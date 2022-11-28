@@ -98,10 +98,10 @@ public class GalleryServiceImpl implements GalleryService {
 				if(summernoteImageNames !=  null) {
 					for(String filesystem : summernoteImageNames) {
 						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
-								.blogNo(blog.getBlogNo())
+								.galNo(gallery.getGalNo())
 								.filesystem(filesystem)
 								.build();
-						blogMapper.insertSummernoteImage(summernoteImage);
+						galleryMapper.insertSummernoteImage(summernoteImage);
 					}
 				}
 				out.println("alert('갤러리 삽입 성공');");

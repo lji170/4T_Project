@@ -24,6 +24,12 @@
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
+	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
+		INSERT INTO SUMMERNOTE_IMAGE
+			(GAL_NO, FILESYSTEM)
+		VALUES
+			(#{galNo}, #{filesystem})
+	</insert>
 	
 	<insert id="insertGallery" parameterType="GalleryDTO">
 		INSERT INTO GALLERY
@@ -53,18 +59,35 @@
 		   SET GAL_TITLE = #{galTitle}, GAL_CONTENT = #{galContent}, GAL_LAST_MODIFY_DATE = SYSDATE
 		 WHERE GAL_NO = #{galNo}
 	</update>
+	
+	<insert id="insertLike" parameterType="GalleryDTO">
+		INSER INTO TBL_LIKE
+			(LIKE_NO, GAL_NO, ID, LIKE_DATE)
+		VALUES
+			(TBL_LIKE_SEQ, #{galNo}, #{id}, SYSDATE)
+	
+	</insert>
 	<update id="updateGalleryLikeCount" parameterType="GalleryDTO">
 		UPDATE GALLERY
 		   SET LIKE_COUNT = LIKE_COUNT + 1
 		 WHERE GAL_NO = #{galNo}
 	</update>
 	
-	
 	<delete id="deleteGallery" parameterType="int">
 		DELETE FROM GALLERY
 		 WHERE GAL_NO = #{galNo}
 	</delete>
 	
+	<select id="selectSummernoteImageListInBlog" parameterType="int" resultType="SummernoteImageDTO">
+		SELECT GAL_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE GAL_NO = #{galNo}
+	</select>
+
+	<select id="selectAllSummernoteImageList" resultType="SummernoteImageDTO">
+		SELECT GAL_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+	</select>
 	
 	
 </mapper>
