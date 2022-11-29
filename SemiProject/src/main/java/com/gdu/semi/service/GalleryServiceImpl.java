@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.GalleryDTO;
+import com.gdu.semi.domain.LikeDTO;
 import com.gdu.semi.domain.SummernoteImageDTO;
 import com.gdu.semi.mapper.GalleryMapper;
 import com.gdu.semi.util.MyFileUtil;
@@ -127,7 +128,6 @@ public class GalleryServiceImpl implements GalleryService {
 		}
 	}
 	
-	
 	@Override
 	public Map<String, Object> saveSummernoteImage(MultipartHttpServletRequest multipartRequest) {
 		// 파라미터 file
@@ -191,56 +191,41 @@ public class GalleryServiceImpl implements GalleryService {
 		
 	}
 	
+	// 좋아요
 	@Override
-	public int galleryLikeCount(int galNo) {
-		return galleryMapper.selectGellryLikeCount(galNo);
-	}
-	@Transactional
-	@Override
-	public ResponseEntity<GalleryDTO> increaseGalleryLikeCount(HttpServletRequest request) {
-		int galNo = Integer.parseInt(request.getParameter("galNo"));
+	public int getLikeCount(HttpServletRequest request) {
 		String id = "인절미";
-		GalleryDTO gallery = GalleryDTO.builder()
-				.galNo(galNo)
-				.id(id)
-				.build();
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
 		
-		ResponseEntity<GalleryDTO> entity = null;
-
-		int insertResult = galleryMapper.insertLike(gallery);
-		if (insertResult > 0) {
-			int result = galleryMapper.updateGalleryLikeCount(gallery);
-			if (result > 0) {
-				entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.OK);
-			} else {
-				entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} else {
-			
-		}
-		return entity;
+		LikeDTO like = LikeDTO.builder()
+				.id(id)
+				.galNo(galNo)
+				.build();
+		return galleryMapper.selectLikeUser(like);
+	}
+	
+	@Override
+	public int addLikeUser(HttpServletRequest request) {
+		String id = "인절미";
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		
+		LikeDTO like = LikeDTO.builder()
+				.id(id)
+				.galNo(galNo)
+				.build();
+		return galleryMapper.insertLike(like);
 	}
 	@Override
-	public int getLikeUser(HttpServletRequest request) {
-		int galNo = Integer.parseInt(request.getParameter("galNo"));
+	public int removeLikeUser(HttpServletRequest request) {
 		String id = "인절미";
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
 		
-		GalleryDTO gallery = GalleryDTO.builder()
-				.galNo(galNo)
+		LikeDTO like = LikeDTO.builder()
 				.id(id)
+				.galNo(galNo)
 				.build();
-		
-		int result = galleryMapper.selectLikeUser(gallery);
-		if (result == 0) {
-			System.out.println("LikeUser: 좋아요 누르지 않은 회원");
-		} else {
-			System.out.println("LikeUser: 좋아요 누른 회원");
-		}
-		return result;
+		return galleryMapper.deleteLike(like);
 	}
-	
-	
-	
 	
 	@Override
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response) {

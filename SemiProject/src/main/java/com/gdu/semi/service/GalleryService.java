@@ -28,10 +28,9 @@ public interface GalleryService {
 	public void modifyGallery(HttpServletRequest request, HttpServletResponse response);
 	
 	// 4. 좋아요
-	public int galleryLikeCount(int galNo);
-	public ResponseEntity<GalleryDTO> increaseGalleryLikeCount(HttpServletRequest request);
-	// 		좋아요 누른 회원 구분하기
-	public int getLikeUser (HttpServletRequest request);
+	public int getLikeCount(HttpServletRequest request);
+	public int addLikeUser(HttpServletRequest request);
+	public int removeLikeUser(HttpServletRequest request);
 	
 	// 5. 삭제
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response);

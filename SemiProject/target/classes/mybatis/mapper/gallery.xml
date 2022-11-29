@@ -71,32 +71,24 @@
 	
 	
 	<!-- 좋아요 기능 -->
-	<select id="selectGellryLikeCount" parameterType="int" resultType="int">
-		SELECT LIKE_COUNT
-		  FROM GALLERY
-		 WHERE GAL_NO = #{galNo}
-	</select>
-	<insert id="insertLike" parameterType="GalleryDTO">
-		INSERT INTO TBL_LIKE
-			(LIKE_NO, GAL_NO, ID, LIKE_DATE)
-		VALUES
-			(TBL_LIKE_SEQ.NEXTVAL, #{galNo}, #{id}, SYSDATE)
-	
-	</insert>
-	<update id="updateGalleryLikeCount" parameterType="GalleryDTO">
-		UPDATE GALLERY
-		   SET LIKE_COUNT = (SELECT COUNT(GAL_NO)
-                       		   FROM TBL_LIKE
-                      		  WHERE GAL_NO = #{galNo})
-		 WHERE GAL_NO = #{galNo}
-	</update>
 	<!-- 게시글에 좋아요 누른 회원 : 1
 	              좋아요 누르지 않은 회원 및 비회원 : 0 -->
-	<select id="selectLikeUser" parameterType="GalleryDTO" resultType="int">
+	<select id="selectLikeUser" parameterType="LikeDTO" resultType="int">
 		SELECT COUNT(*)
 		  FROM TBL_LIKE
 		 WHERE ID = #{id} AND GAL_NO = {#galNo}
 	</select>
+	<insert id="insertLike" parameterType="LikeDTO">
+		INSERT INTO TBL_LIKE
+			(LIKE_NO, GAL_NO, ID, LIKE_DATE)
+		VALUES
+			(TBL_LIKE_SEQ.NEXTVAL, #{galNo}, #{id}, SYSDATE)
+	</insert>	
+
+	<delete id="deleteLike" parameterType="LikeDTO">
+		DELETE FROM TBL_LIKE
+		 WHERE GAL_NO = #{galNo} AND ID = #{id} 
+	</delete>	
 	
 	
 	

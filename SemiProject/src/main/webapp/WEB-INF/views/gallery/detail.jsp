@@ -80,7 +80,7 @@
 			<input type="hidden" name="galNo" value="${gallery.galNo}">
 			<c:choose>
 				<c:when test="${id ne null}">
-					<img class="likeArea" id="btn_like" src="${contextPath}/resources/image/like.png">
+					<img class="likeArea btn_like" id="btn_like" src="${contextPath}/resources/image/like.png">
 				</c:when>
 				<c:otherwise>
 					<span class="likeArea btn_dislike"><img src="${contextPath}/resources/image/dislike.png"></span>
@@ -91,6 +91,18 @@
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
+			/* 좋아요 눌렀는지 확인하기 */
+			$.ajax({
+				type:'get',
+				url :'${contextPath}/gallery/likeCount',
+				data:'galNo=${gallery.galNo}',
+				dataType:'json',
+				success : function(resData){
+					if(resData > 0) {
+						
+					}
+				} 
+			})
 			$('.likeArea').click(function(){
 				
 			})

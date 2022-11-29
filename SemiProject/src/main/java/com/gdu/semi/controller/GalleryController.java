@@ -77,23 +77,24 @@ public class GalleryController {
 	
 	
 	
-	@ResponseBody
 	@GetMapping("/gallery/likeCount")
-	public void likcCount (int galNo) {
-		galleryService.galleryLikeCount(galNo);
+	public int likeCount(HttpServletRequest request) {
+		return galleryService.getLikeCount(request);
+	}
+	@GetMapping("/gallery/likeAdd")
+	public int addLike(HttpServletRequest request) {
+		return galleryService.addLikeUser(request);
+	}
+	@GetMapping("/gallery/likeRemove")
+	public int removeLike(HttpServletRequest request) {
+		return galleryService.removeLikeUser(request);
 	}
 	
-	@ResponseBody
-	@GetMapping("/gallery/addLike")
-	public ResponseEntity<GalleryDTO> addLike (HttpServletRequest request) {
-		return galleryService.increaseGalleryLikeCount(request);
-	}
 	
-	@ResponseBody
-	@GetMapping(value="/gallery/likeUser", produces="application/json")
-	public int likeUser (HttpServletRequest request) {
-		return galleryService.getLikeUser(request);
-	}
+	
+	
+	
+	
 
 	
 	@PostMapping("/gallery/modify")

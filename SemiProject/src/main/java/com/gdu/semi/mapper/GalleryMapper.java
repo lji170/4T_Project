@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.http.ResponseEntity;
 
 import com.gdu.semi.domain.GalleryDTO;
+import com.gdu.semi.domain.LikeDTO;
 import com.gdu.semi.domain.SummernoteImageDTO;
 import com.gdu.semi.domain.UserDTO;
 
@@ -26,12 +27,12 @@ public interface GalleryMapper {
 	public GalleryDTO selectGalleryByNo(int galNo);
 	
 	// 좋아요
-	public int selectGellryLikeCount(int galNo);
-	public int updateGallery(GalleryDTO gallery);
-	public int insertLike(GalleryDTO gallery);
-	public int updateGalleryLikeCount(GalleryDTO gallery);
-	public int selectLikeUser(GalleryDTO gallery);
+	public int selectLikeUser(LikeDTO like);
+	public int insertLike(LikeDTO like);
+	public int deleteLike(LikeDTO like);
 	
+	// 갤러리 수정
+	public int updateGallery(GalleryDTO gallery);
 	
 	public int deleteGallery(int galNo);
 	public List<SummernoteImageDTO> selectSummernoteImageListInBlog(int blogNo);
