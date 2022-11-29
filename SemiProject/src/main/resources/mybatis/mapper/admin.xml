@@ -49,10 +49,10 @@
 	
 	
 	<!-- 회원 강제 탈퇴 1: USERS 테이블에서 제거-->
-	<delete id="deleteUserByNo" parameterType="List">
+	<delete id="deleteUserByNo" parameterType="Map">
 		DELETE
 		  FROM USERS
-		 WHERE USER_NO in (<foreach collection="userNo" item="user" separator=",">#{user.userNo}</foreach>)
+		 WHERE USER_NO = #{userNo}
 	</delete>
 	
 	

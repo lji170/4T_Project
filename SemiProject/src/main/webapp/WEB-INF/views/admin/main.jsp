@@ -214,7 +214,7 @@ $(document).ready(function(){
     
  });
 
-function fn_user1List(){
+function fn_userList(){
 	 
 		 $.ajax({
 			    type: 'get',

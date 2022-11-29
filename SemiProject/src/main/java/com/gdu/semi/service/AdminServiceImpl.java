@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gdu.semi.domain.RetireUserDTO;
 import com.gdu.semi.mapper.AdminMapper;
 import com.gdu.semi.util.PageUtil;
 
@@ -27,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		int userCount = adminMapper.selectUserListCount();
 		
-		pageUtil.setPageUtil(page, 10, userCount);
+		pageUtil.setPageUtil(page, 3, userCount);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin());
@@ -68,10 +70,10 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 		
 	}
+	
 	@Override
-	public int removeUser(List<String> userNo) {
-		int result = adminMapper.deleteUserByNo(userNo);
-		return result;
+	public void removeUser(Map<String, Object> map) {
+		int deleteResult = adminMapper.deleteUserByNo(map);
+		return null;
 	}
-		
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,10 +45,12 @@ public class AdminController {
 	}
 	@ResponseBody
 	@PostMapping(value="/admin/retireUser", produces="application/json; charset=UTF-8")
-	public Object checkTestSave(@RequestParam(value="userNo") int[] userNo) {
-		System.out.println(userNo[0]);
-		System.out.println(userNo[1]);
-		return null;
+	public Map<String, Object> checkTestSave(@RequestParam(value="userNo") String[] userNo, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<>();
+		for(String s : userNo) {
+			map.put("map", adminService.removeUser(s, request, response)) ;
+		}
+		return map;
 		
 		
 		
