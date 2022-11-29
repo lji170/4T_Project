@@ -8,11 +8,13 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -66,9 +68,10 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	}
 	
+	@Transactional
 	@Override
 	public void addGallery(HttpServletRequest request, HttpServletResponse response) {
-		String id = "인절미";
+		String id = "userpp";
 		String galTitle = request.getParameter("galTitle");
 		String galContent = request.getParameter("galContent");
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
@@ -105,6 +108,13 @@ public class GalleryServiceImpl implements GalleryService {
 					}
 				}
 				out.println("alert('갤러리 삽입 성공');");
+				int point = galleryMapper.updateUserPoint(id);
+				
+				if (point > 0) {
+					out.println("alert('포인트를 10점 적립하였습니다.');");
+				} else {
+					out.println("alert('포인트 적립에 실패했습니다. 게시글 작성이 취소됩니다.');");
+				}
 				out.println("location.href='"+ request.getContextPath() +"/gallery/list';");
 			} else {
 				out.println("alert('갤러리 삽입 실패');");
@@ -117,13 +127,14 @@ public class GalleryServiceImpl implements GalleryService {
 		}
 	}
 	
+	
 	@Override
 	public Map<String, Object> saveSummernoteImage(MultipartHttpServletRequest multipartRequest) {
 		// 파라미터 file
 		MultipartFile multipartFile = multipartRequest.getFile("file");
 		
 		// 저장 경로
-		String path = "C:" + File.separator + "summernoteImage";
+		String path = "C:" + File.separator + "gallery";
 		
 		// 저장할 파일명
 		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
@@ -181,6 +192,11 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	
 	@Override
+	public int galleryLikeCount(int galNo) {
+		return galleryMapper.selectGellryLikeCount(galNo);
+	}
+	@Transactional
+	@Override
 	public ResponseEntity<GalleryDTO> increaseGalleryLikeCount(HttpServletRequest request) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
 		String id = "인절미";
@@ -188,16 +204,43 @@ public class GalleryServiceImpl implements GalleryService {
 				.galNo(galNo)
 				.id(id)
 				.build();
-				
-		int result = galleryMapper.updateGalleryLikeCount(gallery);
+		
 		ResponseEntity<GalleryDTO> entity = null;
-		if (result > 0) {
-			entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.OK);
+
+		int insertResult = galleryMapper.insertLike(gallery);
+		if (insertResult > 0) {
+			int result = galleryMapper.updateGalleryLikeCount(gallery);
+			if (result > 0) {
+				entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.OK);
+			} else {
+				entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} else {
-			entity = new ResponseEntity<GalleryDTO>(gallery, HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 		return entity;
 	}
+	@Override
+	public int getLikeUser(HttpServletRequest request) {
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		String id = "인절미";
+		
+		GalleryDTO gallery = GalleryDTO.builder()
+				.galNo(galNo)
+				.id(id)
+				.build();
+		
+		int result = galleryMapper.selectLikeUser(gallery);
+		if (result == 0) {
+			System.out.println("LikeUser: 좋아요 누르지 않은 회원");
+		} else {
+			System.out.println("LikeUser: 좋아요 누른 회원");
+		}
+		return result;
+	}
+	
+	
+	
 	
 	@Override
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response) {

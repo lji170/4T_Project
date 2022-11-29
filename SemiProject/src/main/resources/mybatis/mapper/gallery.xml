@@ -31,12 +31,21 @@
 			(#{galNo}, #{filesystem})
 	</insert>
 	
+	<!-- 갤러리 작성
+		1. 글 작성 (gallery 테이블 추가)
+		2. 포인트 +10 증가 (user 테이블에서 point 증가)
+	-->
 	<insert id="insertGallery" parameterType="GalleryDTO">
 		INSERT INTO GALLERY
 			(GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP )
 		VALUES
 			(GALLERY_SEQ.NEXTVAL, #{id}, #{galTitle}, #{galContent}, SYSDATE, SYSDATE, 0, 0, #{ip})
 	</insert>
+	<update id="updateUserPoint" parameterType="String">
+		UPDATE USERS
+		   SET POINT = POINT + 10
+		 WHERE ID = #{id}
+	</update>
 	
 	
 	<!-- 상세보기
@@ -60,18 +69,38 @@
 		 WHERE GAL_NO = #{galNo}
 	</update>
 	
+	
+	<!-- 좋아요 기능 -->
+	<select id="selectGellryLikeCount" parameterType="int" resultType="int">
+		SELECT LIKE_COUNT
+		  FROM GALLERY
+		 WHERE GAL_NO = #{galNo}
+	</select>
 	<insert id="insertLike" parameterType="GalleryDTO">
-		INSER INTO TBL_LIKE
+		INSERT INTO TBL_LIKE
 			(LIKE_NO, GAL_NO, ID, LIKE_DATE)
 		VALUES
-			(TBL_LIKE_SEQ, #{galNo}, #{id}, SYSDATE)
+			(TBL_LIKE_SEQ.NEXTVAL, #{galNo}, #{id}, SYSDATE)
 	
 	</insert>
 	<update id="updateGalleryLikeCount" parameterType="GalleryDTO">
 		UPDATE GALLERY
-		   SET LIKE_COUNT = LIKE_COUNT + 1
+		   SET LIKE_COUNT = (SELECT COUNT(GAL_NO)
+                       		   FROM TBL_LIKE
+                      		  WHERE GAL_NO = #{galNo})
 		 WHERE GAL_NO = #{galNo}
 	</update>
+	<!-- 게시글에 좋아요 누른 회원 : 1
+	              좋아요 누르지 않은 회원 및 비회원 : 0 -->
+	<select id="selectLikeUser" parameterType="GalleryDTO" resultType="int">
+		SELECT COUNT(*)
+		  FROM TBL_LIKE
+		 WHERE ID = #{id} AND GAL_NO = {#galNo}
+	</select>
+	
+	
+	
+	
 	
 	<delete id="deleteGallery" parameterType="int">
 		DELETE FROM GALLERY

@@ -10,18 +10,20 @@
 
 <script>
 	$(function(){
+		fn_increaseLikeCount();
 		fn_likeCount();
 	});
 	
-	function fn_likeCount(){
+	function fn_increaseLikeCount(){
 		$('#btn_like').click(function(){
 			$.ajax ({
 				type: 'get',
-				url : '${contextPath}/gallery/likeCount',
+				url : '${contextPath}/gallery/addLike',
 				data: "galNo=" + ${gallery.galNo},
 				dataType : 'json',
 				success : function(resData) {
 					alert('게시글 추천 성공')
+					fn_likeCount();
 				},
 				error : function(jqXHR) {
 					alert('게시글 추천 실패')
@@ -30,10 +32,25 @@
 		});				
 	}
 	
+	function fn_likeCount(){
+		$.ajax ({
+			type: 'get',
+			url : '${contextPath}/gallery/likeCount',
+			data: "galNo=" + ${gallery.galNo},
+			dataType : 'json',
+			success : function(resData) {
+				
+			}
+		});
+	}
+	
 </script>
 <style>
 	.blind {
 		display : none;
+	}
+	#btn_like {
+		width: 100px;
 	}
 </style>
 
@@ -61,12 +78,22 @@
 	<div>
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="galNo" value="${gallery.galNo}">
-			<input type="button" id="btn_like" name="likeCount" value="${gallery.likeCount}">
+			<c:choose>
+				<c:when test="${id ne null}">
+					<img class="likeArea" id="btn_like" src="${contextPath}/resources/image/like.png">
+				</c:when>
+				<c:otherwise>
+					<span class="likeArea btn_dislike"><img src="${contextPath}/resources/image/dislike.png"></span>
+				</c:otherwise>
+			</c:choose>
 			<input type="button" value="수정" id="btn_edit_gallery">
 			<input type="button" value="삭제" id="btn_remove_gallery">
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
+			$('.likeArea').click(function(){
+				
+			})
 			
 			$('#btn_edit_gallery').click(function(){
 				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
@@ -117,6 +144,7 @@
 		fn_addComment();
 		fn_commentList();
 		fn_changePage();
+		fn_removeComment();
 	
 		// 함수 정의
 		function fn_commentCount(){
@@ -179,12 +207,17 @@
 					$.each (resData.commentList, function(i, comment){
 						// 댓글내용
 						var div = '';
+						div += '<div>' + comment.commentTitle;
+						// 작성자만 삭제할 수 있도록 if 처리 필요
+						div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
+						// 댓글만 답글을 달 수 있도록 if 처리 필요
+						div += '<input type="button" value="답글" class="btn_reply_area">';
+						div += '</div>';
 						// 댓글내용 밑에 시간표기
 						// 2022.11.28 11:00
-						div += '<div>' + comment.commentTitle + '</div>';
 						div += '<div>';
 						moment.locale('ko-KR');
-						div += '<span style="font-size: 12px; color:silver;">'+ moment(comment.createDate).format('YYYY.MM.DD hh:mm') + '</span>';
+						div += '<span style="font-size: 12px; color:silver;">'+ moment(comment.commentCreateDate).format('YYYY.MM.DD hh:mm') + '</span>';
 						div += '</div>';
 						div += '</div>';
 						$('#comment_list').append(div);
@@ -230,6 +263,27 @@
 				$('#comment_area').toggleClass('blind');
 			});
 		}
+		
+		function fn_removeComment(){
+			$(document).on('click', '.btn_comment_remove', function(){
+				if(confirm('삭제된 댓글은 복수할 수 없습니다. 댓글을 삭제할까요?')){
+					$.ajax({
+						type: 'post',
+						url : '${contextPath}/comment/remove',
+						data: 'commentNo=' + $(this).data('comment_no'),
+						dataType: 'json',
+						success : function(resData){	// resData = {"isRemove" : true}
+							if(resData.isRemove) {
+								alert('댓글이 삭제되었습니다.');
+								fn_commentList();  // 목록 갱신
+								fn_commentCount(); //
+							}
+						}
+					});
+				}
+			});
+			
+		};
 		
 	</script>
 

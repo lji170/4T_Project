@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class GalleryController {
 	}
 	
 	@PostMapping("/gallery/add")
-	public void insertGallery(HttpServletRequest request, HttpServletResponse response) {
+	public void insertGallery(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		galleryService.addGallery(request, response);
 	}
 	
@@ -74,17 +75,32 @@ public class GalleryController {
 		return "gallery/edit";
 	}
 	
+	
+	
+	@ResponseBody
+	@GetMapping("/gallery/likeCount")
+	public void likcCount (int galNo) {
+		galleryService.galleryLikeCount(galNo);
+	}
+	
+	@ResponseBody
+	@GetMapping("/gallery/addLike")
+	public ResponseEntity<GalleryDTO> addLike (HttpServletRequest request) {
+		return galleryService.increaseGalleryLikeCount(request);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/gallery/likeUser", produces="application/json")
+	public int likeUser (HttpServletRequest request) {
+		return galleryService.getLikeUser(request);
+	}
+
+	
 	@PostMapping("/gallery/modify")
 	public String modify(HttpServletRequest request, HttpServletResponse response) {
 		galleryService.modifyGallery(request, response);	// 수정 후 상세보기로
 		return "redirect:/gallery/detail?galNo=" + request.getParameter("galNo");
 	}
-	
-	@ResponseBody
-	@GetMapping("/gallery/likeCount")
-	public ResponseEntity<GalleryDTO> likeCount (HttpServletRequest request) {
-		return galleryService.increaseGalleryLikeCount(request);
- 	}
 	
 	@PostMapping("/gallery/remove")
 	public String remove(HttpServletRequest request, HttpServletResponse response) {

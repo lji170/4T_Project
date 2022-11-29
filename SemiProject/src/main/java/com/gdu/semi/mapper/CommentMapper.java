@@ -13,5 +13,5 @@ public interface CommentMapper {
 	public int selectCommentCount(int galNo);
 	public int insertComment(CommentDTO comment);
 	public List<CommentDTO> selectCommentList (Map<String, Object> map);
-	
+	public int deleteComment(int CommentNo);
 }

@@ -82,4 +82,11 @@ public class CommentServiceImpl implements CommentService {
 		return result;
 	}
 	
+	@Override
+	public Map<String, Object> removeComment(int commentNo) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("isRemove", commentMapper.deleteComment(commentNo) == 1);
+		return result;
+	}
+	
 }
