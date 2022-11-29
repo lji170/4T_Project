@@ -32,4 +32,8 @@ public interface UserService {
 	public void naverLogin(HttpServletRequest request, UserDTO naverUser);
 	public void naverJoin(HttpServletRequest request, HttpServletResponse response);
 	
+	
+	//아이디 찾기 
+	public Map<String, Object> findId(String email);
+	
 }

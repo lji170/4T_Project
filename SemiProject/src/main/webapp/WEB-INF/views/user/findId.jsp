@@ -111,20 +111,34 @@
 	
 	function fn_join(){
 		
-		$('#findId').submit(function(event){
-			
+		$('#findId').click(function(event){
 			
 			if(authCodePass == false){
 				alert('이메일 인증을 받으세요.');
 				event.preventDefault();
 				return;
+				
+			}else { 
+				$.ajax({
+					/* 요청 */
+					type : 'post'
+					url: '${contextPath}/user/findIdForm',
+					data: 'email=' + $('#email').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						$('#msg_showid').text('해당 이메일로 가입한 ID : '+resData);
+					},
+					error: function(jqXHR){
+						alert('관리자에게 문의하세요.');
+					}
+				});
 			}
-			
-			
-			
-			
 		}) // $('#frm_join')
 	}
+	
+	
+
 
 
 
@@ -137,7 +151,7 @@
 <h6>해당 아이디로 가입한 이메일 주소를 입력해주세요. (도메인 포함)</h6>
 
 
-	<form action="${contextPath}/user/findIdForm" method="post" id="findId">
+	<form>
 		<div>
 			<label for="email">이메일*</label>
 			<input type="text" name="email" id="email">
@@ -146,7 +160,10 @@
 			<input type="text" id="authCode" placeholder="인증코드 입력">
 			<input type="button" value="인증하기" id="btn_verifyAuthCode">
 		</div>
-		<button>다음</button>
+		<input type="button" id="findId">
+		<div>
+			<span id="msg_showid"></span>
+		</div>
 	</form>
 
 	

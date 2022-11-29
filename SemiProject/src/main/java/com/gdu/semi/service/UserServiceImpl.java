@@ -22,7 +22,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -300,7 +299,7 @@ public class UserServiceImpl implements UserService {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		
 		// 파라미터
-		String url = request.getParameter("url");
+		//String url = request.getParameter("url");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		
@@ -339,7 +338,7 @@ public class UserServiceImpl implements UserService {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
 				out.println("alert('로그인에 성공하였습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("location.href='" + request.getContextPath()+"/move/index" + "';");
 				out.println("</script>");
 				
 				out.close();
@@ -908,6 +907,24 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	@Override
+	public Map<String, Object> findId(String email) {
+		
+		// 조회조건으로 사용할 맵
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		
+		// 반환값으로 사용할 맵
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("findIdInUser", userMapper.selectUserByMap(map).getId());
+		result.put("findIdInSleepUser", userMapper.selectIdSleepUser(map).getId());
+		
+		
+		
+		return result;
 	}
 	
 	

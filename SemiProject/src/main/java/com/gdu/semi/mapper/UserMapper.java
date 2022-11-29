@@ -27,7 +27,7 @@ public interface UserMapper {
 	public int deleteSleepUser(String id);
 	public int insertNaverUser(UserDTO user);
 	
-	public String findId(Map<String, Object> map);
+	public SleepUserDTO selectIdSleepUser(Map<String, Object> map);
 	
 	
 	

@@ -145,11 +145,27 @@ public class UserController {
 	}
 	
 	
-	//아이디찾기. index.jsp
+	// index.jsp에서 아이디찾기 버튼 클릭시 JSP이동
 	@GetMapping("/user/findId")
 	public String findId() {
 		return "user/findId";
 	}
+	
+	@GetMapping("/move/index")
+	public String moveindex() {
+		return "index";
+	}
+	
+	
+	// findId.jsp에서 아이디찾기
+	@ResponseBody
+	@PostMapping(value="/user/findIdForm", produces="application/json")
+	public Map<String, Object> findIdForm(String email) {
+		
+		return userService.findId(email);
+	}
+	
+	
 	
 	
 	

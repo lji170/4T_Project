@@ -131,28 +131,34 @@
 	
 	<!-- 로그인 이전에 휴면회원인지 확인 -->
 	<select id="selectSleepUserById" parameterType="String" resultType="SleepUserDTO">
-
+		SELECT ID, JOIN_DATE, LAST_LOGIN_DATE, SLEEP_DATE
+		  FROM SLEEP_USERS
+		 WHERE ID = #{id}
 	</select>
 	
-	<!-- 휴면복원1 : 복원할 회원을 USERS 테이블에 삽입 -->
+	
+	
+	
+	<!-- 휴면복원1 : 복원할 회원을 USERS 테이블에 삽입 , 휴먼복원 시 포인트 그대로 유지-->
 	<insert id="insertRestoreUser" parameterType="String">
-
+			(SELECT SLEEP_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE,POINT
+			   FROM SLEEP_USERS
+			  WHERE ID = #{id})
 	</insert>
 	
 	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
 	<delete id="deleteSleepUser" parameterType="String">
-
-
-
-
+		DELETE
+		  FROM SLEEP_USERS
+		 WHERE SLEEP_NO = #{id}
 	</delete>
 	
 	
-	<select id="findId" parameterMap="Map" resultType="String">
+	<select id="selectIdSleepUser" parameterType="Map" resultType="SleepUserDTO">
 		SELECT ID
 			FORM SLEEP_USERS
-			WHERE EMAIL
-	</select>
+			WHERE EMAIL = #{email}
+	</select> 
 	
 	
 	
