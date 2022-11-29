@@ -3,15 +3,12 @@ package com.gdu.semi.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.AdminMapper;
 import com.gdu.semi.util.PageUtil;
 
@@ -25,38 +22,56 @@ public class AdminServiceImpl implements AdminService {
 	private PageUtil pageUtil;
 	
 	@Override
-	public Map<String, Object> getUserList(HttpServletRequest request, Model model) {
-		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(opt.orElse("1"));
+	public Map<String, Object> getUserList(HttpServletRequest request) {
+		int page = Integer.parseInt(request.getParameter("page"));
 		
-		int totalRecord = adminMapper.selectUserListCount();
+		int userCount = adminMapper.selectUserListCount();
 		
-		pageUtil.setPageUtil(page, 10, totalRecord);
+		pageUtil.setPageUtil(page, 10, userCount);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		
-		List<UserDTO> userList = adminMapper.selectUserListByMap(map);
+		Map<String, Object> result = new HashMap<>();
 		
-		model.addAttribute("userList", userList);
-		model.addAttribute("totalRecord", totalRecord);
-		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/admin/userList"));
+		result.put("userList", adminMapper.selectUserList(map));
+		result.put("pageUtil", pageUtil);
 		
-		return map;
-
+		return result;
 		
-	}
-	
-	@Override
-	public int removeUserByNo(HttpServletRequest request) {
-		
-		return adminMapper.deleteUserByNo(request);
 	}
 	@Override
-	public UserDTO getUserNo(int userNo) {
+	public Map<String, Object> findUser(HttpServletRequest request) {
+		String column = request.getParameter("column");
+		String searchText = request.getParameter("searchText");
+		int page = Integer.parseInt(request.getParameter("page"));
 		
-		return adminMapper.selectUserByNo(userNo);
+		Map<String,	Object> userCountMap = new HashMap<>();
+		userCountMap.put("column", column);
+		userCountMap.put("searchText",searchText);
+		
+		int userCount = adminMapper.selectUsersByQueryCount(userCountMap);
+		
+		pageUtil.setPageUtil(page, 3, userCount);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		map.put("column", column);
+		map.put("searchText",searchText);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("findUserList", adminMapper.selectUsersByQuery(map));
+		result.put("pageUtil", pageUtil);
+		
+		return result;
+		
 	}
+	@Override
+	public int removeUser(List<String> userNo) {
+		int result = adminMapper.deleteUserByNo(userNo);
+		return result;
+	}
+		
 }

@@ -5,13 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.ui.Model;
-
-import com.gdu.semi.domain.UserDTO;
-
 
 public interface AdminService {
-	public Map<String, Object> getUserList(HttpServletRequest request, Model model);
-	public int removeUserByNo(HttpServletRequest request);
-	public UserDTO getUserNo(int userNo);
+	public Map<String, Object> getUserList(HttpServletRequest request);
+	public Map<String, Object> findUser(HttpServletRequest request);
+	public int removeUser(List<String> userNo);
 }

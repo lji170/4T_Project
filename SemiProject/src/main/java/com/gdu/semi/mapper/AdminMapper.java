@@ -3,8 +3,6 @@ package com.gdu.semi.mapper;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.semi.domain.UserDTO;
@@ -12,7 +10,9 @@ import com.gdu.semi.domain.UserDTO;
 @Mapper
 public interface AdminMapper {
 	public int selectUserListCount();
-	public List<UserDTO> selectUserListByMap(Map<String, Object> map);
-	public UserDTO selectUserByNo(int userNo);
-	public int deleteUserByNo(HttpServletRequest request);
+	public List<UserDTO> selectUserList(Map<String, Object> map);
+	public List<UserDTO> selectUsersByQuery(Map<String, Object> map);
+	public int selectUsersByQueryCount(Map<String, Object> map);
+	public int deleteUserByNo(List<String> userNo);
+	public int deleteUserByNo(int[] userNo);
 }
