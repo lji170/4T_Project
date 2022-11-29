@@ -154,15 +154,12 @@
 	</delete>
 	
 	
+	<!-- 휴면계정에서 아이디찾기 -->
 	<select id="selectIdSleepUser" parameterType="Map" resultType="SleepUserDTO">
 		SELECT ID
-			FORM SLEEP_USERS
+			FROM SLEEP_USERS
 			WHERE EMAIL = #{email}
 	</select> 
-	
-	
-	
-	
 	
 	
 </mapper>

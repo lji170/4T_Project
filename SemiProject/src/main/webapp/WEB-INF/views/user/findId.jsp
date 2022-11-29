@@ -15,6 +15,9 @@
 		fn_join();
 	});
 	
+	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
+	var authCodePass = false;
+	
 	function fn_emailCheck(){
 		
 		$('#btn_getAuthCode').click(function(){
@@ -121,8 +124,8 @@
 			}else { 
 				$.ajax({
 					/* 요청 */
-					type : 'post'
-					url: '${contextPath}/user/findIdForm',
+					type : 'post',
+					url: '${contextPath}/user/findId/Form',
 					data: 'email=' + $('#email').val(),
 					/* 응답 */
 					dataType: 'json',
@@ -160,11 +163,14 @@
 			<input type="text" id="authCode" placeholder="인증코드 입력">
 			<input type="button" value="인증하기" id="btn_verifyAuthCode">
 		</div>
-		<input type="button" id="findId">
+		<hr>
+		<input type="button" id="findId" value="다음">
 		<div>
 			<span id="msg_showid"></span>
 		</div>
 	</form>
+	
+	
 
 	
 

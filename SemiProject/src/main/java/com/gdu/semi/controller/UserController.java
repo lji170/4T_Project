@@ -159,15 +159,13 @@ public class UserController {
 	
 	// findId.jsp에서 아이디찾기
 	@ResponseBody
-	@PostMapping(value="/user/findIdForm", produces="application/json")
-	public Map<String, Object> findIdForm(String email) {
-		
+	@PostMapping(value="/user/findId/Form", produces="application/json")
+	public Map<String, Object> findIdForm(@RequestParam(value="email") String email) {
 		return userService.findId(email);
 	}
 	
 	
-	
-	
+
 	
 	
 	
