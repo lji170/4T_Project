@@ -916,18 +916,23 @@ public class UserServiceImpl implements UserService {
 		// 조회조건으로 사용할 맵
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("email", email);
+
 		
 		// 반환값으로 사용할 맵
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result.put("findIdInUser", userMapper.selectUserByMap(map));
-//		result.put("findIdInSleepUser", userMapper.selectIdSleepUser(map));
-//		
-//		System.out.println(result);
-//		
-//		return result;
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("test", email);
+		
+		result.put("findIdInSleepUser", userMapper.selectIdSleepUser(map));
+		result.put("findIdInUser", userMapper.selectUserByMap(map));
+		
+		System.out.println(result);
+		
 		return result;
+		
+		
+		
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		result.put("test", email);
+//		return result;
 		
 	}
 	

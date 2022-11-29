@@ -145,17 +145,18 @@ public class UserController {
 	}
 	
 	
-	// index.jsp에서 아이디찾기 버튼 클릭시 JSP이동
-	@GetMapping("/user/findId")
-	public String findId() {
-		return "user/findId";
-	}
 	
+	// index페이지로 이동. "/"매핑값을 리다이렉트로 처리했기 때문에 index로 이동하는 매핑 설정
 	@GetMapping("/move/index")
 	public String moveindex() {
 		return "index";
 	}
 	
+	// index.jsp에서 아이디찾기 버튼 클릭시 JSP이동
+	@GetMapping("/user/findId")
+	public String findId() {
+		return "user/findId";
+	}
 	
 	// findId.jsp에서 아이디찾기
 	@ResponseBody
@@ -164,6 +165,11 @@ public class UserController {
 		return userService.findId(email);
 	}
 	
+	
+	@GetMapping("/user/findPw")
+	public String findPw() {
+		return "user/findPw";
+	}
 	
 
 	

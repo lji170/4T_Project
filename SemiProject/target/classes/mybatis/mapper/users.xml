@@ -19,6 +19,7 @@
 			 </if>
 			 <if test="email != null">
 			 	AND EMAIL = #{email}
+			 	
 			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}

@@ -6,17 +6,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디찾기</title>
+<title>비밀번호 찾기</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script>
-
 	$(function(){
+		fn_findID();
 		fn_emailCheck();
 		fn_join();
-	});
+		fn_idCheck();
+		$('#find_id_By_email').hide();
+	})
+	
+	function fn_findID(){
+		$('#findID').click(function (){
+			location.href='${contextPath}/user/findId';
+		});
+	}
 	
 	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
 	var authCodePass = false;
+	var idPass = false;
 	
 	function fn_emailCheck(){
 		
@@ -35,7 +44,7 @@
 				// 입력한 이메일
 				let emailValue = $('#email').val();
 				
-				//정규식 검사
+				// 정규식 검사
 				if(regEmail.test(emailValue) == false){
 					reject(1);  // catch의 function으로 넘기는 인수 : 1(이메일 형식이 잘못된 경우)
 					authCodePass = false;
@@ -75,6 +84,7 @@
 						// 발송한 인증코드와 사용자가 입력한 인증코드 비교
 						$('#btn_verifyAuthCode').click(function(){
 							if(resData.authCode == $('#authCode').val()){
+								
 								alert('인증되었습니다.');
 								authCodePass = true;
 							} else {
@@ -112,56 +122,87 @@
 	}  // fn_emailCheck
 	
 	
+	// 서브밋 전 아이디, 이메일 검사
 	function fn_join(){
 		
-		$('#findId').click(function(event){
+		$('#findPw').click(function(event){
 			
 			if(authCodePass == false){
 				alert('이메일 인증을 받으세요.');
 				event.preventDefault();
 				return;
-				
-			}else { 
-				$.ajax({
-					/* 요청 */
-					type : 'post',
-					url: '${contextPath}/user/findId/Form',
-					data: 'email=' + $('#email').val(),
-					/* 응답 */
-					dataType: 'json',
-					success: function(resData){
-						if(resData.findIdInUser != null){
-							$('#msg_showid').text('해당 이메일로 가입한 ID : ' + resData.findIdInUser.id);
-						}
-						if(resData.findIdInSleepUser !=null){
-							
-							$('#msg_showid').text('해당 이메일로 가입한 ID : ' + resData.findIdInSleepUser.id);
-						}
-
-					},
-					error: function(jqXHR){
-						alert('관리자에게 문의하세요.');
-					}
-				});
 			}
 		}) // $('#frm_join')
+		
+		
 	}
 	
 	
-
-
-
+	// 1. 아이디 중복체크 & 정규식
+	function fn_idCheck(){
+		
+		$('#fn_idCheck').click(function(){
+			
+			
+			if($('#id').val == ''){
+				alert('아이디를 입력하세요.');
+				return;
+			}
+			
+			
+			// 회원아이디가 맞는지 체크
+			$.ajax({
+				/* 요청 */
+				type: 'get',
+				url: '${contextPath}/user/checkReduceId',
+				data: 'id=' + $('#id').val(),
+				/* 응답 */
+				dataType: 'json',
+				success: function(resData){  // resData = {"isUser": true, "isRetireUser": false}
+					if(resData.isUser || resData.isRetireUser){
+						$('#find_id_By_email').show();
+						$('#msg_id').text($('#id').val());
+					} else {
+						alert('가입되지않은 아이디입니다. 아이디를 확인해주세요');
+						$('#find_id_By_email').hide();
+						$('#email').val('');
+						$('#authCode').val('');
+					}
+				}
+			});  // ajax
+			
+		});  // keyup
+		
+	}  // fn_idCheck
+	
+	
+	
+	
 
 </script>
 </head>
 <body>
 
-<h3>아이디 찾기</h3>
-
-<h6>해당 아이디로 가입한 이메일 주소를 입력해주세요. (도메인 포함)</h6>
-
-
-	<form>
+<div>
+	<div>
+		<h2>비밀번호 찾기</h2>
+		<h6>비밀번호를 찾고자 하는 아이디를 입력하세요</h6>
+		
+		<form>
+			<label for="id">아이디 입력</label>
+			<input type="text" id="id" name="id">
+			<input type="button" id="fn_idCheck" value="다음">
+			<h6 id="findID">아이디가 기억나지 않는다면? 아이디찾기</h6>
+		</form>
+	</div>
+	
+	
+	<div id="find_id_By_email">
+	<hr>
+		<h3>추가 인증을 진행합니다. 이메일을 입력해주세요(도메인포함)</h3>
+		<!-- 위에서 입력한 아이디 고정시키기 -->
+		<input type="hidden" id="msg_id">
+		
 		<div>
 			<label for="email">이메일*</label>
 			<input type="text" name="email" id="email">
@@ -170,16 +211,17 @@
 			<input type="text" id="authCode" placeholder="인증코드 입력">
 			<input type="button" value="인증하기" id="btn_verifyAuthCode">
 		</div>
-		<hr>
-		<input type="button" id="findId" value="다음">
 		<div>
-			<span id="msg_showid"></span>
+			<span id="msg_showPw"></span>
 		</div>
-	</form>
+	</div>
 	
 	
+</div>
 
-	
+
+
+
 
 </body>
 </html>
