@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.service.UserService;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @Controller
 public class UserController {
 
@@ -171,6 +173,26 @@ public class UserController {
 		return "user/findPw";
 	}
 	
+	
+	@ResponseBody
+	@PostMapping(value="/user/sendAuthCodeAndChangePw", produces="application/json")
+	public Map<String, Object> sendAuthCodeAndChangePw(){
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	@ResponseBody
+	@PostMapping(value="/user/checkReduceIDAndEmail",  produces="application/json")
+	public Map<String, Object> checkReduceIDAndEmail(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
+	
+		return userService.selectIdAndEmail(id,email);
+		
+	}
 
 	
 	

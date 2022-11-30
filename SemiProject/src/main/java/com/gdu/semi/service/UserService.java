@@ -36,4 +36,7 @@ public interface UserService {
 	//아이디 찾기 
 	public Map<String, Object> findId(String email);
 	
+	// 파라미터로 받은 아이디,이메일이 유저테이블에 있는지 조회함
+	 public Map<String, Object> selectIdAndEmail(String id, String email);
+	
 }

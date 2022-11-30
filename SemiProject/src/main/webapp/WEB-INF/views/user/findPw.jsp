@@ -15,6 +15,7 @@
 		fn_join();
 		fn_idCheck();
 		$('#find_id_By_email').hide();
+		$('#btn_go_login').hide();
 	})
 	
 	function fn_findID(){
@@ -29,10 +30,7 @@
 	
 	function fn_emailCheck(){
 		
-		$('#btn_getAuthCode').click(function(){
-			
-			// 인증코드를 입력할 수 있는 상태로 변경함
-			$('#authCode').prop('readonly', false);
+		$('#btn_getTemporyPw').click(function(){
 			
 			// resolve : 성공하면 수행할 function
 			// reject  : 실패하면 수행할 function
@@ -51,16 +49,16 @@
 					return;     // 아래 ajax 코드 진행을 막음
 				}
 				
-				// 이메일 중복 체크
+				// 입력된 아이디와 이메일이 동일유저의 데이터인지 확인하는 ajax
 				$.ajax({
 					/* 요청 */
-					type: 'get',
-					url: '${contextPath}/user/checkReduceEmail',
-					data: 'email=' + $('#email').val(),
+					type: 'post',
+					url: '${contextPath}/user/checkReduceIDAndEmail',
+					data: 'email=' + $('#email').val() + '&id=' + $('#msg_id').val(),
 					/* 응답 */
 					dataType: 'json',
 					success: function(resData){
-						// 기존 회원 정보에 등록된 이메일이라면 성공 처리
+						// 기존 회원 정보에 등록된 이메일과 아이디라면 성공
 						if(resData.isUser){
 							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
 						} else {
@@ -71,33 +69,27 @@
 				
 			}).then(function(){
 				
-				// 인증번호 보내는 ajax
+				
 				$.ajax({
-					/* 요청 */
-					type: 'get',
-					url: '${contextPath}/user/sendAuthCode',
-					data: 'email=' + $('#email').val(),
-					/* 응답 */
-					dataType: 'json',
-					success: function(resData){
-						alert('인증코드를 발송했습니다. 이메일을 확인하세요.');
-						// 발송한 인증코드와 사용자가 입력한 인증코드 비교
-						$('#btn_verifyAuthCode').click(function(){
-							if(resData.authCode == $('#authCode').val()){
-								
-								alert('인증되었습니다.');
-								authCodePass = true;
-							} else {
-								alert('인증에 실패했습니다.');
-								authCodePass = false;
-							}
-						});
-					},
-					error: function(jqXHR){
-						alert('인증번호 발송이 실패했습니다.');
-						authCodePass = false;
-					}
-				});  // ajax
+					type : 'post',
+					url : '${contextPath}/user/sendAuthCodeAndChangePw'
+					
+					
+					
+					
+					
+				})
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 			}).catch(function(code){  // 인수 1 또는 2를 전달받기 위한 파라미터 code 선언
 
@@ -112,8 +104,6 @@
 			
 				authCodePass = false;
 			
-				// 입력된 이메일에 문제가 있는 경우 인증코드 입력을 막음
-				$('#authCode').prop('readonly', true);
 				
 			});  // new Promise
 			
@@ -133,8 +123,6 @@
 				return;
 			}
 		}) // $('#frm_join')
-		
-		
 	}
 	
 	
@@ -142,7 +130,6 @@
 	function fn_idCheck(){
 		
 		$('#fn_idCheck').click(function(){
-			
 			
 			if($('#id').val == ''){
 				alert('아이디를 입력하세요.');
@@ -161,7 +148,7 @@
 				success: function(resData){  // resData = {"isUser": true, "isRetireUser": false}
 					if(resData.isUser || resData.isRetireUser){
 						$('#find_id_By_email').show();
-						$('#msg_id').text($('#id').val());
+						$('#msg_id').val($('#id').val());
 					} else {
 						alert('가입되지않은 아이디입니다. 아이디를 확인해주세요');
 						$('#find_id_By_email').hide();
@@ -199,21 +186,27 @@
 	
 	<div id="find_id_By_email">
 	<hr>
-		<h3>추가 인증을 진행합니다. 이메일을 입력해주세요(도메인포함)</h3>
+		<h3>해당ID로 가입한 이메일을 입력해주세요. 임시비밀번호를 보내드리겠습니다. (도메인 포함)</h3>
 		<!-- 위에서 입력한 아이디 고정시키기 -->
 		<input type="hidden" id="msg_id">
 		
 		<div>
 			<label for="email">이메일*</label>
 			<input type="text" name="email" id="email">
-			<input type="button" value="인증번호받기" id="btn_getAuthCode">
+			<input type="button" value="임시비밀번호받기" id="btn_getTemporyPw">
 			<span id="msg_email"></span><br>
 			<input type="text" id="authCode" placeholder="인증코드 입력">
 			<input type="button" value="인증하기" id="btn_verifyAuthCode">
 		</div>
 		<div>
-			<span id="msg_showPw"></span>
+			<span id="msg_snedTemporaryPw"></span>
 		</div>
+	</div>
+	
+	<hr>
+	
+	<div>
+		<input type="button" value="로그인하러가기" id="btn_go_login">
 	</div>
 	
 	

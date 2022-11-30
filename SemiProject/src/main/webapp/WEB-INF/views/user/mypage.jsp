@@ -112,6 +112,8 @@
 		<div>
 			<input type="button" value="비밀번호변경" id="btn_edit_pw">
 		</div>
+		
+		
 		<div id="modify_pw_area">
 			<form id="frm_edit_pw" action="${contextPath}/user/modify/pw" method="post">
 				<!-- 비밀번호 -->

@@ -936,6 +936,21 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
+	@Override
+	public Map<String, Object> selectIdAndEmail(String id, String email) {
+		
+		//조회시 사용할 맵
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("email", email);
+		
+		// 결과값을 받을 맵
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isUser", userMapper.selectUserByMap(map) != null);
+		
+		return result;
+	}
+	
 	
 	
 	
