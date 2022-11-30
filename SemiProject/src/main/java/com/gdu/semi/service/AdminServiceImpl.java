@@ -1,5 +1,7 @@
 package com.gdu.semi.service;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdu.semi.domain.RetireUserDTO;
+import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.AdminMapper;
 import com.gdu.semi.util.PageUtil;
 
@@ -72,8 +75,19 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public void removeUser(Map<String, Object> map) {
-		int deleteResult = adminMapper.deleteUserByNo(map);
-		return null;
+	public Map<String, Object> removeUser(Map<String, Object> userNo) {
+		
+		Map<String,	Object> deleteUser = new HashMap<>();
+		System.out.println(userNo);
+		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
+		users.get(0).getName();
+		List<RetireUserDTO> retireUsersDTO = new ArrayList<>();
+		retireUsersDTO.add(RetireUserDTO);
+		adminMapper.insertUserByNo();
+		deleteUser.put("isRemove", adminMapper.deleteUserByNo(userNo) == 1);
+		
+		
+		return deleteUser;
+		
 	}
 }

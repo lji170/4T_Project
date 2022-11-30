@@ -5,6 +5,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
+<script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
+<script src="${contextPath}/resources/js/moment-with-locales.js"></script>
 <head>
 <meta charset="UTF-8">
 <title>어드민 페이지</title>
@@ -217,7 +219,7 @@ $(document).ready(function(){
 function fn_userList(){
 	 
 		 $.ajax({
-			    type: 'get',
+			    type: 'post',
 			    url: '${contextPath}/admin/userList',
 			    data: 'page=' + $('#page').val(),
 			    dataType: 'json',
@@ -245,10 +247,10 @@ function fn_userList(){
 			          .append( $('<td>').text(user.userNo) )
 			          .append( $('<td>').append(user.id))
 			          .append( $('<td>').text(user.name) )
-			          .append( $('<td>').text(user.joinDate) )
+			          .append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
 			          .append( $('<td>').text(user.mobile) )
-			          .append( $('<td>').text(user.pwModifyDate) )
-			          .append( $('<td>').text(user.infoModifyDate) )
+			          .append( $('<td>' +  moment(user.pwModifyDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+			          .append( $('<td>' +  moment(user.infoModifyDate).format('YYYY.MM.DD hh:mm') + '</td>'))
 			          .append( $('<td>').text(user.point) )
 			          .append($('<td>').append($('<input type="checkbox" name="userCheck" value="'+ user.userNo +'">')))
 			          ///admin/userRemove?userNo='+ user.userNo 
@@ -261,18 +263,18 @@ function fn_userList(){
 					var paging = '';
 					// 이전 블록
 					if(pageUtil.beginPage != 1){
-						paging += '<span class="enable_listLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+						paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
 					}
 					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
 						if(p == $('#page').val()){
 							paging += '<strong>' + p + '</strong>';
 						} else {
-							paging += '<span class="enable_listLink" data-page="'+ p +'">' + p + '</span>';
+							paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
 						}
 					}
 					// 다음블록
 					if(pageUtil.endPage != pageUtil.totalPage){
-						paging += '<span class="enable_listLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+						paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
 					}
 					
 					$('#paging').append(paging);
@@ -283,7 +285,7 @@ function fn_userList(){
  function fn_findUser(){
 	 
 		 $.ajax({
-			 type: 'get',
+			 type: 'post',
 			 url: '${contextPath}/admin/searchUser',
 			 data: 'column=' + $('#column').val() + '&searchText=' + $('#searchText').val() + '&page=' + $('#page').val(),
 			 dataType: 'json',
@@ -308,11 +310,12 @@ function fn_userList(){
 		          .append( $('<td>').text(findUser.userNo) )
 		          .append( $('<td>').append(findUser.id))
 		          .append( $('<td>').text(findUser.name) )
-		          .append( $('<td>').text(findUser.joinDate) )
+		          .append( $('<td>' +  moment(findUser.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
 		          .append( $('<td>').text(findUser.mobile) )
-		          .append( $('<td>').text(findUser.pwModifyDate) )
-		          .append( $('<td>').text(findUser.infoModifyDate) )
+		          .append( $('<td>' +  moment(findUser.pwModifyDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+		          .append( $('<td>' +  moment(findUser.infoModifyDate).format('YYYY.MM.DD hh:mm') + '</td>'))
 		          .append( $('<td>').text(findUser.point) )
+		          .append($('<form>'))
 		          .append($('<td>').append($('<input type="checkbox" name="userCheck" value="'+ findUser.userNo +'">')))
 		          ///admin/userRemove?userNo='+ user.userNo 
 		          .appendTo('#list_body');
@@ -343,8 +346,6 @@ function fn_userList(){
 	
  }
  function fn_changeFindPage(){
-		//스크립트 안에서 생성된 값은 해당처럼 생성못한다.
-		//$('.enable_link').click
 		$(document).on('click', '.enable_findLink', function(){
 			$('#page').val($(this).data('page'));
 			fn_findUser();
@@ -363,19 +364,21 @@ function fn_retireUser(){
 	    $('input[name="userCheck"]:checked').each(function (index) {
 	    	userArray.push($(this).val());
 	    });
-	    console.log(userArray);
+	    
 	    $.ajax({
 	    	type: 'post',
 	    	url: '${contextPath}/admin/retireUser',
-	    	traditional : true,
-	    	data : {"userNo" : userArray},
+	    	data : {
+	    		"userNo" : userArray
+		    },
 	    	dataType: 'json',
 	    	success: function(resData){
-	    		if (resData == 1) {
-					alert('삭제성공');
-				} else {
-					alert('삭제실패');
-				}
+	    		if(resData.isRemove){
+	    			alert('성공');
+	    		} else{
+	    			alert('실패');
+	    		}
+	    		fn_userList();
 	    	}
 	    });
 	});
@@ -390,9 +393,6 @@ function fn_sleepUser(){
 			
 			
 			<h1>회원간략정보 및 회원검색</h1>
-			
-			<br><hr><br>
-			
 			<select id="column" name="column">
 				<option value="ID">아이디</option>
 				<option value="NAME">이름</option>
@@ -402,6 +402,10 @@ function fn_sleepUser(){
 			<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">
 			<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">
 			
+			<br><hr><br>
+			<div>
+			
+			</div>			
 			<input type="button" id="btn_retireUser" value="탈퇴">
 			<input type="button" id="btn_sleepUser" value="휴면" onclick="fn_sleepUser();">
 			

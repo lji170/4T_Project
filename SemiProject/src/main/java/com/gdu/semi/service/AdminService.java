@@ -10,5 +10,5 @@ import javax.servlet.http.HttpServletResponse;
 public interface AdminService {
 	public Map<String, Object> getUserList(HttpServletRequest request);
 	public Map<String, Object> findUser(HttpServletRequest request);
-	public void removeUser(Map<String, Object> map);
+	public Map<String, Object> removeUser(Map<String, Object> userNo);
 }
