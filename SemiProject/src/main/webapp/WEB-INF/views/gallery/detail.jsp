@@ -82,13 +82,11 @@
 							alert('좋아요를 누른 회원입니다.')
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/like.png')
-								fn_touchLike();
 						} else {
 							alert('아직 좋아요를 누르지 않았네요!');
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png')
-								fn_touchLike();
-						}
+						}						
 					}
 				});
 			}
