@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CommentDTO {
 
-   private int commentNo;
-   private long galNo;
-   private String id;
-   private String commentTitle;
-   private Date commentCreateDate;
-   private Date commentLastModifyDate;
-   private String ip;
-   
+	private int commentNo;
+	private long galNo;
+	private String id;
+	private String commentTitle;
+	private Date commentCreateDate;
+	private Date commentLastModifyDate;
+	private String ip;
+	
 }

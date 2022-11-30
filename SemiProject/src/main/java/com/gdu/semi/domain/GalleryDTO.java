@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class GalleryDTO {
-   
-   private int galNo;
-   private String id;
-   private String galTitle;
-   private String galContent;
-   private Date galCreateDate;
-   private Date galLastModifyDate;
-   private int galHit;
-   private int likeCount;
-   private String ip;
-   
-   
+	
+	private int galNo;
+	private String id;
+	private String galTitle;
+	private String galContent;
+	private Date galCreateDate;
+	private Date galLastModifyDate;
+	private int galHit;
+	private int likeCount;
+	private String ip;
+	
+	
 }
