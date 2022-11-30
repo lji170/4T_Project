@@ -1,7 +1,5 @@
 package com.gdu.semi.domain;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class LikeDTO {
-	
-	private int likeNo;
+public class SummernoteImageDTO {
 	private int galNo;
-	private String id;
-	private Date likeDate;
-
+	private String path;
+	private String filesystem;
 }

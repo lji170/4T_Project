@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.semi.mapper.CommentMapper">
+
+	<select id="selectCommentCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM TBL_COMMENT
+		 WHERE GAL_NO = #{galNo}
+	</select>
+	
+	<insert id="insertComment" parameterType="CommentDTO">
+		INSERT INTO TBL_COMMENT
+			(COMMENT_NO, GAL_NO, ID, COMMENT_TITLE, COMMENT_CREATE_DATE, COMMNET_LAST_MODIFY_DATE, IP)
+		VALUES
+			(TBL_COMMENT_SEQ.NEXTVAL, #{galNo}, #{id}, #{commentTitle}, SYSDATE, SYSDATE, #{ip})
+	</insert>
+	
+	<select id="selectCommentList" parameterType="Map" resultType="CommentDTO">
+		SELECT A.ROW_NUM, A.COMMENT_NO, A.COMMENT_NO, A.GAL_NO, A.ID, A.COMMENT_TITLE, A.COMMENT_CREATE_DATE, A.COMMNET_LAST_MODIFY_DATE, A.IP
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GAL_NO DESC) AS ROW_NUM, COMMENT_NO, GAL_NO, ID, COMMENT_TITLE, COMMENT_CREATE_DATE, COMMNET_LAST_MODIFY_DATE, IP
+		  		  FROM TBL_COMMENT
+		  		 WHERE GAL_NO = #{galNo}) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM TBL_COMMENT
+		 WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	
+</mapper>
