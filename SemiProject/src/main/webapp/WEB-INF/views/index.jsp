@@ -137,6 +137,10 @@
 		</script>
 	</c:if>
 
+	<hr/>
+	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
+	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
+	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
 
 
 </body>

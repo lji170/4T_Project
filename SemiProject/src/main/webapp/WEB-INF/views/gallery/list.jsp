@@ -28,9 +28,16 @@
 <body>
 
 	<h1>갤러리 게시판에 오신 것을 환영합니다.</h1>
-	
+	<c:if test="${loginUser != null}">
+		<div>
+			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님
+		</div>
+		<a href="${contextPath}/user/logout">로그아웃</a>
+		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
+	</c:if>
 	<div>
 		<form method="post" action="${contextPath}/gallery/write">
+		
 			<button>갤러리 작성하기</button>
 		</form>
 	</div>
