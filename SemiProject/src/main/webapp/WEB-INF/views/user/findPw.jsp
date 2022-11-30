@@ -9,6 +9,7 @@
 <title>비밀번호 찾기</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script>
+
 	$(function(){
 		fn_findID();
 		fn_emailCheck();
@@ -61,7 +62,6 @@
 						// 기존 회원 정보에 등록된 이메일과 아이디라면 성공
 						if(resData.isUser){
 							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
-							
 						} else {
 							reject(2);   // catch의 function으로 넘기는 인수 : 2(다른 회원이 사용중인 이메일이라서 등록이 불가능한 경우)
 						}
@@ -77,7 +77,10 @@
 					data : 'email=' + $('#email').val() + '&id=' + $('#msg_id').val(),
 					dataType : 'json',
 					success : function(resData){
-						//alert(resData.updatePw);
+						if(resData.updatePw = 1){
+							$('#msg_snedTemporaryPw').text('비밀번호가 변경되었습니다. 임시비밀번호로 로그인 후 비밀번호를 변경해주세요')
+							$('#btn_go_login').show();
+						}
 						
 						
 					},
@@ -89,18 +92,6 @@
 					
 					
 				});
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			}).catch(function(code){  // 인수 1 또는 2를 전달받기 위한 파라미터 code 선언
 
 				switch(code){
@@ -172,7 +163,7 @@
 		
 	}  // fn_idCheck
 	
-	
+
 	
 	
 
@@ -206,6 +197,7 @@
 			<input type="button" value="임시비밀번호받기" id="btn_getTemporyPw">
 			<span id="msg_email"></span><br>
 		</div>
+		<br>
 		<div>
 			<span id="msg_snedTemporaryPw"></span>
 		</div>
@@ -214,7 +206,7 @@
 	<hr>
 	
 	<div>
-		<input type="button" value="로그인하러가기" id="btn_go_login">
+		<a href="${contextPath}" id="btn_go_login">로그인하러가기</a>
 	</div>
 	
 	

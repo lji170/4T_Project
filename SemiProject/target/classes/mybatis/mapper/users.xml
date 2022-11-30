@@ -102,16 +102,13 @@
 	</update>
 	
 	<!-- 마이페이지 : 비밀번호 수정 -->
-	<update id="updateUserPassword" parameterType="UserDTO">
+	<update id="updateUserPassword" parameterType="Map">
 		UPDATE USERS
 		   SET PW = #{pw}
 		     , PW_MODIFY_DATE = SYSDATE
  		 <where>
 			 <if test="userNo != null">
 			 	USER_NO = #{userNo}
-			 </if>
-			 <if test="email != null">
-			 	AND EMAIL = #{email}
 			 </if>
  			 <if test="id != null">
 			 	AND ID = #{id}
