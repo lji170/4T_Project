@@ -17,11 +17,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component  // RequestLoggingAspect 클래스를 Bean으로 만들어 두시오.
 @Aspect     // 안녕. 난 Aspect야. AOP 동작하려면 내가 필요해.
-public class RequestLoggingAspect_memo {
+public class RequestLoggingAspect {
 	
 	
 	// 로거
-	private static final Logger LOG = LoggerFactory.getLogger(RequestLoggingAspect_memo.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RequestLoggingAspect.class);
 
 	
 	// 포인트컷 설정

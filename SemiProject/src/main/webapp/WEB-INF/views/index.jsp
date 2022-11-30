@@ -9,7 +9,15 @@
 <title>회원가입 화면</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
+
+</head>
+<body>
+
+	<!-- 로그인이 안 된 상태 -->
+	<c:if test="${loginUser == null}">
+<div>
+
+		<script>
 	
 	$(function(){
 		
@@ -56,12 +64,8 @@
 	}
 	
 </script>
-</head>
-<body>
-
-
-<div>
 	
+		
 		<h1>로그인</h1>
 		
 		<form id="frm_login" action="${contextPath}/user/login" method="post">
@@ -106,10 +110,32 @@
 		<div>
 			<a href="${apiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 		</div>
+		
+		<hr>
+		
+			<a href="${contextPath}/user/agree">회원가입하러가기</a>
 	
-	</div>
+		</div>                                                  
+		
+		</c:if>
+	
 
-
+	<!-- 로그인이 된 상태 -->
+	<c:if test="${loginUser != null}">
+		<div>
+			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님 반갑습니다.
+		</div>
+		<a href="${contextPath}/user/logout">로그아웃</a>
+		<a href="javascript:fn_abc()">회원탈퇴</a>
+		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
+		<script>
+			function fn_abc(){
+				if(confirm('탈퇴하시겠습니까?')){
+					$('#lnk_retire').submit();
+				}
+			}
+		</script>
+	</c:if>
 
 
 
