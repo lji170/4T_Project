@@ -193,50 +193,41 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	// 좋아요
 	@Override
-	public int getGalleryLikeCount(HttpServletRequest request) {
+	public Map<String, Object> getLikeCount(HttpServletRequest request) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		return galleryMapper.selectLikeCount(galNo);
-	}
-	@Override
-	public int getLikeCount(HttpServletRequest request) {
-		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		return galleryMapper.updateLikeCount(galNo);
+		Map<String, Object> result = new HashMap<>();
+		result.put("likeCount", galleryMapper.selectLikeCount(galNo));
+		return result;
 	}
 	@Override
 	public int getLikeUser(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		System.out.println("id:" + id + ", galNo :" + galNo);
 		LikeDTO like = LikeDTO.builder()
 				.id(id)
 				.galNo(galNo)
 				.build();
 		return galleryMapper.selectLikeUser(like);
 	}
+	@Override
+	public int touchLike(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		LikeDTO like = LikeDTO.builder()
+				.id(id)
+				.galNo(galNo)
+				.build();
+		
+		int result = galleryMapper.selectLikeUser(like);
+		if(result == 0) {
+			galleryMapper.insertLike(like);
+		} else {
+			galleryMapper.deleteLike(like);
+		}
+		
+		return result;
+	}
 	
-	@Override
-	public int addLikeUser(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		
-		
-		LikeDTO like = LikeDTO.builder()
-				.id(id)
-				.galNo(galNo)
-				.build();
-		return galleryMapper.insertLike(like);
-	}
-	@Override
-	public int removeLikeUser(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		
-		LikeDTO like = LikeDTO.builder()
-				.id(id)
-				.galNo(galNo)
-				.build();
-		return galleryMapper.deleteLike(like);
-	}
 	
 	@Override
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response) {

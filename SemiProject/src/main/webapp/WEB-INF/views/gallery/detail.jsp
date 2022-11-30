@@ -29,7 +29,7 @@
 	
 	<div>
 		<span>조회수 <fmt:formatNumber value="${gallery.galHit}" pattern="#,##0" /></span>
-		<span id="likeCountArea">좋아요 </span>
+		좋아요 <span id="likeCountArea"></span>개
 		<script>
 			
 		</script>
@@ -58,19 +58,6 @@
 				fn_getLikeUser();
 			});
 			
-			function fn_getGalleryLikeCount(){
-				$.ajax({
-					type:'get',
-					url :'${contextPath}/gallery/galleryLikeCount',
-					data:'galNo=${gallery.galNo}',
-					dataType:'json',
-					success : function(resData){
-						
-						console.log('gallerylikecount' + resData);
-					}
-				});
-			}
-			
 			function fn_getLikeCount(){
 				$.ajax({
 					type:'get',
@@ -78,9 +65,7 @@
 					data:'galNo=${gallery.galNo}',
 					dataType:'json',
 					success : function(resData){
-						console.log(resData);
-						$('#likeCountArea').empty();
-						$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
+						$('#likeCountArea').text(resData.likeCount);
 					}
 				});
 			}
@@ -94,72 +79,50 @@
 					dataType:'json',
 					success : function(resData){
 						if (resData > 0) {
+							alert('좋아요를 누른 회원입니다.')
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/like.png')
-								.attr('id','btn_like');
-							fn_removeLike();
+								fn_touchLike();
 						} else {
+							alert('아직 좋아요를 누르지 않았네요!');
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png')
-								.attr('id','btn_dislike');
-							fn_addLike();
+								fn_touchLike();
 						}
 					}
 				});
 			}
-			/* 좋아요 누르면 like 테이블에 추가*/
-			function fn_addLike(){
-				$('#btn_dislike').click(function(){
+		
+			function fn_touchLike(){
+				$('.likeArea').click(function(){
 					$.ajax({
 						type:'get',
-						url :'${contextPath}/gallery/likeAdd',
+						url :'${contextPath}/gallery/touchLike',
 						data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
-						dataType:'json',
-						success : function(resData){
-							$('#likeCountArea').empty();
-							fn_getGalleryLikeCount();
-							fn_getLikeUser();
-							// 좋아요 Count + 1
-							$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
+						dataType:'int',
+						success : function(resData) {
+							alert('touch Like or Dislike!');
+							if (resData == 0) {
+								alert('좋아요를 누르셨습니다.');
+							} else {
+								alert('좋아요가 취소되었습니다.');
+							}
 						}
 					});
-					
-					
 				});
 			}
 			
-			function fn_removeLike(){
-				$('#btn_like').click(function(){
-					$('#likeCountArea').empty();
-					$.ajax({
-						type:'get',
-						url :'${contextPath}/gallery/likeRemove',
-						data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
-						dataType:'json',
-						success : function(resData){
-							fn_getGalleryLikeCount();
-							$('.likeArea')
-								.attr('src','${contextPath}/resources/image/dislike.png')
-								.attr('id','btn_dislike');
-							fn_getLikeUser();
-							// 좋아요 Count - 1
-							$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
-							
-						}
-					});
-				});
-				
-				$('#btn_edit_gallery').click(function(){
-					$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
+			
+			$('#btn_edit_gallery').click(function(){
+				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
+				$('#frm_btn').submit();
+			});
+			$('#btn_remove_gallery').click(function(){
+				if(confirm('블로그를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
+					$('#frm_btn').attr('action', '${contextPath}/gallery/remove');
 					$('#frm_btn').submit();
-				});
-				$('#btn_remove_gallery').click(function(){
-					if(confirm('블로그를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
-						$('#frm_btn').attr('action', '${contextPath}/gallery/remove');
-						$('#frm_btn').submit();
-					}
-				});
-			}
+				}
+			});
 			
 		</script> 
 	</div>
@@ -304,8 +267,6 @@
 		}
 		
 		function fn_changePage(){
-			// 자바스크립트로 만든 아이들은 아래와 같은 코드로 작동시켜야한다. (동적요소는 일반 클릭이벤트로 이동하지 않는다.)
-			// $(만들어져있었던부모).on('click', '.enable_link', (function(){ }));
 			$(document).on('click', '.enable_link', function(){
 				$('#page').val( $(this).data('page') );
 				fn_commentList();

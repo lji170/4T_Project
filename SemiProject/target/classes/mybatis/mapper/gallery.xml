@@ -71,8 +71,9 @@
 	
 	
 	<!-- 좋아요 기능 -->
+	
 	<select id="selectLikeCount" parameterType="int" resultType="int">
-		SELECT COUNT(GAL_NO)
+		SELECT COUNT(*)
 		  FROM TBL_LIKE
 		 WHERE GAL_NO = #{galNo}
 	</select>

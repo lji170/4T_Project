@@ -28,6 +28,7 @@ public interface GalleryMapper {
 	
 	// 좋아요
 	public int selectLikeCount(int galNo);
+	
 	public int updateLikeCount(int galNo);
 	public int selectLikeUser(LikeDTO like);
 	public int insertLike(LikeDTO like);

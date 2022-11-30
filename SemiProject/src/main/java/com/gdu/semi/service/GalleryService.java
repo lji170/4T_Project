@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.GalleryDTO;
+import com.gdu.semi.domain.LikeDTO;
 
 public interface GalleryService {
 	public void getGalleryList(HttpServletRequest request, Model model);
@@ -28,11 +29,9 @@ public interface GalleryService {
 	public void modifyGallery(HttpServletRequest request, HttpServletResponse response);
 	
 	// 4. 좋아요
-	public int getGalleryLikeCount(HttpServletRequest request);
-	public int getLikeCount(HttpServletRequest request);
+	public Map<String, Object> getLikeCount(HttpServletRequest request);
 	public int getLikeUser(HttpServletRequest request);
-	public int addLikeUser(HttpServletRequest request);
-	public int removeLikeUser(HttpServletRequest request);
+	public int touchLike(HttpServletRequest request);
 	
 	// 5. 삭제
 	public void removeGallery(HttpServletRequest request, HttpServletResponse response);

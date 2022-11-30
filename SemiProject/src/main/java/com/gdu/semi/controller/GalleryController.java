@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.GalleryDTO;
+import com.gdu.semi.domain.LikeDTO;
 import com.gdu.semi.service.GalleryService;
 
 @Controller
@@ -77,13 +78,8 @@ public class GalleryController {
 	
 	// 좋아요
 	@ResponseBody
-	@GetMapping("gallery/galleryLikeCount")
-	public int galleryLikeCount(HttpServletRequest request) {
-		return galleryService.getGalleryLikeCount(request);
-	}
-	@ResponseBody
 	@GetMapping("gallery/likeCount")
-	public int likeCount(HttpServletRequest request) {
+	public Map<String, Object> likeCount(HttpServletRequest request) {
 		return galleryService.getLikeCount(request);
 	}
 	@ResponseBody
@@ -92,14 +88,9 @@ public class GalleryController {
 		return galleryService.getLikeUser(request);
 	}
 	@ResponseBody
-	@GetMapping("/gallery/likeAdd")
-	public int addLike(HttpServletRequest request) {
-		return galleryService.addLikeUser(request);
-	}
-	@ResponseBody
-	@GetMapping("/gallery/likeRemove")
-	public int removeLike(HttpServletRequest request) {
-		return galleryService.removeLikeUser(request);
+	@GetMapping("/gallery/touchLike")
+	public int touchLike (HttpServletRequest request) {
+		return galleryService.touchLike(request);
 	}
 	
 	
