@@ -533,7 +533,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('비밀번호가 수정되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("location.href='" + request.getContextPath()+"/move/index';");
 				out.println("</script>");
 				
 			} else {
@@ -952,6 +952,69 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	
+	
+	
+	@Override
+	public Map<String, Object> sendAuthCodeAndChangePw(String id, String email) {
+		
+		
+		
+		// 인증코드 만들기
+		String authCode = securityUtil.getAuthCode(6);  // String authCode = securityUtil.generateRandomString(6);
+		System.out.println("생성된 임시비밀번호 : " + authCode);
+		
+		// 이메일 전송을 위한 필수 속성을 Properties 객체로 생성
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", "smtp.gmail.com");  // 구글 메일로 보냄(보내는 메일은 구글 메일만 가능)
+		properties.put("mail.smtp.port", "587");             // 구글 메일로 보내는 포트 번호
+		properties.put("mail.smtp.auth", "true");            // 인증된 메일
+		properties.put("mail.smtp.starttls.enable", "true"); // TLS 허용
+		
+		// 사용자 정보를 javax.mail.Session에 저장
+		Session session = Session.getInstance(properties, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		
+		// 이메일 작성 및 전송
+		try {
+			
+			Message message = new MimeMessage(session);
+			
+			message.setFrom(new InternetAddress(username, "인증코드관리자"));            // 보내는사람
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));  // 받는사람
+			message.setSubject("[Application] 임시비밀번호입니다.");                   // 제목
+			message.setContent("임시비밀번호는 <strong>" + authCode + "</strong>입니다.", "text/html; charset=UTF-8");  // 내용
+			
+			Transport.send(message);  // 이메일 전송
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		// 임시비밀번호를 DB에 들어갈 수 있도록 가공함
+		String pw = securityUtil.sha256(authCode);
+		
+		// 비밀번호 인증번호로 업데이트하기
+		//조회시 사용할 userdto
+		UserDTO user = UserDTO.builder()
+				.id(id)
+				.email(email)
+				.pw(pw)
+				.build();
+		
+		System.out.println(user);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("updatePw", userMapper.updateUserPassword(user));
+		System.out.println(result);
+		
+		
+		return result;
+	}
 	
 	
 	

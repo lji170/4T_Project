@@ -61,6 +61,7 @@
 						// 기존 회원 정보에 등록된 이메일과 아이디라면 성공
 						if(resData.isUser){
 							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
+							
 						} else {
 							reject(2);   // catch의 function으로 넘기는 인수 : 2(다른 회원이 사용중인 이메일이라서 등록이 불가능한 경우)
 						}
@@ -72,13 +73,22 @@
 				
 				$.ajax({
 					type : 'post',
-					url : '${contextPath}/user/sendAuthCodeAndChangePw'
+					url : '${contextPath}/user/sendAuthCodeAndChangePw',
+					data : 'email=' + $('#email').val() + '&id=' + $('#msg_id').val(),
+					dataType : 'json',
+					success : function(resData){
+						//alert(resData.updatePw);
+						
+						
+					},
+					error : function(jqXHR){
+						alert('실패했습니다');
+					}
 					
 					
 					
 					
-					
-				})
+				});
 				
 				
 				
@@ -98,7 +108,7 @@
 					$('#msg_email').text('이메일 형식이 올바르지 않습니다.');
 					break;
 				case 2:
-					$('#msg_email').text('가입되지 않은 이메일입니다.');
+					$('#msg_email').text('해당 ID 가입시 입력한 이메일을 입력해주세요.');
 					break;
 				}
 			
@@ -195,8 +205,6 @@
 			<input type="text" name="email" id="email">
 			<input type="button" value="임시비밀번호받기" id="btn_getTemporyPw">
 			<span id="msg_email"></span><br>
-			<input type="text" id="authCode" placeholder="인증코드 입력">
-			<input type="button" value="인증하기" id="btn_verifyAuthCode">
 		</div>
 		<div>
 			<span id="msg_snedTemporaryPw"></span>

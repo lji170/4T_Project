@@ -106,7 +106,17 @@
 		UPDATE USERS
 		   SET PW = #{pw}
 		     , PW_MODIFY_DATE = SYSDATE
-		 WHERE USER_NO = #{userNo}
+ 		 <where>
+			 <if test="userNo != null">
+			 	USER_NO = #{userNo}
+			 </if>
+			 <if test="email != null">
+			 	AND EMAIL = #{email}
+			 </if>
+ 			 <if test="id != null">
+			 	AND ID = #{id}
+			 </if>
+		 </where>
 	</update>
 	
 	<!-- 휴면처리1 : 1년 이상 로그인 기록이 없으면 휴면테이블에 저장 -->

@@ -176,9 +176,9 @@ public class UserController {
 	
 	@ResponseBody
 	@PostMapping(value="/user/sendAuthCodeAndChangePw", produces="application/json")
-	public Map<String, Object> sendAuthCodeAndChangePw(){
+	public Map<String, Object> sendAuthCodeAndChangePw(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
 		
-		
+		return userService.sendAuthCodeAndChangePw(id,email);
 	}
 	
 	

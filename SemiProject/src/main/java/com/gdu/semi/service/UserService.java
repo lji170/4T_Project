@@ -38,5 +38,8 @@ public interface UserService {
 	
 	// 파라미터로 받은 아이디,이메일이 유저테이블에 있는지 조회함
 	 public Map<String, Object> selectIdAndEmail(String id, String email);
+	 
+	// 인증코드보내고 임시비밀번호로 업데이트
+	public Map<String, Object> sendAuthCodeAndChangePw(String id, String email);
 	
 }
