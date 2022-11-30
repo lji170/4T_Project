@@ -5,46 +5,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <jsp:include page="layout/header.jsp">
-	<jsp:param value="${gallery.galNo}번 블로그" name="title"/>
+	<jsp:param value="${gallery.galNo}번 갤러리" name="title"/>
 </jsp:include>
 
-<script>
-	$(function(){
-		fn_increaseLikeCount();
-		fn_likeCount();
-	});
-	
-	function fn_increaseLikeCount(){
-		$('#btn_like').click(function(){
-			$.ajax ({
-				type: 'get',
-				url : '${contextPath}/gallery/addLike',
-				data: "galNo=" + ${gallery.galNo},
-				dataType : 'json',
-				success : function(resData) {
-					alert('게시글 추천 성공')
-					fn_likeCount();
-				},
-				error : function(jqXHR) {
-					alert('게시글 추천 실패')
-				}
-			});
-		});				
-	}
-	
-	function fn_likeCount(){
-		$.ajax ({
-			type: 'get',
-			url : '${contextPath}/gallery/likeCount',
-			data: "galNo=" + ${gallery.galNo},
-			dataType : 'json',
-			success : function(resData) {
-				
-			}
-		});
-	}
-	
-</script>
 <style>
 	.blind {
 		display : none;
@@ -66,7 +29,10 @@
 	
 	<div>
 		<span>조회수 <fmt:formatNumber value="${gallery.galHit}" pattern="#,##0" /></span>
-		<span>좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" /></span>
+		<span id="likeCountArea">좋아요 </span>
+		<script>
+			
+		</script>
 	</div>
 	
 	<hr>
@@ -78,46 +44,122 @@
 	<div>
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="galNo" value="${gallery.galNo}">
-			<c:choose>
-				<c:when test="${id ne null}">
-					<img class="likeArea btn_like" id="btn_like" src="${contextPath}/resources/image/like.png">
-				</c:when>
-				<c:otherwise>
-					<span class="likeArea btn_dislike"><img src="${contextPath}/resources/image/dislike.png"></span>
-				</c:otherwise>
-			</c:choose>
+			<script>
+			
+			</script>
+			<img class="likeArea">
 			<input type="button" value="수정" id="btn_edit_gallery">
 			<input type="button" value="삭제" id="btn_remove_gallery">
 			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
-			/* 좋아요 눌렀는지 확인하기 */
-			$.ajax({
-				type:'get',
-				url :'${contextPath}/gallery/likeCount',
-				data:'galNo=${gallery.galNo}',
-				dataType:'json',
-				success : function(resData){
-					if(resData > 0) {
+			$(function(){
+		   		fn_getLikeCount(); 
+				fn_getLikeUser();
+			});
+			
+			function fn_getGalleryLikeCount(){
+				$.ajax({
+					type:'get',
+					url :'${contextPath}/gallery/galleryLikeCount',
+					data:'galNo=${gallery.galNo}',
+					dataType:'json',
+					success : function(resData){
 						
+						console.log('gallerylikecount' + resData);
 					}
-				} 
-			})
-			$('.likeArea').click(function(){
+				});
+			}
+			
+			function fn_getLikeCount(){
+				$.ajax({
+					type:'get',
+					url :'${contextPath}/gallery/likeCount',
+					data:'galNo=${gallery.galNo}',
+					dataType:'json',
+					success : function(resData){
+						console.log(resData);
+						$('#likeCountArea').empty();
+						$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
+					}
+				});
+			}
+		
+			/* 좋아요 눌렀는지 확인하기 */
+			function fn_getLikeUser(){
+				$.ajax({
+					type:'get',
+					url :'${contextPath}/gallery/likeUser',
+					data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
+					dataType:'json',
+					success : function(resData){
+						if (resData > 0) {
+							$('.likeArea')
+								.attr('src','${contextPath}/resources/image/like.png')
+								.attr('id','btn_like');
+							fn_removeLike();
+						} else {
+							$('.likeArea')
+								.attr('src','${contextPath}/resources/image/dislike.png')
+								.attr('id','btn_dislike');
+							fn_addLike();
+						}
+					}
+				});
+			}
+			/* 좋아요 누르면 like 테이블에 추가*/
+			function fn_addLike(){
+				$('#btn_dislike').click(function(){
+					$.ajax({
+						type:'get',
+						url :'${contextPath}/gallery/likeAdd',
+						data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
+						dataType:'json',
+						success : function(resData){
+							$('#likeCountArea').empty();
+							fn_getGalleryLikeCount();
+							fn_getLikeUser();
+							// 좋아요 Count + 1
+							$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
+						}
+					});
+					
+					
+				});
+			}
+			
+			function fn_removeLike(){
+				$('#btn_like').click(function(){
+					$('#likeCountArea').empty();
+					$.ajax({
+						type:'get',
+						url :'${contextPath}/gallery/likeRemove',
+						data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
+						dataType:'json',
+						success : function(resData){
+							fn_getGalleryLikeCount();
+							$('.likeArea')
+								.attr('src','${contextPath}/resources/image/dislike.png')
+								.attr('id','btn_dislike');
+							fn_getLikeUser();
+							// 좋아요 Count - 1
+							$('#likeCountArea').append('좋아요 <fmt:formatNumber value="${gallery.likeCount}" pattern="#,##0" />');
+							
+						}
+					});
+				});
 				
-			})
-			
-			$('#btn_edit_gallery').click(function(){
-				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
-				$('#frm_btn').submit();
-			});
-			$('#btn_remove_gallery').click(function(){
-				if(confirm('블로그를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
-					$('#frm_btn').attr('action', '${contextPath}/gallery/remove');
+				$('#btn_edit_gallery').click(function(){
+					$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
 					$('#frm_btn').submit();
-				}
-			});
-			
+				});
+				$('#btn_remove_gallery').click(function(){
+					if(confirm('블로그를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
+						$('#frm_btn').attr('action', '${contextPath}/gallery/remove');
+						$('#frm_btn').submit();
+					}
+				});
+			}
 			
 		</script> 
 	</div>
@@ -144,7 +186,7 @@
 	</div>
 	<!-- 현재 페이지 번호를 저장하고 있는 hidden -->
 	<input type="hidden" id="page" value="1">
-
+	<input type="hidden" id="id" value="userpp">
 	<script>
 		
 		// 전역 변수 page 	(모든 함수에서 사용 가능)

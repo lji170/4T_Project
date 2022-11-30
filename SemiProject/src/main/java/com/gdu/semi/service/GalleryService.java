@@ -28,7 +28,9 @@ public interface GalleryService {
 	public void modifyGallery(HttpServletRequest request, HttpServletResponse response);
 	
 	// 4. 좋아요
+	public int getGalleryLikeCount(HttpServletRequest request);
 	public int getLikeCount(HttpServletRequest request);
+	public int getLikeUser(HttpServletRequest request);
 	public int addLikeUser(HttpServletRequest request);
 	public int removeLikeUser(HttpServletRequest request);
 	

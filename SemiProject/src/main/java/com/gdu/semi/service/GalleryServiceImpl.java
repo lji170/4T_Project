@@ -193,10 +193,20 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	// 좋아요
 	@Override
-	public int getLikeCount(HttpServletRequest request) {
-		String id = "인절미";
+	public int getGalleryLikeCount(HttpServletRequest request) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		
+		return galleryMapper.selectLikeCount(galNo);
+	}
+	@Override
+	public int getLikeCount(HttpServletRequest request) {
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		return galleryMapper.updateLikeCount(galNo);
+	}
+	@Override
+	public int getLikeUser(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		System.out.println("id:" + id + ", galNo :" + galNo);
 		LikeDTO like = LikeDTO.builder()
 				.id(id)
 				.galNo(galNo)
@@ -206,8 +216,9 @@ public class GalleryServiceImpl implements GalleryService {
 	
 	@Override
 	public int addLikeUser(HttpServletRequest request) {
-		String id = "인절미";
+		String id = request.getParameter("id");
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		
 		
 		LikeDTO like = LikeDTO.builder()
 				.id(id)
@@ -217,7 +228,7 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	@Override
 	public int removeLikeUser(HttpServletRequest request) {
-		String id = "인절미";
+		String id = request.getParameter("id");
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
 		
 		LikeDTO like = LikeDTO.builder()

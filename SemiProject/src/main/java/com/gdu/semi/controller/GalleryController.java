@@ -75,16 +75,28 @@ public class GalleryController {
 		return "gallery/edit";
 	}
 	
-	
-	
-	@GetMapping("/gallery/likeCount")
+	// 좋아요
+	@ResponseBody
+	@GetMapping("gallery/galleryLikeCount")
+	public int galleryLikeCount(HttpServletRequest request) {
+		return galleryService.getGalleryLikeCount(request);
+	}
+	@ResponseBody
+	@GetMapping("gallery/likeCount")
 	public int likeCount(HttpServletRequest request) {
 		return galleryService.getLikeCount(request);
 	}
+	@ResponseBody
+	@GetMapping("/gallery/likeUser")
+	public int likeUser(HttpServletRequest request) {
+		return galleryService.getLikeUser(request);
+	}
+	@ResponseBody
 	@GetMapping("/gallery/likeAdd")
 	public int addLike(HttpServletRequest request) {
 		return galleryService.addLikeUser(request);
 	}
+	@ResponseBody
 	@GetMapping("/gallery/likeRemove")
 	public int removeLike(HttpServletRequest request) {
 		return galleryService.removeLikeUser(request);
