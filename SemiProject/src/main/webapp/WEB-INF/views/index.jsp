@@ -64,8 +64,6 @@
 	}
 	
 </script>
-	
-		
 		<h1>로그인</h1>
 		
 		<form id="frm_login" action="${contextPath}/user/login" method="post">
@@ -119,7 +117,7 @@
 		
 		</c:if>
 	
-	</div>
+
 	<!-- 로그인이 된 상태 -->
 	<c:if test="${loginUser != null}">
 		<div>
