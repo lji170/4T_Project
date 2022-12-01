@@ -1,6 +1,5 @@
 package com.gdu.semi.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdu.semi.service.AdminService;
 import com.gdu.semi.util.SecurityUtil;
 
@@ -28,7 +24,7 @@ public class AdminController {
 	@Autowired
 	private SecurityUtil securityUtil;
 	
-	@GetMapping("/admin/main")
+	@PostMapping("/admin/main")
 	public String adminMain() {
 		return "admin/main";
 	}
@@ -48,11 +44,18 @@ public class AdminController {
 	
 	@ResponseBody
 	@PostMapping(value="/admin/retireUser", produces="application/json; charset=UTF-8")
-	public Map<String, Object> checkTestDelete(@RequestParam(value="userNo[]") List<String> userNo ) {
+	public Map<String, Object> TranslationRetire(@RequestParam(value="userNo[]") List<String> userNo) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("userNo", userNo);
 		return adminService.removeUser(map);
-		
-		
 	}
+	@ResponseBody
+	@PostMapping(value="/admin/sleepUser", produces="application/json; charset=UTF-8")
+	public Map<String, Object> TranslationSleep(@RequestParam(value="userNo[]") List<String> userNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userNo", userNo);
+		return adminService.sleepUser(map);
+	}
+	
+	
 }

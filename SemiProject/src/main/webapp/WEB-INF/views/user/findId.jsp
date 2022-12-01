@@ -114,8 +114,6 @@
    
    
    function fn_join(){
-      
-      
          
          if(authCodePass == false){
             alert('이메일 인증을 받으세요.');
@@ -138,14 +136,12 @@
                      
                      $('#msg_showid').text('해당 이메일로 가입한 ID : ' + resData.findIdInSleepUser.id);
                   }
-
                },
                error: function(jqXHR){
                   alert('관리자에게 문의하세요.');
                }
             });
          }
-     
    }
    
    

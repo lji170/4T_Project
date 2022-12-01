@@ -213,6 +213,7 @@ $(document).ready(function(){
 	
 	fn_changeFindPage();
 	fn_retireUser();
+	fn_sleepUser();
     
  });
 
@@ -230,6 +231,7 @@ function fn_userList(){
 			       
 			       $('#list_head').empty();
 			       $('#list_body').empty();
+			       $('#list_foot').empty();
 			       $('<tr>')
 			    	  .append( $('<th>').text("유저번호") )
 			    	  .append( $('<th>').text("아이디") )
@@ -239,11 +241,12 @@ function fn_userList(){
 			    	  .append( $('<th>').text("비밀번호수정일") )
 			    	  .append( $('<th>').text("회원정보수정일") )
 			    	  .append( $('<th>').text("포인트") )
-			    	  .append( $('<th>').text("탈퇴") )
+			    	  .append( $('<th>').text("선택") )
 			    	  .appendTo('#list_head');
 			       $.each(resData.userList, function( index, user ) {
 			    	   
 			          $('<tr>')
+			          
 			          .append( $('<td>').text(user.userNo) )
 			          .append( $('<td>').append(user.id))
 			          .append( $('<td>').text(user.name) )
@@ -256,6 +259,9 @@ function fn_userList(){
 			          ///admin/userRemove?userNo='+ user.userNo 
 			          .appendTo('#list_body');
 			       });
+			       $('<tr>')
+			       .append($('<td id="paging" colspan="9"></td>'))
+			       .appendTo('#list_foot');
 			       
 			       
 			       $('#paging').empty();
@@ -293,6 +299,7 @@ function fn_userList(){
 				 $('#searchText').val('');
 				 $('#list_head').empty();
 			     $('#list_body').empty();
+			     $('#list_foot').empty();
 			     $('<tr>')
 		    	  .append( $('<th>').text("유저번호") )
 		    	  .append( $('<th>').text("아이디") )
@@ -302,7 +309,7 @@ function fn_userList(){
 		    	  .append( $('<th>').text("비밀번호수정일") )
 		    	  .append( $('<th>').text("회원정보수정일") )
 		    	  .append( $('<th>').text("포인트") )
-		    	  .append( $('<th>').text("탈퇴") )
+		    	  .append( $('<th>').text("선택") )
 		    	  .appendTo('#list_head');
 		       $.each(resData.findUserList, function( index, findUser ) {
 		    	   
@@ -320,6 +327,9 @@ function fn_userList(){
 		          ///admin/userRemove?userNo='+ user.userNo 
 		          .appendTo('#list_body');
 		       });
+		       $('<tr>')
+		       .append($('<td id="paging" colspan="9"></td>'))
+		       .appendTo('#list_foot');
 		       $('#paging').empty();
 				var pageUtil = resData.pageUtil
 				var paging = '';
@@ -358,8 +368,13 @@ function fn_userList(){
 		});
  }
 function fn_retireUser(){
-	$('#btn_retireUser').click(function(){
 	
+	$('#btn_retireUser').click(function(ev){
+		if($('input[name="userCheck"]:checked').val() == 1){
+			alert('관리자는 탈퇴할 수 없습니다.');
+			ev.preventDefault();
+			return;
+		}
 		var userArray = [];
 	    $('input[name="userCheck"]:checked').each(function (index) {
 	    	userArray.push($(this).val());
@@ -373,10 +388,10 @@ function fn_retireUser(){
 		    },
 	    	dataType: 'json',
 	    	success: function(resData){
-	    		if(resData.isRemove){
-	    			alert('성공');
-	    		} else{
-	    			alert('실패');
+	    		if(resData.isRemove >= 1){
+	    			alert(resData.isRemove +"명을 강제탈퇴 했습니다.");
+	    		} else {
+	    			alert("탈퇴처리 실패");
 	    		}
 	    		fn_userList();
 	    	}
@@ -385,7 +400,34 @@ function fn_retireUser(){
     
 }
 function fn_sleepUser(){
-	
+	$('#btn_sleepUser').click(function(){
+		if($('input[name="userCheck"]:checked').val() == 1){
+			alert('관리자는 휴면유저로 전환할 수 없습니다.');
+			ev.preventDefault();
+			return;
+		}
+		var userArray = [];
+	    $('input[name="userCheck"]:checked').each(function (index) {
+	    	userArray.push($(this).val());
+	    });
+	    
+	    $.ajax({
+	    	type: 'post',
+	    	url: '${contextPath}/admin/sleepUser',
+	    	data : {
+	    		"userNo" : userArray
+		    },
+	    	dataType: 'json',
+	    	success: function(resData){
+	    		if(resData.isSleepUser >= 1){
+	    			alert(resData.isSleepUser +"명을 휴면처리 했습니다.");
+	    		} else {
+	    			alert("휴면처리 실패");
+	    		}
+	    		fn_userList();
+	    	}
+	    });
+	});
 }
 </script>
 <div>
@@ -401,23 +443,17 @@ function fn_sleepUser(){
 			<input type="text" id="searchText" name="searchText">
 			<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">
 			<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">
+			<input type="button" id="btn_retireUser" value="탈퇴">
+			<input type="button" id="btn_sleepUser" value="휴면">
 			
 			<br><hr><br>
-			<div>
-			
-			</div>			
-			<input type="button" id="btn_retireUser" value="탈퇴">
-			<input type="button" id="btn_sleepUser" value="휴면" onclick="fn_sleepUser();">
 			
 			<table>
 				<thead id="list_head">
 				</thead>
 				<tbody id="list_body">
 				</tbody>
-				<tfoot>
-					<tr>
-						<td id="paging" colspan="9"></td>
-					</tr>
+				<tfoot id="list_foot">
 				</tfoot>
 			</table>
 			

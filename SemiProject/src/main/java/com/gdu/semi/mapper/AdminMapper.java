@@ -3,7 +3,6 @@ package com.gdu.semi.mapper;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.semi.domain.UserDTO;
@@ -16,5 +15,6 @@ public interface AdminMapper {
 	public List<UserDTO> selectUsersByQuery(Map<String, Object> map);
 	public int deleteUserByNo(Map<String, Object> userNo);
 	public List<UserDTO> selectUserByNo(Map<String, Object> userNo);
-	public int insertUserByNo(List<UserDTO> user);
+	public int insertRetireUser(Map<String, Object> retireUserList);
+	public int insertSleepUser(Map<String, Object> sleepUserList);
 }
