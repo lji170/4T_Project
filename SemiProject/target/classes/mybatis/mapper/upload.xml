@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.gdu.semi.mapper.UploadMapper">
+
+	<!--  # 게시글 목록 -->
+	<!--  1. 전체 게시글수 : (1) 전체 게시글수 list.jsp에 표시 (2) 페이징 처리에 필요 -->
+	<select id="selectUploadCount" resultType="int">
+		SELECT COUNT(UPLOAD_NO)
+		FROM UPLOAD 
+	</select>
+
+	<!--  2. 전체 게시글 목록 -->
+	<!--  * 페이징 처리 : 가상칼럼 ROWNUM을 이용해 전달된 게시글 시작번호와 끝번호를 비교
+		 - 이유 : PK인 UPLOAD_NO값은 삭제될 수 있기 때문에 게시글 번호 역할을 수행할 수 없다 -->
+	<select id="selectUploadList" parameterType="map" resultType="uploadDTO">
+		SELECT A.UPLOAD_NO, A.ID, A.UPLOAD_TITLE, A.UPLOAD_CONTENT, A.UPLOAD_CREATE_DATE, A.UPLOAD_LAST_MODIFY_DATE, A.UPLOAD_HIT, A.IP
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, UPLOAD_CREATE_DATE, UPLOAD_LAST_MODIFY_DATE, UPLOAD_HIT, IP
+				FROM UPLOAD) A
+		WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<!--  # 게시글 상세 -->
+	<!-- 1. upload 테이블 조회 -->
+	<select id="selectUploadByNo" parameterType="int" resultType="UploadDTO">
+		SELECT UPLOAD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, UPLOAD_CREATE_DATE, UPLOAD_LAST_MODIFY_DATE, UPLOAD_HIT, IP
+		  FROM UPLOAD
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</select>
+	
+	
+	<!-- 2. 첨부파일 조건부 전체 조회 -->
+	<select id="selectAttachList" parameterType="int" resultType="AttachDTO">
+		SELECT ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, UPLOAD_NO
+		  FROM ATTACH
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</select>
+	
+	<!--  3. 조회수 증가 -->
+	<update id="updateHit" parameterType="int">
+		UPDATE UPLOAD
+			SET UPLOAD_HIT = UPLOAD_HIT + 1
+		WHERE UPLOAD_NO = #{uploadNo}
+	</update>
+	
+	<!--  # 추가 -->
+	<!--  * 업로드 테이블, 첨부테이블에 동일한 uploadNo를 
+		(1) uploadNo : 게시글 번호
+		(2) 올린 게시글에 첨부파일을 정확히 올리기 위해서는, 동일한 uploadNo를 사용해야한다
+		- 방법 (1) : uploadNo를 얻어내기 위한 쿼리문을 짜거나?
+			   (2) : selectkey를 사용
+	
+	
+	 -->
+	<!--  1. 게시글 추가 -->
+	<insert id="insertUpload" parameterType="UploadDTO">
+	<!--  1) insert 쿼리문 실행 전에 uploadNo 값을 얻기위한 selectkey를 사용 -->
+	<selectKey keyProperty="uploadNo" resultType="int" order="BEFORE">
+		SELECT UPLOAD_SEQ.NEXTVAL
+		FROM DUAL
+	</selectKey>
+	<!--  2) 게시글 삽입 : #{uploadNo} => selectkey에서 얻는 값 -->
+		INSERT INTO UPLOAD
+			(UPLOAD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, UPLOAD_CREATE_DATE, UPLOAD_LAST_MODIFY_DATE, UPLOAD_HIT, IP)
+		VALUES
+			(#{uploadNo}, #{id}, #{uploadTitle}, #{uploadContent}, SYSDATE, SYSDATE, 0, #{ip})
+	</insert>
+	<!--  2. 첨부파일 추가 -->
+	<insert id="insertAttach" parameterType="AttachDTO">
+		INSERT INTO ATTACH
+			(ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, UPLOAD_NO)
+		VALUES
+			(ATTACH_SEQ.NEXTVAL, #{path}, #{origin}, #{filesystem}, 0, #{uploadNo})
+	</insert>
+	<!--  3. 포인트 처리 -->
+	<update id="updatePoint" parameterType="String">
+		UPDATE USERS
+			SET POINT = POINT + 5
+		WHERE ID = #{id}
+	</update>
+	
+	
+	<!--  # 첨부 개별 다운로드 -->
+	<!--  1. 특정 첨부파일 조회 -->
+	<select id="selectAttachByNo" parameterType="int" resultType="AttachDTO">
+		SELECT ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, UPLOAD_NO
+		  FROM ATTACH
+		 WHERE ATTACH_NO = #{attachNo}
+	</select>
+	
+	<!--  2. 첨부파일 다운로드 증가 -->
+	
+	<update id="updateDownloadCnt" parameterType="int">
+		UPDATE ATTACH
+			SET DOWNLOAD_CNT = DOWNLOAD_CNT + 1
+		WHERE ATTACH_NO = #{attachNo}
+	</update>
+	
+	<!--  3. 포인트 없애기 : 다운로드한 파일수만큼 - 5 감소 -->
+	<update id="deletePoint" parameterType="String">
+		UPDATE USERS
+			SET POINT = POINT -5
+		WHERE ID = #{id}
+	</update>
+
+	
+	<!--  # 첨부 전체 다운로드 -->
+	<!--  1. 첨부파일 전체 조회 -->
+	<!--  * 기존 코드를 그대로 사용 -->
+	
+	<!--  2. 첨부파일 다운로드 증가 -->
+	<!--  * 위에코드를 그대로 사용 -->
+	
+	
+	
+	<!--  # 게시글 수정 -->
+	<update id="updateUpload" parameterType="UploadDTO">
+		UPDATE UPLOAD
+			SET	UPLOAD_TITLE = #{uploadTitle} , UPLOAD_CONTENT = #{uploadContent}
+		WHERE UPLOAD_NO = #{uploadNo}
+	</update>
+	
+	
+	<!--  # 첨부파일 삭제 -->
+	<!--  1. 첨부파일 삭제 -->
+	<!--  1) 첨부파일 삭제 -->
+	<delete id="deleteAttach" parameterType="int">
+		DELETE ATTACH
+		WHERE ATTACH_NO = #{attachNo}
+	</delete>
+	
+	<!--  2) 첨부파일 전부삭제 -->
+	<delete id="deleteAttachAll" parameterType="int">
+		DELETE ATTACH
+		WHERE UPLOAD_NO = #{uploadNo}
+	</delete>
+	
+	<!--  2. 게시글 삭제 : 삭제지만 update로 -->
+	
+	<!--  1) 첨부파일 전부 조회 : selectAttachList 문 재활용-->
+	<!--  2) 게시글 삭제 -->
+
+		<delete id="deleteUpload" parameterType="int">
+		DELETE
+		  FROM UPLOAD
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</delete>
+	
+</mapper>
