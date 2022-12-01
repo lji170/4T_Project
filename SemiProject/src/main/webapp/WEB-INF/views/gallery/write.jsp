@@ -79,9 +79,15 @@
 <div>
 
 	<h1>작성 화면</h1>
-	
+	<c:if test="${loginUser != null}">
+		<div>
+			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님
+		</div>
+		<a href="${contextPath}/user/logout">로그아웃</a>
+		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
+	</c:if>
 	<form id="frm_write" action="${contextPath}/gallery/add" method="post">
-	
+		<input type="hidden" name="id" value="${loginUser.id}">
 		<div>
 			<label for="galTitle">제목</label>
 			<input type="text" name="galTitle" id="galTitle">
