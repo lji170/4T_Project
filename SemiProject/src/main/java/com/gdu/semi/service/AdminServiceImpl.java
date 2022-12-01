@@ -77,17 +77,19 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Map<String, Object> removeUser(Map<String, Object> userNo) {
 		
-		Map<String,	Object> deleteUser = new HashMap<>();
-		System.out.println(userNo);
-		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
-		users.get(0).getName();
-		List<RetireUserDTO> retireUsersDTO = new ArrayList<>();
-		retireUsersDTO.add(RetireUserDTO);
-		adminMapper.insertUserByNo();
-		deleteUser.put("isRemove", adminMapper.deleteUserByNo(userNo) == 1);
+//		Map<String,	Object> deleteUser = new HashMap<>();
+//		System.out.println(userNo);
+//		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
+//		users.get(0).getName();
+//		List<RetireUserDTO> retireUsersDTO = new ArrayList<>();
+//		retireUsersDTO.add(RetireUserDTO);
+//		adminMapper.insertUserByNo();
+//		deleteUser.put("isRemove", adminMapper.deleteUserByNo(userNo) == 1);
+//		
+//		
+//		return deleteUser;
 		
-		
-		return deleteUser;
+		return null;
 		
 	}
 }
