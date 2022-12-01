@@ -119,7 +119,6 @@
 		
 		</c:if>
 	
-<<<<<<< HEAD
 	</div>
 	<!-- 로그인이 된 상태 -->
 	<c:if test="${loginUser != null}">
