@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.service.UserService;
 
-import oracle.jdbc.proxy.annotation.Post;
-
 @Controller
 public class UserController {
 
@@ -131,8 +129,6 @@ public class UserController {
 		return "user/check";
 	}
 	
-
-	
 	@PostMapping("/user/modify/pw")
 	public void requiredLogin_modifyPw(HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyPassword(request, response);
@@ -147,8 +143,6 @@ public class UserController {
 	public void restore(HttpServletRequest request, HttpServletResponse response) {
 		userService.restoreUser(request, response);
 	}
-	
-	
 	
 	// index페이지로 이동. "/"매핑값을 리다이렉트로 처리했기 때문에 index로 이동하는 매핑 설정
 	@GetMapping("/move/index")
@@ -169,22 +163,16 @@ public class UserController {
 		return userService.findId(email);
 	}
 	
-	
 	@GetMapping("/user/findPw")
 	public String findPw() {
 		return "user/findPw";
 	}
-	
-	
-	
-	
 	
 	@ResponseBody
 	@PostMapping(value="/user/checkReduceIDAndEmail",  produces="application/json")
 	public Map<String, Object> checkReduceIDAndEmail(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
 	
 		return userService.selectIdAndEmail(id,email);
-		
 	}
 
 	@ResponseBody
@@ -193,11 +181,5 @@ public class UserController {
 		
 		return userService.sendAuthCodeAndChangePw(id,email);
 	}
-	
-	
-	
-	
-	
-	
 	
 }
