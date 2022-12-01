@@ -16,12 +16,16 @@ DROP TABLE UPLOAD CASCADE CONSTRAINTS;
 CREATE TABLE UPLOAD (
 	UPLOAD_NO	            NUMBER	            NOT NULL,
 	ID	                    VARCHAR2(30 BYTE)	NOT NULL,
+<<<<<<< HEAD
+	UPLOAD_TITLE	            VARCHAR2(100 BYTE)	NOT NULL,
+=======
 	UPLOAD_TITLE	        VARCHAR2(100 BYTE)	NULL,
+>>>>>>> main
 	UPLOAD_CONTENT	        VARCHAR2(100 BYTE)	NULL,
 	UPLOAD_CREATE_DATE	    DATE	            NULL,
 	UPLOAD_LAST_MODIFY_DATE	DATE	            NULL,
 	UPLOAD_HIT	            NUMBER	            NULL,
-	IP	                    VARCHAR2(30 BYTE)	NULL
+	IP	                    VARCHAR2(30 BYTE)	NOT NULL
 );
 
 -- 첨부파일 테이블
