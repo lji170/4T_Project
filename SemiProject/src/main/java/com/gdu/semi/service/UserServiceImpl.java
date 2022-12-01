@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('회원 가입되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("location.href='" + request.getContextPath()+"/move/index" + "';");
 				out.println("</script>");
 				
 			} else {
@@ -532,7 +532,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('비밀번호가 수정되었습니다.');");
-				out.println("location.href='" + request.getContextPath()+"/move/index';");
+				out.println("location.href='" + request.getContextPath()+"/user/check/form';");
 				out.println("</script>");
 				
 			} else {
@@ -888,7 +888,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('회원 가입되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("location.href='" + request.getContextPath()+"/user/check/form" + "';");
 				out.println("</script>");
 				
 			} else {
