@@ -9,7 +9,7 @@ public class indexcontroller {
 	
 	@GetMapping("/")
 	public String index() {
-		return "index";
+		return "redirect:/index/form";
 	}
 	
 	
