@@ -34,6 +34,24 @@
 		<hr>
 		
 		<div>
+		회원정보 : 
+			 <ul>
+			 <c:if test="${loginUser.snsType}">
+			 	<li>네이버 간편가입 회원</li>
+			 </c:if>
+			 	<li>성함 : ${name}</li>
+			 	<li>성별 : ${GENDER}</li>
+			 	<li>생년월일 : ${birthyear}.${birthday}</li>
+			 	<li>핸드폰번호 : ${mobile}</li>
+			 	<li>우편번호 : [${postcode}]</li>
+			 	<li>보유 포인트 : </li>
+			 </ul>
+		</div>
+		
+		<hr>
+		
+		
+		<div>
 			<a href="${contextPath}/user/check/move">보안설정</a>
 		</div>
 	

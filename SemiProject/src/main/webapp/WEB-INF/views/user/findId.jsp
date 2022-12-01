@@ -119,6 +119,7 @@
 			if(authCodePass == false){
 				alert('이메일 인증을 받으세요.');
 				event.preventDefault();
+				
 				return;
 				
 			}else { 
