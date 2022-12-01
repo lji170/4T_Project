@@ -77,14 +77,14 @@ public class AdminServiceImpl implements AdminService {
 		
 		Map<String,	Object> deleteUser = new HashMap<>();
 		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
+		List<RetireUserDTO> retireUserList = new ArrayList<>();
 		RetireUserDTO retireUser = new RetireUserDTO();
 		for(int i = 0; i < users.size(); i ++) {
-			 retireUser.setId(users.get(i).getId());
-			 retireUser.setJoinDate(users.get(i).getJoinDate());
+			retireUser.setId(users.get(i).getId());
+			retireUser.setJoinDate(users.get(i).getJoinDate());
+			retireUserList.add(i, retireUser);
 		}
-		Map<String, Object> user = new HashMap<>();
-		user.put("retireUser", retireUser);
-		System.out.println(user);
+		System.out.println(retireUserList);
 		//retireUsersDTO.add();
 		//adminMapper.insertUserByNo();
 		deleteUser.put("isRemove", adminMapper.deleteUserByNo(userNo) == 1);
