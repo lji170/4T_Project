@@ -40,21 +40,49 @@
 	
 	
 	<!-- 회원 강제 탈퇴2: RETIRE_USERS 테이블에 추가 -->
-	<insert id="insertUserByNo" parameterType="UserDTO">
-		INSERT INTO 
-			(RETIRE_NO, JOIN_DATE, RETIRE_DATE, ID)
-		VALUES
-			(RETIRE_SEQ.VAL, #{joinDate}, SYSDATE, #{id})
-	</insert>
-	<!-- 회원 강제 탈퇴 2: 삭제할 번호로 유저 조회 후 데이터 얻기  -->
-	<!-- <select id="selectUserByNo" parameterType="int" resultType="UserDTO">
-		SELECT ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, POINT
-		  FROM USERS
-		 WHERE USER_NO in (#{userNo})
-	</select> -->
 	
+	<insert id="insertRetireUser" parameterType="Map">
+		INSERT INTO RETIRE_USERS (RETIRE_NO, RETIRE_DATE, JOIN_DATE,  ID)
+		SELECT RETIRE_USERS_SEQ.NEXTVAL, A.* FROM(
+			<foreach collection="retireUsers" item="item" separator="UNION ALL ">
+			SELECT SYSDATE, 
+				   #{item.joinDate} AS JOIN_DATE,
+				   #{item.id} AS ID
+		      FROM DUAL
+		  </foreach>) A
+	</insert>
+	
+	<insert id="insertSleepUser" parameterType="Map">
+		INSERT INTO SLEEP_USERS (SLEEP_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, SLEEP_DATE, POINT)
+		SELECT SLEEP_USERS_SEQ.NEXTVAL, A.* FROM(
+			<foreach collection="sleepUsers" item="item" separator="UNION ALL ">
+				SELECT #{item.id,jdbcType=VARCHAR} AS ID,
+					   #{item.pw,jdbcType=VARCHAR} AS PW,
+					   #{item.name,jdbcType=VARCHAR} AS NAME,
+					   #{item.gender,jdbcType=VARCHAR} AS GENDER,
+					   #{item.email,jdbcType=VARCHAR} AS EMAIL,
+					   #{item.mobile,jdbcType=VARCHAR} AS MOBILE,
+					   #{item.birthyear,jdbcType=VARCHAR} AS BIRTHYEAR,
+					   #{item.birthday,jdbcType=VARCHAR} AS BIRTHDAY,
+					   #{item.postcode,jdbcType=VARCHAR} AS POSTCODE,
+					   #{item.roadAddress,jdbcType=VARCHAR} AS ROAD_ADDRESS,
+					   #{item.jibunAddress,jdbcType=VARCHAR} AS JIBUN_ADDRESS,
+					   #{item.detailAddress,jdbcType=VARCHAR} AS DETAIL_ADDRESS,
+					   #{item.extraAddress,jdbcType=VARCHAR} AS RETRA_ADDRESS,
+					   #{item.agreeCode,jdbcType=INTEGER} AS AGREE_CODE,
+					   #{item.snsType,jdbcType=VARCHAR} AS SNS_TYPE,
+					   #{item.joinDate,jdbcType=DATE} AS JOIN_DATE,
+					   #{item.pwModifyDate,jdbcType=DATE} AS PW_MODIFY_DATE,
+					   SYSDATE,
+					   #{item.point,jdbcType=INTEGER} AS POINT
+				  FROM DUAL
+			</foreach>) A
+			
+	</insert>
+	
+	<!-- 회원 강제 탈퇴 및 강제 휴면 2-->
 	<select id="selectUserByNo" parameterType="Map" resultType="UserDTO">
-		  SELECT ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, POINT
+		  SELECT ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, POINT
 		  	FROM USERS
 		  <where>
 		    <foreach item="item" collection="userNo" open="USER_NO in (" separator="," close=")" >
@@ -63,7 +91,7 @@
 		  </where>
 	</select>
 	
-	<!-- 회원 강제 탈퇴 1: USERS 테이블에서 제거-->
+	<!-- 회원 강제 탈퇴 및 강제 휴면 1: USERS 테이블에서 제거-->
 	<delete id="deleteUserByNo" parameterType="Map">
 		DELETE
 		  FROM USERS

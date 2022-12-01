@@ -324,7 +324,6 @@
 			if(idPass == false){
 				alert('아이디를 확인하세요.');
 				event.preventDefault();
-				return;
 			} else if(pwPass == false || rePwPass == false){
 				alert('비밀번호를 확인하세요.');
 				event.preventDefault();
