@@ -48,9 +48,11 @@
 			
 			</script>
 			<img class="likeArea">
-			<input type="button" value="수정" id="btn_edit_gallery">
-			<input type="button" value="삭제" id="btn_remove_gallery">
-			<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
+			<c:if test="${loginUser.id eq gallery.id}">
+				<input type="button" value="수정" id="btn_edit_gallery">
+				<input type="button" value="삭제" id="btn_remove_gallery">
+			</c:if>
+				<input type="button" value="목록" onclick="location.href='${contextPath}/gallery/list'">
 		</form>
 		<script>
 			$(function(){
@@ -81,18 +83,20 @@
 						if (resData > 0) {
 							alert('좋아요를 누른 회원입니다.')
 							$('.likeArea')
-								.attr('src','${contextPath}/resources/image/like.png')
+								.attr('src','${contextPath}/resources/image/like.png');
 						} else {
 							alert('아직 좋아요를 누르지 않았네요!');
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png')
 						}						
+						fn_touchLike();
 					}
 				});
 			}
 		
 			function fn_touchLike(){
 				$('.likeArea').click(function(){
+					alert('클릭!');
 					$.ajax({
 						type:'get',
 						url :'${contextPath}/gallery/touchLike',
@@ -102,8 +106,14 @@
 							alert('touch Like or Dislike!');
 							if (resData == 0) {
 								alert('좋아요를 누르셨습니다.');
+								$('.likeArea').empty();
+								$('.likeArea')
+									.attr('src','${contextPath}/resources/image/like.png');
 							} else {
 								alert('좋아요가 취소되었습니다.');
+								$('.likeArea').empty();
+								$('.likeArea')
+								.attr('src','${contextPath}/resources/image/dislike.png');
 							}
 						}
 					});
@@ -223,8 +233,10 @@
 						// 댓글내용
 						var div = '';
 						div += '<div>' + comment.commentTitle;
-						// 작성자만 삭제할 수 있도록 if 처리 필요
-						div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
+						// 작성자만 삭제할 수 있도록 if 처리 필요 (작동 안됨)
+						if (${loginUser.id ne null} && ${loginUser.id eq gallery.id}) {
+							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
+						}
 						// 댓글만 답글을 달 수 있도록 if 처리 필요
 						div += '<input type="button" value="답글" class="btn_reply_area">';
 						div += '</div>';
