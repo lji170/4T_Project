@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,9 @@ public class CommentServiceImpl implements CommentService {
 	public Map<String, Object> addComment(HttpServletRequest request) {
 		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		String id = "인절미";
+		HttpSession session = request.getSession();
+		String id = session.getId();
+		System.out.println("id:" + id);
 		String commentTitle = request.getParameter("commentTitle");
 		
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
@@ -57,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		String id = "인절미";
+		String id = request.getParameter("id");
 		String commentTitle = request.getParameter("commentTitle");
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
 		String ip = opt.orElse(request.getRemoteAddr());

@@ -211,11 +211,15 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	@Override
 	public int touchLike(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String sessionId = session.getId();
 		String id = request.getParameter("id");
+		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		System.out.println("sessionId:"+ sessionId + "id:" + id + ",galNo:" + galNo);
 		LikeDTO like = LikeDTO.builder()
-				.id(id)
 				.galNo(galNo)
+				.id(id)
 				.build();
 		
 		int result = galleryMapper.selectLikeUser(like);

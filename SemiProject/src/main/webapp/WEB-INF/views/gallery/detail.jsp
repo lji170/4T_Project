@@ -58,6 +58,7 @@
 			$(function(){
 		   		fn_getLikeCount(); 
 				fn_getLikeUser();
+				fn_touchLike();
 			});
 			
 			function fn_getLikeCount(){
@@ -115,6 +116,9 @@
 								$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png');
 							}
+						},
+						error : function(){
+							alert('오류!');
 						}
 					});
 				});
@@ -157,7 +161,6 @@
 	</div>
 	<!-- 현재 페이지 번호를 저장하고 있는 hidden -->
 	<input type="hidden" id="page" value="1">
-	<input type="hidden" id="id" value="userpp">
 	<script>
 		
 		// 전역 변수 page 	(모든 함수에서 사용 가능)
@@ -214,26 +217,13 @@
 				data:'galNo=${gallery.galNo}&page=' + $('#page').val(),	// 페이징 처리를 위해, 현재 page도 파라미터로 전달!
 				dataType: 'json',
 				success : function(resData){
-					/* 
-						resData = {
-							"commentList" : [
-								{댓글하나},
-								{댓글하나},
-								...
-							],
-							"pageUtil" : {
-								page : x,
-								...
-							}
-					}
-					*/
 					// 화면에 댓글 목록 뿌리기
 					$('#comment_list').empty();
 					$.each (resData.commentList, function(i, comment){
 						// 댓글내용
 						var div = '';
 						div += '<div>' + comment.commentTitle;
-						// 작성자만 삭제할 수 있도록 if 처리 필요 (작동 안됨)
+						// 작성자만 삭제할 수 있도록 if 처리 필요
 						if (${loginUser.id ne null} && ${loginUser.id eq gallery.id}) {
 							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
 						}
