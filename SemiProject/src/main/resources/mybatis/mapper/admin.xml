@@ -40,7 +40,7 @@
 	
 	
 	<!-- 회원 강제 탈퇴2: RETIRE_USERS 테이블에 추가 -->
-	<insert id="insertUserByNo" parameterType="UserDTO">
+	<insert id="insertRetireUser" parameterType="UserDTO">
 		INSERT INTO 
 			(RETIRE_NO, JOIN_DATE, RETIRE_DATE, ID)
 		VALUES

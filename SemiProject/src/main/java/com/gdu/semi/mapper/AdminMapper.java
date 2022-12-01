@@ -16,5 +16,5 @@ public interface AdminMapper {
 	public List<UserDTO> selectUsersByQuery(Map<String, Object> map);
 	public int deleteUserByNo(Map<String, Object> userNo);
 	public List<UserDTO> selectUserByNo(Map<String, Object> userNo);
-	public int insertUserByNo(List<UserDTO> user);
+	public int insertRetireUser(List<UserDTO> user);
 }
