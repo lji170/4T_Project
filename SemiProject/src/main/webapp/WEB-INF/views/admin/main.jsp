@@ -188,10 +188,10 @@
 </head>
 <body>
 	<nav id="nav3">
-	    <a href="${contextPath}/admin/main">4Team_Admin</a>
+	    <a href="${contextPath}/move/index">4Team_Admin</a>
 	    <ul>
 	      <li><a id="btn_userList" onclick="fn_userList()">회원관리</a></li>
-	      <li><a href="${contextPath}/admin/bbs/agent">자유게시판관리</a></li>
+	      <li><a >자유게시판관리</a></li>
 	      <li><a href="${contextPath}/admin/gallery/agent">갤러리게시판관리</a></li>
 	      <li><a href="${contextPath}/admin/upload/agent">업로드관리</a></li>
 	      <li><a href="${contextPath}/admin/down/agent">다운로드관리</a></li>

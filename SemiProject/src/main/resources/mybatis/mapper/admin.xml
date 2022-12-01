@@ -102,6 +102,20 @@
 		  </where>
 	</delete>
 	
+	<!-- 갤러리 게시글 총 개수  -->
+	<select id="selectGalleryListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM GALLERY
+	</select>
+	
+	<!-- 갤러리 게시판 리스트 페이징 처리 -->
+	<select id="selectGalleryListByMap" parameterType="Map" resultType="GalleryDTO">
+		SELECT A.ROW_NUM, A.GAL_NO, A.ID, A.GAL_TITLE, A.GAL_CONTENT, A.GAL_CREATE_DATE, A.GAL_LAST_MODIFY_DATE, A.GAL_HIT, A.LIKE_COUNT, A.IP
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GAL_NO DESC) AS ROW_NUM, GAL_NO, ID, GAL_TITLE, GAL_CONTENT, GAL_CREATE_DATE, GAL_LAST_MODIFY_DATE, GAL_HIT, LIKE_COUNT, IP
+		  		FROM GALLERY) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
 	
 	
 	
