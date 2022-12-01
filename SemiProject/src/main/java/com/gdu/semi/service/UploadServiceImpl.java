@@ -55,8 +55,6 @@ public class UploadServiceImpl implements UploadService {
 		
 	// * 임시아이디 : 추후에 지우기
 	// => 앞으로 호출하는 모든 id는 admin으로 통일
-	HttpSession sessionLogin = request.getSession();
-	sessionLogin.setAttribute("loginUser", "admin");
 	// sessionLogin.getAttribute("loginUser");		// => 합쳤을때 사용될 코드
 		
 	// & 문제 : ip를 조회에서 사용?		------------------------------------------------------------------
