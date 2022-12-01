@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gdu.app12.service.BbsService;
+import com.gdu.semi.service.BbsService;
 
 @Controller
 public class BbsController {
@@ -17,11 +17,6 @@ public class BbsController {
 	@Autowired
 	private BbsService bbsService;
 
-	@GetMapping("/")
-	public String welcome() {
-		return "index";
-	}
-	
 	@GetMapping("/bbs/list")
 	public String list(HttpServletRequest request, Model model) {
 		bbsService.findAllBbsList(request, model);
@@ -49,6 +44,7 @@ public class BbsController {
 	public String replyAdd(HttpServletRequest request) {
 		bbsService.addReply(request);
 		return "redirect:/bbs/list";
+		
 	}
 	
 }

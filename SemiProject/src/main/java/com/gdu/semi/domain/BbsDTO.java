@@ -15,12 +15,13 @@ public class BbsDTO {
 	private int bbsNo;
 	private String id;
 	private String bbsTitle;
-	private Date bbscreateDate;
+	private Date createDate;
 	private int state; 
 	private int depth;
 	private int groupNo;
 	private int groupOrder;
-	private Date bsslastmodifyDate;
+	private Date bbsLastModifyDate;
 	private String ip;
+	private String content;
 	
 }

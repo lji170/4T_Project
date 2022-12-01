@@ -97,7 +97,7 @@
 		</form>
 			
 		<div>
-			<a href="${contextPath}/user/findId">아이디 찾기</a> | 
+			<a href="${contextPath}/user/findId">아이디 찾기</a>
 			<a href="${contextPath}/user/findPw">비밀번호 찾기</a>
 		</div>
 		
@@ -109,8 +109,14 @@
 	
 	</div>
 
-
-
+	<hr/>
+  	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
+	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
+   	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
+   	<c:if test="${loginUser.id == admin }">
+		<a href="${contextPath}/admin/main">관리자게시판으로 이동</a>
+	</c:if>
+	
 
 
 </body>

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.gdu.semi.domain.BbsDTO;
 import com.gdu.semi.mapper.BbsMapper;
 import com.gdu.semi.util.PageUtil;
+import com.gdu.semi.util.SecurityUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -62,14 +63,14 @@ public class BbsServiceImpl implements BbsService {
 	@Override
 	public int addBbs(HttpServletRequest request) {
 		
-		String writer = securityUtil.sha256(request.getParameter("writer"));
-		String title = securityUtil.preventXSS(request.getParameter("title"));
-		String ip = request.getRemoteAddr();
+		String id = request.getParameter("id");
+		String bbsTitle = securityUtil.preventXSS(request.getParameter("bbsTitle"));
+		String content = securityUtil.preventXSS(request.getParameter("content"));
 		
 		BbsDTO bbs = new BbsDTO();
-		bbs.setWriter(writer);
-		bbs.setTitle(title);
-		bbs.setIp(ip);
+		bbs.setId(id);
+		bbs.setBbsTitle(bbsTitle);
+		bbs.setContent(content);
 		
 		return bbsMapper.insertBbs(bbs);
 		
@@ -86,8 +87,8 @@ public class BbsServiceImpl implements BbsService {
 	public int addReply(HttpServletRequest request) {
 		
 		// 작성자, 제목
-		String writer = securityUtil.sha256(request.getParameter("writer"));
-		String title = securityUtil.preventXSS(request.getParameter("title"));
+		String id = securityUtil.sha256(request.getParameter("id"));
+		String bbsTitle = securityUtil.preventXSS(request.getParameter("bbsTitle"));
 		
 		// IP
 		String ip = request.getRemoteAddr();
@@ -108,8 +109,8 @@ public class BbsServiceImpl implements BbsService {
 		
 		// 답글DTO
 		BbsDTO reply = new BbsDTO();
-		reply.setWriter(writer);
-		reply.setTitle(title);
+		reply.setId(id);
+		reply.setBbsTitle(bbsTitle);
 		reply.setIp(ip);
 		reply.setDepth(depth + 1);            // 답글 depth : 원글 depth + 1
 		reply.setGroupNo(groupNo);            // 답글 groupNo : 원글 groupNo
@@ -124,5 +125,5 @@ public class BbsServiceImpl implements BbsService {
 	public int removeBbs(int bbsNo) {
 		return bbsMapper.deleteBbs(bbsNo);
 	}
-
+	
 }

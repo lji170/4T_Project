@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gdu.app12.domain.BbsDTO;
+import com.gdu.semi.domain.BbsDTO;
 
 @Mapper
 public interface BbsMapper {
@@ -15,4 +15,5 @@ public interface BbsMapper {
 	public int updatePreviousReply(BbsDTO bbs);		// 댓글 삽입 전 기존 답급의 GROUP_ORDER 업데이트
 	public int insertReply(BbsDTO bbs);				// 댓글 삽입
 	public int deleteBbs(int bbsNo);
+
 }
