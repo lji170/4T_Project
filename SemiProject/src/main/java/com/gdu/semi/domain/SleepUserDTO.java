@@ -32,7 +32,7 @@ public class SleepUserDTO {
 	private Date pwModifyDate;
 	private Date lastLoginDate;
 	private Date sleepDate;
-	private int ponit;
+	private int point;
 	
 	
 	

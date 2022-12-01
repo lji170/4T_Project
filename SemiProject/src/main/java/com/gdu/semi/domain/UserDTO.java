@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserDTO {
-
    private int userNo;
    private String id;
    private String pw;
@@ -36,4 +35,3 @@ public class UserDTO {
    private Date sessionLimitDate;
    private int point;
 }
-
