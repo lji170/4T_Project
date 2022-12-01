@@ -124,7 +124,9 @@
 			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님 반갑습니다.
 		</div>
 		<a href="${contextPath}/user/logout">로그아웃</a>
+		<c:if test="${loginUser.id ne 'admin'}">
 		<a href="javascript:fn_abc()">회원탈퇴</a>
+		</c:if>
 		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
 		<script>
 			function fn_abc(){
@@ -136,11 +138,15 @@
 	</c:if>
 
 	<hr/>
+	<c:if test="${loginUser.id ne 'admin'}">
   	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
 	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
    	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
-   	<c:if test="${loginUser.id == admin }">
-		<a href="${contextPath}/admin/main">관리자게시판으로 이동</a>
+   	</c:if>
+   	<c:if test="${loginUser.id eq 'admin'}">
+   		<form action="${contextPath}/admin/main"  method="POST">
+   			<button>관리자 메인으로 이동</button>
+   		</form>
 	</c:if>
 
 
