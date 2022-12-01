@@ -29,10 +29,10 @@ public class SleepUserDTO {
 	private int agreeCode;
 	private String snsType;
 	private Date joinDate;
-	private String pwModifyDate;
+	private Date pwModifyDate;
 	private Date lastLoginDate;
 	private Date sleepDate;
-	private int ponit;
+	private int point;
 	
 	
 	

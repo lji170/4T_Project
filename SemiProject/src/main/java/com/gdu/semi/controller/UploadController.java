@@ -24,12 +24,6 @@ public class UploadController {
 	@Autowired
 	UploadService uploadService;
 	
-	// # 웰컴페이지
-	@GetMapping("/")
-	public String welcome() {
-		return "index";
-	}
-	
 	// # service + move : 목록페이지
 	// - 매개변수 
 	// (1) request( 용도 : 페이지 이동을 위한 page 파라미터 전달)
