@@ -170,4 +170,22 @@
 	</select> 
 	
 	
+	<update id="updateUserInfo" parameterType="Map">
+	
+		UPDATE USERS
+		    <set>
+		        <if test="email != null">EMAIL=#{email},</if>
+		        <if test="gender != null">GENDER=#{gender},</if>
+		        <if test="mobile != null">MOBILE=#{mobile},</if>
+		        <if test="postcode != null">POSTCODE=#{postcode},</if>
+		        <if test="roadAddress != null">ROAD_ADDRESS=#{roadAddress},</if>
+		        <if test="jibunAddress != null">JIBUN_ADDRESS=#{jibunAddress},</if>
+		        <if test="detailAddress != null">DETAIL_ADDRESS=#{detailAddress},</if>
+		        <if test="extraAddress != null">EXTRA_ADDRESS=#{extraAddress},</if>
+		    </set>
+	    WHERE PNO = #{no}
+	    
+	</update>
+	
+	
 </mapper>
