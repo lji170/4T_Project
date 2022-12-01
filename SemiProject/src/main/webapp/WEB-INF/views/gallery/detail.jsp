@@ -223,7 +223,11 @@
 						// 댓글내용
 						var div = '';
 						div += '<div>' + comment.commentTitle;
+<<<<<<< HEAD
 						// 작성자만 삭제할 수 있도록 if 처리 필요
+=======
+						// 작성자만 삭제할 수 있도록 if 처리 필요 (작동 안됨)
+>>>>>>> 9a5eec9df3852e8abfd0eb5ce30a69a5d405fcc5
 						if (${loginUser.id ne null} && ${loginUser.id eq gallery.id}) {
 							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
 						}

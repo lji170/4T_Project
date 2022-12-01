@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.gdu.semi.domain.CommentDTO;
 import com.gdu.semi.mapper.CommentMapper;
 import com.gdu.semi.util.PageUtil;
+import com.gdu.semi.util.SecurityUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -21,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	private CommentMapper commentMapper;
 	private PageUtil pageUtil;
+	private SecurityUtil securityUtil;
 	
 
 	@Override
@@ -34,9 +36,10 @@ public class CommentServiceImpl implements CommentService {
 	public Map<String, Object> addComment(HttpServletRequest request) {
 		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
+		String paramId = request.getParameter("id");
 		HttpSession session = request.getSession();
 		String id = session.getId();
-		System.out.println("id:" + id);
+		System.out.println("id:" + id + "paramId:" + paramId);
 		String commentTitle = request.getParameter("commentTitle");
 		
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));

@@ -26,7 +26,6 @@
 
 </head>
 <body>
-
 	<h1>갤러리 게시판에 오신 것을 환영합니다.</h1>
 	<c:if test="${loginUser eq null}">
 		<a href="${contextPath}/"> 로그인</a>
