@@ -141,7 +141,9 @@
 	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
 	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
 	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
-
+	<c:if test="${loginUser.id == admin }">
+		<a href="${contextPath}/admin/main">관리자게시판으로 이동</a>
+	</c:if>
 
 </body>
 </html>
