@@ -28,7 +28,11 @@
 	<div class="container">
 		<div class="header">
 			<div class="title">
-				<h1>업로드 다운로드 게시판에 온것을 환영합니다</h1>
+				<h1>업로드 게시판</h1>
+				<div>
+					<a id="header_login" class="btn_add_login" href="${contextPath}/index/form">로그인</a>
+				</div>
 			</div>	
 		</div>
+
 

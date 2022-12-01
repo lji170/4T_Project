@@ -46,6 +46,19 @@
 			<mapping path="/user/login"/>
 			<beans:bean class="com.gdu.semi.interceptor.SleepUserCheckingInterceptor" />
 		</interceptor>
+		<!-- 아래는 upload interceptor -->
+		<interceptor>
+			<mapping path="/upload/edit"/>
+			<mapping path="/upload/remove"/>
+			<beans:bean class="com.gdu.semi.interceptor.RequiredModifyInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/upload/download"/>
+			<mapping path="/upload/downloadAll"/>
+			<beans:bean class="com.gdu.semi.interceptor.PointCheckInterceptor"/>
+		</interceptor>
+		
 	</interceptors>
 	
 	

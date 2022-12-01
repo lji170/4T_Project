@@ -24,6 +24,7 @@ public class UploadController {
 	@Autowired
 	UploadService uploadService;
 	
+	
 	// # service + move : 목록페이지
 	// - 매개변수 
 	// (1) request( 용도 : 페이지 이동을 위한 page 파라미터 전달)
@@ -64,7 +65,7 @@ public class UploadController {
 	@ResponseBody
 	@GetMapping("/upload/download")
 	public ResponseEntity<Resource> download(@RequestHeader("User-agent") String agent, 
-											HttpServletRequest request) {
+													HttpServletRequest request) {
 		return uploadService.download(agent, request);
 	}
 	
@@ -72,7 +73,7 @@ public class UploadController {
 	@ResponseBody
 	@GetMapping("/upload/downloadAll")
 	public ResponseEntity<Resource> downloadAll(@RequestHeader("User-agent") String agent, 
-											HttpServletRequest request) {
+													HttpServletRequest request) {
 		return uploadService.downloadAll(agent, request);
 	}
 	
@@ -82,7 +83,7 @@ public class UploadController {
 	// AOP: 로그인 한 경우에만 작성창 이동가능
 	// & 수정 : 원래 post 처리였으나, 첨부삭제후 post 요청을 못받아서 edit으로 처리
 	@PostMapping("/upload/edit")
-	public String required_edit(HttpServletRequest request, Model model) {
+	public String edit(HttpServletRequest request,  Model model) {
 		uploadService.getUploadByNo(request, model);	// 특정 uploadNo의 upload, attach 테이블 둘다 조회
 		return "upload/edit";
 	}
@@ -121,8 +122,16 @@ public class UploadController {
 	
 	// 3) 게시글 삭제
 	@PostMapping("/upload/remove")
-	public void required_uploadRemove(HttpServletRequest request, HttpServletResponse response) {
+	public void uploadRemove(HttpServletRequest request, HttpServletResponse response) {
 		uploadService.removeUpload(request, response);
+	}
+	
+	
+	// # 검색어에 따른 목록 검색
+	@GetMapping("/upload/Search")
+	public String uploadSearch(HttpServletRequest request, Model model) {
+		uploadService.selectUploadSearch(request, model);
+		return "upload/list";
 	}
 	
 	
