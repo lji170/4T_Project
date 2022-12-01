@@ -179,7 +179,8 @@ public class UploadServiceImpl implements UploadService {
 		// 3) id 가져오기 : users 테이블에서(또는 session영역에서)
 		HttpSession sessionLogin = multipartServletRequest.getSession();
 		
-		String id = (String)sessionLogin.getAttribute("loginUser");
+	
+		String id = String.valueOf(sessionLogin.getAttribute("loginUser"));
 		// System.out.println(id);	// admin
 		
 		// 2. dto 생성
@@ -368,8 +369,8 @@ public class UploadServiceImpl implements UploadService {
 		// [3] 포인트 감소 : 다운받은 사람의 id의 포인트를 줄여아하기 때문에 session 영역의 id가 필요
 		// 1) session 영역에서 id 가져오기
 		HttpSession sessionLogin = request.getSession();
-		String id = (String)sessionLogin.getAttribute("loginUser");
 		
+		String id = String.valueOf(sessionLogin.getAttribute("loginUser"));
 		// 2) 포인트 감소시키기
 		uploadMapper.deletePoint(id);
 		
@@ -447,8 +448,8 @@ public class UploadServiceImpl implements UploadService {
 						// [3] 포인트 감소 : 다운받은 사람의 id의 포인트를 줄여아하기 때문에 session 영역의 id가 필요
 						// 1) session 영역에서 id 가져오기
 						HttpSession sessionLogin = request.getSession();
-						String id = (String)sessionLogin.getAttribute("loginUser");
 						
+						String id = String.valueOf(sessionLogin.getAttribute("loginUser"));
 						// 2) 포인트 감소시키기
 						uploadMapper.deletePoint(id);
 					

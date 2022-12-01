@@ -82,8 +82,8 @@ public class AdminServiceImpl implements AdminService {
 		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
 		users.get(0).getName();
 		List<RetireUserDTO> retireUsersDTO = new ArrayList<>();
-		retireUsersDTO.add(RetireUserDTO);
-		adminMapper.insertUserByNo();
+		// retireUsersDTO.add(RetireUserDTO);
+		// adminMapper.insertUserByNo();
 		deleteUser.put("isRemove", adminMapper.deleteUserByNo(userNo) == 1);
 		
 		
