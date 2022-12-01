@@ -9,7 +9,15 @@
 <title>회원가입 화면</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
+
+</head>
+<body>
+
+	<!-- 로그인이 안 된 상태 -->
+	<c:if test="${loginUser == null}">
+<div>
+
+		<script>
 	
 	$(function(){
 		
@@ -56,12 +64,8 @@
 	}
 	
 </script>
-</head>
-<body>
-
-
-<div>
 	
+		
 		<h1>로그인</h1>
 		
 		<form id="frm_login" action="${contextPath}/user/login" method="post">
@@ -97,7 +101,7 @@
 		</form>
 			
 		<div>
-			<a href="${contextPath}/user/findId">아이디 찾기</a> | 
+			<a href="${contextPath}/user/findId">아이디 찾기</a>
 			<a href="${contextPath}/user/findPw">비밀번호 찾기</a>
 		</div>
 		
@@ -106,11 +110,40 @@
 		<div>
 			<a href="${apiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 		</div>
+		
+		<hr>
+		
+			<a href="${contextPath}/user/agree">회원가입하러가기</a>
+	
+		</div>                                                  
+		
+		</c:if>
 	
 	</div>
+	<!-- 로그인이 된 상태 -->
+	<c:if test="${loginUser != null}">
+		<div>
+			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님 반갑습니다.
+		</div>
+		<a href="${contextPath}/user/logout">로그아웃</a>
+		<a href="javascript:fn_abc()">회원탈퇴</a>
+		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
+		<script>
+			function fn_abc(){
+				if(confirm('탈퇴하시겠습니까?')){
+					$('#lnk_retire').submit();
+				}
+			}
+		</script>
+	</c:if>
 
-
-
+	<hr/>
+  	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
+	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
+   	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
+   	<c:if test="${loginUser.id == admin }">
+		<a href="${contextPath}/admin/main">관리자게시판으로 이동</a>
+	</c:if>
 
 
 </body>
