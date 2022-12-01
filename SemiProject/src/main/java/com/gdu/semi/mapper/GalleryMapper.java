@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.http.ResponseEntity;
 
 import com.gdu.semi.domain.GalleryDTO;
 import com.gdu.semi.domain.LikeDTO;
 import com.gdu.semi.domain.SummernoteImageDTO;
-import com.gdu.semi.domain.UserDTO;
 
 @Mapper
 public interface GalleryMapper {

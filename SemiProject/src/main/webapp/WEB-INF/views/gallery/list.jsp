@@ -12,13 +12,13 @@
 <script>
 	$(function(){
 	
-		if('${recordPerPage}' != ''){
-			$('#recordPerPage').val(${recordPerPage});
-		} else {
-			$('#recordPerPage').val(10);
-		}
+		// 세션에 recordPerPage가 없는 경우 recordPerPage 10으로 초기화
+		var recordPerPage = ('${recordPerPage}'=='') ? '10' : '${recordPerPage}';
+		$('#recordPerPage').val(recordPerPage);
+		
+		// recordPerPage 변경
 		$('#recordPerPage').change(function(){
-			location.href = '${contextPath}/gallery/recordPerPage=' + $(this).val();
+			location.href = '${contextPath}/gallery/change/list?recordPerPage=' + $(this).val();
 		});
 		
 	});
