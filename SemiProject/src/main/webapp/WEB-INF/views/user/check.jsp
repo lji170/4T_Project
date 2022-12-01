@@ -12,6 +12,15 @@
 	
 	$(function(){
 		
+		 fn_click_check_pw();
+		
+
+		
+	});
+	
+	// 유저테이블에 들어간 비밀번호와, 입력된 비밀번호의 값이 일치하는지 확인하는 ajax
+	function fn_click_check_pw(){
+		
 		$('#btn_check_pw').click(function(){
 			
 			$.ajax({
@@ -23,7 +32,7 @@
 				dataType: 'json',
 				success: function(resData){
 					if(resData.isUser){
-						location.href = '${contextPath}/user/mypage';
+						alert('비밀번호 변경이 완료되었습니다.');
 					} else {
 						alert('비밀번호를 확인하세요.');
 					}
@@ -33,7 +42,7 @@
 			
 		});
 		
-	});
+	}
 	
 </script>
 </head>
@@ -55,5 +64,22 @@
 		
 	</div>
 
+	<div>
+		<div>변경할 비밀번호를 입력하세요.</div>
+			<div>
+				<label for="pw">비밀번호</label>
+				<input type="password" name="pw" id="pw">
+				<span id="msg_pw"></span>
+			</div>
+			<div>
+				<label for="re_pw">비밀번호 확인</label>
+				<input type="password" id="re_pw">
+				<span id="msg_re_pw"></span>
+			</div>
+			<div>
+				<button>비밀번호 변경하기</button>
+				<input type="button" value="취소하기" id="btn_edit_pw_cancel">
+			</div>
+	</div>
 </body>
 </html>

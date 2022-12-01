@@ -17,6 +17,7 @@
 		<typeAlias type="com.gdu.semi.domain.BbsDTO" alias="BbsDTO" />
 		<typeAlias type="com.gdu.semi.domain.GalleryDTO" alias="GalleryDTO" />
 		<typeAlias type="com.gdu.semi.domain.CommentDTO" alias="CommentDTO" />
+		<typeAlias type="com.gdu.semi.domain.SummernoteImageDTO" alias="SummernoteImageDTO" />	<!-- 새로 추가하엿습니다. YJ -->
 		<typeAlias type="com.gdu.semi.domain.LikeDTO" alias="LikeDTO" />
 		<typeAlias type="com.gdu.semi.domain.UploadDTO" alias="UploadDTO" />
 		<typeAlias type="com.gdu.semi.domain.AttachDTO" alias="AttachDTO" />

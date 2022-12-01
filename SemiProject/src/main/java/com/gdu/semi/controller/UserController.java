@@ -117,7 +117,7 @@ public class UserController {
 	
 	@GetMapping("/user/check/form")
 	public String requiredLogin_checkForm() {
-		return "user/check";
+		return "user/mypage";
 	}
 	
 	@ResponseBody
@@ -126,10 +126,12 @@ public class UserController {
 		return userService.confirmPassword(request);
 	}
 	
-	@GetMapping("/user/mypage")
-	public String requiredLogin_mypage() {
-		return "user/mypage";
+	@GetMapping("/user/check/move")
+	public String requiredLogin_securitymove() {
+		return "user/check";
 	}
+	
+
 	
 	@PostMapping("/user/modify/pw")
 	public void requiredLogin_modifyPw(HttpServletRequest request, HttpServletResponse response) {
@@ -174,15 +176,6 @@ public class UserController {
 	}
 	
 	
-	@ResponseBody
-	@PostMapping(value="/user/sendAuthCodeAndChangePw", produces="application/json")
-	public Map<String, Object> sendAuthCodeAndChangePw(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
-		
-		return userService.sendAuthCodeAndChangePw(id,email);
-	}
-	
-	
-	
 	
 	
 	
@@ -194,6 +187,15 @@ public class UserController {
 		
 	}
 
+	@ResponseBody
+	@PostMapping(value="/user/sendAuthCodeAndChangePw", produces="application/json")
+	public Map<String, Object> sendAuthCodeAndChangePw(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
+		
+		return userService.sendAuthCodeAndChangePw(id,email);
+	}
+	
+	
+	
 	
 	
 	

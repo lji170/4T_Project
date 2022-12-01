@@ -511,14 +511,13 @@ public class UserServiceImpl implements UserService {
 		// 사용자 번호
 		int userNo = loginUser.getUserNo();
 		
-		// DB로 보낼 UserDTO
-		UserDTO user = UserDTO.builder()
-				.userNo(userNo)
-				.pw(pw)
-				.build();
+		// DB로 보낼 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userNo", userNo);
+		map.put("pw", pw);
 		
 		// 비밀번호 수정
-		int result = userMapper.updateUserPassword(user);
+		int result = userMapper.updateUserPassword(map);
 		
 		// 응답
 		try {
@@ -957,11 +956,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Map<String, Object> sendAuthCodeAndChangePw(String id, String email) {
 		
-		
-		
-		// 인증코드 만들기
-		String authCode = securityUtil.getAuthCode(6);  // String authCode = securityUtil.generateRandomString(6);
-		System.out.println("생성된 임시비밀번호 : " + authCode);
+		// 임시비번 만들기
+		String tempPw = securityUtil.getAuthCode(6);  // String authCode = securityUtil.generateRandomString(6);
+		System.out.println("생성된 임시비밀번호 : " + tempPw);
 		
 		// 이메일 전송을 위한 필수 속성을 Properties 객체로 생성
 		Properties properties = new Properties();
@@ -986,7 +983,7 @@ public class UserServiceImpl implements UserService {
 			message.setFrom(new InternetAddress(username, "인증코드관리자"));            // 보내는사람
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));  // 받는사람
 			message.setSubject("[Application] 임시비밀번호입니다.");                   // 제목
-			message.setContent("임시비밀번호는 <strong>" + authCode + "</strong>입니다.", "text/html; charset=UTF-8");  // 내용
+			message.setContent("임시 비밀번호는 <strong>" + tempPw + "</strong>입니다.", "text/html; charset=UTF-8");  // 내용
 			
 			Transport.send(message);  // 이메일 전송
 			
@@ -994,23 +991,14 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		
-		
-		// 임시비밀번호를 DB에 들어갈 수 있도록 가공함
-		String pw = securityUtil.sha256(authCode);
-		
 		// 비밀번호 인증번호로 업데이트하기
-		//조회시 사용할 userdto
-		UserDTO user = UserDTO.builder()
-				.id(id)
-				.email(email)
-				.pw(pw)
-				.build();
-		
-		System.out.println(user);
+		// 조회시 사용할 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pw", securityUtil.sha256(tempPw));
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("updatePw", userMapper.updateUserPassword(user));
-		System.out.println(result);
+		result.put("updatePw", userMapper.updateUserPassword(map));
 		
 		
 		return result;
