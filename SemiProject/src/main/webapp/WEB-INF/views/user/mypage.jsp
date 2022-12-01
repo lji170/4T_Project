@@ -36,15 +36,17 @@
 		<div>
 		회원정보 : 
 			 <ul>
-			 <c:if test="${loginUser.snsType}">
+			 <c:if test="${loginUser.snsType eq 'naver'}">
 			 	<li>네이버 간편가입 회원</li>
 			 </c:if>
-			 	<li>성함 : ${name}</li>
-			 	<li>성별 : ${GENDER}</li>
-			 	<li>생년월일 : ${birthyear}.${birthday}</li>
-			 	<li>핸드폰번호 : ${mobile}</li>
-			 	<li>우편번호 : [${postcode}]</li>
-			 	<li>보유 포인트 : </li>
+			 	<li>성함 : ${loginUser.name}</li>
+			 <c:if test="${loginUser.gender eq 'NO'}">	
+			 	<li>성별 : 선택안함</li>
+			 </c:if>
+			 	<li>생년월일 : ${loginUser.birthyear}.${loginUser.birthday}</li>
+			 	<li>핸드폰번호 : ${loginUser.mobile}</li>
+			 	<li>우편번호 : [${loginUser.postcode}]${loginUser.roadAddress}&nbsp;${loginUser.detailAddress}&nbsp;${loginUser.extraAddress}</li>
+			 	<li>보유 포인트 : ${loginUser.point}</li>
 			 </ul>
 		</div>
 		
@@ -55,6 +57,9 @@
 			<a href="${contextPath}/user/check/move">보안설정</a>
 		</div>
 	
+		<hr>
+		
+		<a href="${contextPath}/move/index">홈으로가기</a>
 	
 	</div>
 	
