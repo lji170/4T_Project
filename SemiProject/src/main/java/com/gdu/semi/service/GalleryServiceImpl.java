@@ -109,12 +109,16 @@ public class GalleryServiceImpl implements GalleryService {
 					}
 				}
 				out.println("alert('갤러리 삽입 성공');");
+				
+				if (!id.equals("admin")) {
+					
 				int point = galleryMapper.updateUserPoint(id);
 				
 				if (point > 0) {
 					out.println("alert('포인트를 10점 적립하였습니다.');");
 				} else {
 					out.println("alert('포인트 적립에 실패했습니다. 게시글 작성이 취소됩니다.');");
+				}
 				}
 				out.println("location.href='"+ request.getContextPath() +"/gallery/list';");
 			} else {
@@ -211,18 +215,16 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	@Override
 	public int touchLike(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String sessionId = session.getId();
 		String id = request.getParameter("id");
-		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		System.out.println("sessionId:"+ sessionId + "id:" + id + ",galNo:" + galNo);
 		LikeDTO like = LikeDTO.builder()
 				.galNo(galNo)
 				.id(id)
 				.build();
 		
 		int result = galleryMapper.selectLikeUser(like);
+		System.out.println(result);
+		
 		if(result == 0) {
 			galleryMapper.insertLike(like);
 		} else {

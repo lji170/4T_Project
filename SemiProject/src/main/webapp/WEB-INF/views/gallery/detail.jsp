@@ -3,24 +3,53 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<link rel="stylesheet" href="${contextPath}/resources/css/gallery.css">
 
+<div id="top_fixer">
+	<h1 id="top_title">갤러리 게시판</h1>
+	<div id="login_area">
+		<c:if test="${loginUser eq null}">
+				<a href="${contextPath}/"> 로그인</a>
+		</c:if>
+		<c:if test="${loginUser != null}">
+			<a id="login_hover" href="${contextPath}/user/check/form">${loginUser.name}</a>님
+			<a id="login_hover" href="${contextPath}/user/logout">로그아웃</a>
+		</c:if>
+	</div>
+	<div>
+		<form method="post" action="${contextPath}/gallery/write">
+			<input type="hidden" id="userId" value="${loginUser.id}">
+		</form>
+	</div>
+</div>
+<br/>
 <jsp:include page="layout/header.jsp">
 	<jsp:param value="${gallery.galNo}번 갤러리" name="title"/>
 </jsp:include>
-
+<div>${gallery.galTitle}</div>
 <style>
-	.blind {
-		display : none;
-	}
 	#btn_like {
 		width: 100px;
 	}
-</style>
-
-<div>
-
-	<h1>${gallery.galTitle}</h1>
 	
+</style>
+<script>
+	$(function(){
+		fn_getLikeCount();
+	});
+	function fn_getLikeCount(){
+		$.ajax({
+			type:'get',
+			url :'${contextPath}/gallery/likeCount',
+			data:'galNo=${gallery.galNo}',
+			dataType:'json',
+			success : function(resData){
+				$('#likeCountArea').text(resData.likeCount);
+			}
+		});
+	}
+</script>
+<div id="article">
 	<div>
 		<span>▷ 작성일 <fmt:formatDate value="${gallery.galCreateDate}" pattern="yyyy. M. d HH:mm" /></span>
 		&nbsp;&nbsp;&nbsp;
@@ -30,9 +59,7 @@
 	<div>
 		<span>조회수 <fmt:formatNumber value="${gallery.galHit}" pattern="#,##0" /></span>
 		좋아요 <span id="likeCountArea"></span>개
-		<script>
-			
-		</script>
+		
 	</div>
 	
 	<hr>
@@ -44,11 +71,23 @@
 	<div>
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="galNo" value="${gallery.galNo}">
+			<input type="hidden" name="id" value="${loginUser.id}">
 			<script>
 			
 			</script>
-			<img class="likeArea">
-			<c:if test="${loginUser.id eq gallery.id}">
+			<c:if test="${loginUser eq null}">
+				<img id="unNamedLikeArea" src="${contextPath}/resources/image/dislike.png">
+			</c:if>
+			<script>
+				$('#unNamedLikeArea').click(function(){
+					alert('로그인한 유저만 좋아요를 누를 수 있습니다.');
+				})
+			</script>
+			<c:if test="${loginUser ne null}">
+				<img class="likeArea">
+			</c:if>
+			<!-- 게시글 작성자만 수정/삭제 가능 -->
+			<c:if test="${loginUser.id eq gallery.id || loginUser.id eq 'admin'}">
 				<input type="button" value="수정" id="btn_edit_gallery">
 				<input type="button" value="삭제" id="btn_remove_gallery">
 			</c:if>
@@ -56,37 +95,32 @@
 		</form>
 		<script>
 			$(function(){
-		   		fn_getLikeCount(); 
 				fn_getLikeUser();
-				fn_touchLike();
 			});
 			
-			function fn_getLikeCount(){
-				$.ajax({
-					type:'get',
-					url :'${contextPath}/gallery/likeCount',
-					data:'galNo=${gallery.galNo}',
-					dataType:'json',
-					success : function(resData){
-						$('#likeCountArea').text(resData.likeCount);
-					}
-				});
+			
+			// 로그인 유저만 좋아요 누르기
+			function fn_checkLogin(){
+				if (${loginUser eq null}){
+					$('.likeArea').click(function(event){
+						alert('로그인한 유저만 좋아요를 누를 수 있습니다.');
+						event.preventDefault();
+						return;
+					})
+				}
 			}
-		
 			/* 좋아요 눌렀는지 확인하기 */
 			function fn_getLikeUser(){
 				$.ajax({
 					type:'get',
 					url :'${contextPath}/gallery/likeUser',
-					data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
+					data:'galNo=${gallery.galNo}&id=${loginUser.id}',
 					dataType:'json',
 					success : function(resData){
 						if (resData > 0) {
-							alert('좋아요를 누른 회원입니다.')
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/like.png');
 						} else {
-							alert('아직 좋아요를 누르지 않았네요!');
 							$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png')
 						}						
@@ -94,17 +128,17 @@
 					}
 				});
 			}
+			
 		
 			function fn_touchLike(){
 				$('.likeArea').click(function(){
-					alert('클릭!');
 					$.ajax({
 						type:'get',
 						url :'${contextPath}/gallery/touchLike',
-						data:'galNo=${gallery.galNo}&id=' + $('#id').val(),
-						dataType:'int',
+						data:'galNo=${gallery.galNo}&id=${loginUser.id}',
+						dataType:'text',
 						success : function(resData) {
-							alert('touch Like or Dislike!');
+							console.log('resData:' + resData);
 							if (resData == 0) {
 								alert('좋아요를 누르셨습니다.');
 								$('.likeArea').empty();
@@ -116,14 +150,16 @@
 								$('.likeArea')
 								.attr('src','${contextPath}/resources/image/dislike.png');
 							}
+							fn_getLikeCount();
 						},
-						error : function(){
+						error : function(jqXHR){
+							console.log(jqXHR);
 							alert('오류!');
 						}
 					});
 				});
 			}
-			
+		 
 			
 			$('#btn_edit_gallery').click(function(){
 				$('#frm_btn').attr('action', '${contextPath}/gallery/edit');
@@ -149,6 +185,7 @@
 			<form id="frm_add_comment">
 				<div class="add_comment">
 					<div class="add_comment_input add_comment_btn">
+						<input type="hidden" name="id" value="${loginUser.id}">
 						<input type="text" name="commentTitle" id="commentTitle" placeholder="댓글을 작성하려면 로그인 해 주세요.">
 						<input type="button" value="작성완료" id="btn_add_comment">
 					</div>
@@ -189,6 +226,13 @@
 		
 		function fn_addComment(){
 			$('#btn_add_comment').click(function(){
+				// 비회원 댓글 작성 방지
+				// 알럿창 + 내용 비우기
+				if(${loginUser eq null}) {
+					alert('로그인한 유저만 댓글을 달 수 있습니다.');
+					$('#commentTitle').val('');
+					return;
+				}
 				if($('#commentTitle').val() == ''){
 					alert('댓글 내용을 입력하세요');
 					return;
@@ -223,16 +267,11 @@
 						// 댓글내용
 						var div = '';
 						div += '<div>' + comment.commentTitle;
-<<<<<<< HEAD
+						div += '<span class="writer">작성자</span>' + comment.id;
 						// 작성자만 삭제할 수 있도록 if 처리 필요
-=======
-						// 작성자만 삭제할 수 있도록 if 처리 필요 (작동 안됨)
->>>>>>> 9a5eec9df3852e8abfd0eb5ce30a69a5d405fcc5
-						if (${loginUser.id ne null} && ${loginUser.id eq gallery.id}) {
+						if (${loginUser.id ne null} && (${loginUser.id eq gallery.id} || ${loginUser.id eq 'admin'})) {
 							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
 						}
-						// 댓글만 답글을 달 수 있도록 if 처리 필요
-						div += '<input type="button" value="답글" class="btn_reply_area">';
 						div += '</div>';
 						// 댓글내용 밑에 시간표기
 						// 2022.11.28 11:00
@@ -285,7 +324,7 @@
 		
 		function fn_removeComment(){
 			$(document).on('click', '.btn_comment_remove', function(){
-				if(confirm('삭제된 댓글은 복수할 수 없습니다. 댓글을 삭제할까요?')){
+				if(confirm('삭제된 댓글은 복구할 수 없습니다. 댓글을 삭제할까요?')){
 					$.ajax({
 						type: 'post',
 						url : '${contextPath}/comment/remove',
@@ -305,8 +344,6 @@
 		};
 		
 	</script>
-
 </div>
-
 </body>
 </html>

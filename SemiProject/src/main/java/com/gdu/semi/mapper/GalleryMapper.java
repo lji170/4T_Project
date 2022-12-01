@@ -36,7 +36,7 @@ public interface GalleryMapper {
 	
 	// 갤러리 수정
 	public int updateGallery(GalleryDTO gallery);
-	
+	// 갤러리 삭제
 	public int deleteGallery(int galNo);
 	public List<SummernoteImageDTO> selectSummernoteImageListInBlog(int blogNo);
 	public List<SummernoteImageDTO> selectAllSummernoteImageList();

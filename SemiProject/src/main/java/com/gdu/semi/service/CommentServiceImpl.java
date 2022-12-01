@@ -36,10 +36,11 @@ public class CommentServiceImpl implements CommentService {
 	public Map<String, Object> addComment(HttpServletRequest request) {
 		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		String paramId = request.getParameter("id");
-		HttpSession session = request.getSession();
-		String id = session.getId();
-		System.out.println("id:" + id + "paramId:" + paramId);
+		/*	세션으로 아이디를 받을 경우 :
+			B45DD51BD392A2BDFA1DC3A1F1D705FA
+			아이디 오류 발생
+		 */
+		String id = request.getParameter("id");
 		String commentTitle = request.getParameter("commentTitle");
 		
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));

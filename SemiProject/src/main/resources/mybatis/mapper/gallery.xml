@@ -100,7 +100,14 @@
 
 	<delete id="deleteLike" parameterType="LikeDTO">
 		DELETE FROM TBL_LIKE
-		 WHERE GAL_NO = #{galNo} AND ID = #{id} 
+		<where>
+			<if test="id == 'admin'">
+				GAL_NO = #{galNo}
+			</if>
+			<if test="id != 'admin'">
+				AND ID = #{id}
+			</if>
+		</where>
 	</delete>	
 	
 	

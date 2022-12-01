@@ -88,7 +88,7 @@ public class GalleryController {
 		return galleryService.getLikeUser(request);
 	}
 	@ResponseBody
-	@GetMapping("/gallery/touchLike")
+	@GetMapping(value="/gallery/touchLike")
 	public int touchLike (HttpServletRequest request) {
 		return galleryService.touchLike(request);
 	}
