@@ -28,17 +28,28 @@
 <body>
 
 	<h1>갤러리 게시판에 오신 것을 환영합니다.</h1>
+	<c:if test="${loginUser eq null}">
+		<a href="${contextPath}/"> 로그인</a>
+	</c:if>
 	<c:if test="${loginUser != null}">
 		<div>
 			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님
 		</div>
 		<a href="${contextPath}/user/logout">로그아웃</a>
-		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
 	</c:if>
 	<div>
 		<form method="post" action="${contextPath}/gallery/write">
-		
-			<button>갤러리 작성하기</button>
+			<input type="hidden" id="userId" value="${loginUser.id}">
+			<input type="submit" id="btn_write" value="갤러리 작성하기">
+			<script>
+				$('#btn_write').click(function(event){
+					if (${loginUser.id eq null}) {
+						alert('로그인해야 게시글을 작성할 수 있습니다.');
+						event.preventDefault();
+						return;
+					}
+				});
+			</script>
 		</form>
 	</div>
 	<div>
