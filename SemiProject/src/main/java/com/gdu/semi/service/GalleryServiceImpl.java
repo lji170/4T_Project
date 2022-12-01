@@ -72,7 +72,7 @@ public class GalleryServiceImpl implements GalleryService {
 	@Transactional
 	@Override
 	public void addGallery(HttpServletRequest request, HttpServletResponse response) {
-		String id = "userpp";
+		String id = request.getParameter("id");
 		String galTitle = request.getParameter("galTitle");
 		String galContent = request.getParameter("galContent");
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
