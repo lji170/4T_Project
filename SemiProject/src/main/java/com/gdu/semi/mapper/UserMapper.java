@@ -29,7 +29,7 @@ public interface UserMapper {
 	
 	public SleepUserDTO selectIdSleepUser(Map<String, Object> map);
 	
-	
+	public int updateUserInfo(Map<String, Object> map);
 	
 	
 	

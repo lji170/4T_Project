@@ -190,8 +190,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/info/change")
-	public void userInfoChange() {
-		userService.
+	public void userInfoChange(HttpServletRequest request, HttpServletResponse response) {
+		userService.updateUserInfo(request,response);
 	}
 	
 }
