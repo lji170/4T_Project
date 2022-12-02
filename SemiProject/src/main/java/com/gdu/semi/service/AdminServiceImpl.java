@@ -78,6 +78,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Map<String, Object> removeUser(Map<String, Object> userNo) {
 		
+
 		Map<String,	Object> deleteUser = new HashMap<>();
 		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
 		
@@ -95,9 +96,9 @@ public class AdminServiceImpl implements AdminService {
 		
 		deleteUser.put("isRemove", deleteResult);
 		System.out.println(insertResult +"," + deleteResult);
+
 		
-		
-		return deleteUser;
+		return null;
 		
 	}
 	
