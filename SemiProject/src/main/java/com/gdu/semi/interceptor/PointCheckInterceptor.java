@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.UploadMapper;
 
 @Component
@@ -26,11 +27,13 @@ public class PointCheckInterceptor implements HandlerInterceptor {
 		// 1. 유저의 아이디 가져오기
 		
 		HttpSession session = request.getSession();
-		String id = String.valueOf(session.getAttribute("loginUser")); 
+		UserDTO user = (UserDTO)session.getAttribute("loginUser");
 		
+		String id = user.getId();
+		System.out.println(id);
 		// 2. id로 유저의 포인트 조회
 		int point = uploadMapper.selectUserPoint(id);
-		System.out.println(point);
+		
 		
 		// 3. 포인트 비교
 		if(point < 5 || point == 0) {

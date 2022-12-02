@@ -86,7 +86,7 @@
 			// 평소에는 닫아주기
 		function fn_behindButton() {			// * js의 문자열비교 : ''로 감싸기
 		
-			if('${loginUser}' == '${upload.id}') {
+			if('${loginUser.id}' == '${upload.id}') {
 				$('#writer_area').attr('class', 'none');	
 			}
 			
@@ -121,6 +121,7 @@
 			<span>글번호 : ${upload.uploadNo}</span>
 		</div>
 		<div>
+		
 			<span>조회수 :&nbsp;<fmt:formatNumber value="${upload.uploadHit}" pattern="#,##0" /></span>
 			&nbsp;&nbsp;
 			<span>작성일 :&nbsp;<fmt:formatDate value="${upload.uploadCreateDate}" pattern="yyyy.M.d.HH:mm"/></span>
@@ -128,7 +129,7 @@
 			<span>수정일 :&nbsp;<fmt:formatDate value="${upload.uploadLastModifyDate}" pattern="yyyy.M.d.HH:mm"/></span>
 			&nbsp;
 		</div>
-		${loginUser}
+		
 		<hr>
 		
 		

@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.AttachDTO;
 import com.gdu.semi.domain.UploadDTO;
+import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.UploadMapper;
 import com.gdu.semi.util.MyFileUtil;
 import com.gdu.semi.util.PageUtil;
@@ -191,7 +192,10 @@ public class UploadServiceImpl implements UploadService {
 			// 3) id 가져오기 : users 테이블에서(또는 session영역에서)
 			HttpSession sessionLogin = multipartServletRequest.getSession();
 			
-			String id = (String)sessionLogin.getAttribute("loginUser");
+			
+			UserDTO user = (UserDTO)sessionLogin.getAttribute("loginUser");
+			
+			String id = user.getId();
 			// System.out.println(id);	// admin
 			
 			// 2. dto 생성
@@ -312,8 +316,9 @@ public class UploadServiceImpl implements UploadService {
 			// [1] 포인트 감소 : 다운받은 사람의 id의 포인트를 줄여아하기 때문에 session 영역의 id가 필요
 			// 1) session 영역에서 id 가져오기
 			HttpSession sessionLogin = request.getSession();
-			String id = (String)sessionLogin.getAttribute("loginUser");
+			UserDTO user = (UserDTO)sessionLogin.getAttribute("loginUser");
 			
+			String id = user.getId();
 			
 			//	(2) 포인트 감소시키기	: 포인트 부족 응답처리는 aop에서!
 			uploadMapper.deletePoint(id);
@@ -461,7 +466,9 @@ public class UploadServiceImpl implements UploadService {
 							// [3] 포인트 감소 : 다운받은 사람의 id의 포인트를 줄여아하기 때문에 session 영역의 id가 필요
 							// 1) session 영역에서 id 가져오기
 							HttpSession sessionLogin = request.getSession();
-							String id = (String)sessionLogin.getAttribute("loginUser");
+							UserDTO user = (UserDTO)sessionLogin.getAttribute("loginUser");
+							
+							String id = user.getId();
 							
 							// 2) 포인트 감소시키기
 							uploadMapper.deletePoint(id);

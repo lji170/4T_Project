@@ -45,6 +45,9 @@
        		<c:if test="${loginUser == null}">
        			<div><input type="button" value="로그인" onclick="location.href='${contextPath}/index/form'"><input type="button" value="회원가입" onclick="location.href='${contextPath}/user/agree'"></div>
        		</c:if>
+       		<c:if test="${loginUser != null}">
+       		<div><input type="button" value="로그아웃" onclick="location.href='${contextPath}/user/logout'"><input type="button" value="홈으로가기" onclick="location.href='${contextPath}/index/form'"></div>
+       		</c:if>
        			<table class="table">
          		  <tr>
            		   <td>
@@ -105,7 +108,7 @@
 							<td><fmt:formatDate value="${bbs.createDate}" pattern="yy/MM/dd HH:mm:ss" /></td>
 							<td>
 							
-							<c:if test="${loginUser != null}">
+							<c:if test="${loginUser.id eq bbs.id}">
 								<form id="frm_bbs" action="${contextPath}/bbs/remove" method="post">
 									<input type="hidden" name="bbsNo" value="${bbs.bbsNo}">
 									<a class="lnk_remove" id="lnk_remove${bbs.bbsNo}">게시글 삭제</a>
@@ -121,7 +124,7 @@
 								</script>
 							</td>
 							<td>
-							<c:if test="${loginUser != null}">
+							<c:if test="${loginUser.id eq bbs.id}">
 								<form id="bbs_modify" action="${contextPath}/bbs/modify" method="get">
 									<input type="hidden" name="bbsNo" value="${bbs.bbsNo}">
 									<input type="hidden" name="bbsTitle" value="${bbs.bbsTitle}">

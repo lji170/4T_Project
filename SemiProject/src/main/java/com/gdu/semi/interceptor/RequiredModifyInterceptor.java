@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.UploadMapper;
 
 @Component
@@ -25,7 +26,9 @@ public class RequiredModifyInterceptor implements HandlerInterceptor {
 		
 		// 1. session에 저장된 id 가져오기
 		HttpSession session = request.getSession();
-		String id = String.valueOf(session.getAttribute("loginUser"));
+		UserDTO user = (UserDTO)session.getAttribute("loginUser");
+		
+		String id = user.getId();
 		
 		// 2. 게시글 번호
 		int uploadNo = Integer.parseInt(request.getParameter("uploadNo")); 
