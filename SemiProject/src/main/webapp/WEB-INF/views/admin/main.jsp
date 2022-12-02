@@ -227,18 +227,6 @@ function fn_userList(){
 			    success: function(resData){  
 			    	
 			    	/*  $('#list_head').empty(); */
-			    	$('#admin_content').empty();
-			    	$('#div1').empty();
-			       $('<div id="div1">')
-			       	.append('<h1>회원간략정보 및 회원검색</h1>')
-			       	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
-			       	.append('<input type="text" id="searchText" name="searchText">')
-			       	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
-			       	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
-			       	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
-			       	.append('<input type="button" id="btn_sleepUser" value="휴면">')
-			    	.prependTo('#frm_search')
-		
 						
 			       $('#list_head').empty();
 			       $('#list_body').empty();
@@ -301,15 +289,7 @@ function fn_userList(){
  function fn_galleryList(){
 	 $('#admin_content').empty();
  	$('#div1').empty();
-    $('<div id="div1">')
-    	.append('<h1>회원간략정보 및 회원검색</h1>')
-    	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
-    	.append('<input type="text" id="searchText" name="searchText">')
-    	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
-    	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
-    	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
-    	.append('<input type="button" id="btn_sleepUser" value="휴면">')
- 	.prependTo('#frm_search')
+    
 
 	 $.ajax({
 		type: 'post',
@@ -378,17 +358,10 @@ function fn_userList(){
  }
  
  function fn_findUser(){
+	 $('#btn_search').click(function(){
+		 
+	 
 	 $('#admin_content').empty();
- 	$('#div1').empty();
-    $('<div id="div1">')
-    	.append('<h1>회원간략정보 및 회원검색</h1>')
-    	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
-    	.append('<input type="text" id="searchText" name="searchText">')
-    	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
-    	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
-    	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
-    	.append('<input type="button" id="btn_sleepUser" value="휴면">')
- 	.prependTo('#frm_search')
 
 		 
 		 $.ajax({
@@ -454,7 +427,7 @@ function fn_userList(){
 			     
 			 }
 		 });
-	
+	 });
  }
  function fn_changeFindPage(){
 		$(document).on('click', '.enable_findLink', function(){
@@ -533,6 +506,14 @@ function fn_sleepUser(){
 </script>
 <div>
 	 	<form id="frm_search">
+    	<h1>회원간략정보 및 회원검색</h1>
+    	<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>
+    	<input type="text" id="searchText" name="searchText">
+    	<input type="button" id="btn_search" value="검색" ><!-- onclick="fn_findUser()" -->
+    	<input type="button" id="btn_init" value="초기화" onclick="fn_userList()">
+    	<input type="button" id="btn_retireUser" value="탈퇴">
+    	<input type="button" id="btn_sleepUser" value="휴면">
+ 	
 			
 			<div id='admin_content'>상단 메뉴에서 원하시는 기능을 선택해주세요</div>
 			
