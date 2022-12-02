@@ -166,7 +166,7 @@
 				$('#frm_btn').submit();
 			});
 			$('#btn_remove_gallery').click(function(){
-				if(confirm('블로그를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
+				if(confirm('갤러리를 삭제하면 블로그에 달린 댓글을 더 이상 확인할 수 없습니다. 삭제하시겠습니까?')){
 					$('#frm_btn').attr('action', '${contextPath}/gallery/remove');
 					$('#frm_btn').submit();
 				}

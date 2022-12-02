@@ -504,7 +504,7 @@
 			<!-- 버튼 -->
 			<div>
 				<button>가입하기</button>
-				<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
+				<a href="${contextPath}/index/form">취소하기</a>
 			</div>
 		
 		</form>
