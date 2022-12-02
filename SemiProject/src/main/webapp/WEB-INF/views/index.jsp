@@ -15,10 +15,8 @@
 
 	<!-- 로그인이 안 된 상태 -->
 	<c:if test="${loginUser == null}">
-<div>
+	<script>
 
-		<script>
-	
 	$(function(){
 		
 		fn_login();
@@ -63,9 +61,8 @@
 		
 	}
 	
-</script>
+	</script>
 	
-		
 		<h1>로그인</h1>
 		
 		<form id="frm_login" action="${contextPath}/user/login" method="post">
@@ -114,19 +111,18 @@
 		<hr>
 		
 			<a href="${contextPath}/user/agree">회원가입하러가기</a>
-	
-		</div>                                                  
-		
 		</c:if>
 	
-	</div>
+
 	<!-- 로그인이 된 상태 -->
 	<c:if test="${loginUser != null}">
 		<div>
 			<a href="${contextPath}/user/check/form">${loginUser.name}</a> 님 반갑습니다.
 		</div>
 		<a href="${contextPath}/user/logout">로그아웃</a>
+		<c:if test="${loginUser.id ne 'admin'}">
 		<a href="javascript:fn_abc()">회원탈퇴</a>
+		</c:if>
 		<form id="lnk_retire" action="${contextPath}/user/retire" method="post"></form>
 		<script>
 			function fn_abc(){
@@ -138,11 +134,15 @@
 	</c:if>
 
 	<hr/>
+	<c:if test="${loginUser.id ne 'admin'}">
   	<a href="${contextPath}/bbs/list">자유게시판으로 가기</a>
 	<a href="${contextPath}/upload/list">업로드게시판으로 가기</a>
    	<a href="${contextPath}/gallery/list">갤러리게시판으로 가기</a>
-   	<c:if test="${loginUser.id == admin }">
-		<a href="${contextPath}/admin/main">관리자게시판으로 이동</a>
+   	</c:if>
+   	<c:if test="${loginUser.id eq 'admin'}">
+   		<form action="${contextPath}/admin/main"  method="POST">
+   			<button>관리자 메인으로 이동</button>
+   		</form>
 	</c:if>
 
 

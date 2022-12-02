@@ -104,7 +104,7 @@
 	
 		<div>
 			<label for="galTitle">제목</label>
-			<input type="text" name="galTitle" id="galTitle" value="${gallery.galNo}">
+			<input type="text" name="galTitle" id="galTitle" value="${gallery.galTitle}">
 		</div>
 		
 		<div>
