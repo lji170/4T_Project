@@ -46,5 +46,17 @@ public class BbsController {
 		return "redirect:/bbs/list";
 		
 	}
+	@GetMapping("/bbs/modify")
+	public String modify(HttpServletRequest request) {
+		return "bbs/edit";
+	}
+	
+	@GetMapping("/bbs/edit")
+	public String edit(HttpServletRequest request) {
+		bbsService.modifyBbs(request);
+		return "redirect:/bbs/list";
+	}
+	
+	
 	
 }

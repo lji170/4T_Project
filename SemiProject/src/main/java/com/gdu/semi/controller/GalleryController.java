@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gdu.semi.domain.GalleryDTO;
-import com.gdu.semi.domain.LikeDTO;
 import com.gdu.semi.service.GalleryService;
 
 @Controller
@@ -26,18 +23,32 @@ public class GalleryController {
 	@Autowired
 	private GalleryService galleryService;
 	
+	// 목록 개수
+	@GetMapping("/gallery/change/list")
+	public String changeList(HttpServletRequest request, int recordPerPage) {
+		// 세션에 recordPerPage를 변경해서 올린 뒤 다시 목록으로 돌아감
+		request.getSession().setAttribute("recordPerPage", recordPerPage);
+		return "redirect:" + request.getHeader("referer");
+	}
+	// 목록 뿌리기
 	@GetMapping("/gallery/list")
 	public String list(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		galleryService.getGalleryList(request, model);
 		return "gallery/list";
 	}
-	
-	@GetMapping("galley/detail")
-	public String detail() {
-		return "gallery/detail";
+	@ResponseBody
+	@GetMapping("/gallery/attachedImage")
+	public Map<String, Object> attachedImage(int galNo){
+		return galleryService.checkAttachedImage(galNo);
 	}
-	
+	// 검색
+	@GetMapping("/gallery/search")
+	public String search(HttpServletRequest request, Model model) {
+		galleryService.findGalleryList(request, model);
+		return "gallery/list";
+	}
+
 	@PostMapping(value="/gallery/write")
 	public String write() {
 		return "gallery/write";
@@ -88,7 +99,7 @@ public class GalleryController {
 		return galleryService.getLikeUser(request);
 	}
 	@ResponseBody
-	@GetMapping("/gallery/touchLike")
+	@GetMapping(value="/gallery/touchLike")
 	public int touchLike (HttpServletRequest request) {
 		return galleryService.touchLike(request);
 	}

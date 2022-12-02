@@ -18,9 +18,10 @@ public class UploadDTO {
 	private String id;
 	private String uploadTitle;
 	private String uploadContent;
-	private Date createDate;
-	private Date lastModifyDate;
+	private Date uploadCreateDate;
+	private Date uploadLastModifyDate;
 	private int uploadHit;
 	private String ip;
+
 	
 }

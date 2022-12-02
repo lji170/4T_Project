@@ -7,6 +7,7 @@
 
 <mapper namespace="com.gdu.semi.mapper.UploadMapper">
 
+	
 	<!--  # 게시글 목록 -->
 	<!--  1. 전체 게시글수 : (1) 전체 게시글수 list.jsp에 표시 (2) 페이징 처리에 필요 -->
 	<select id="selectUploadCount" resultType="int">
@@ -100,14 +101,16 @@
 		WHERE ATTACH_NO = #{attachNo}
 	</update>
 	
-	<!--  3. 포인트 없애기 : 다운로드한 파일수만큼 - 5 감소 -->
+	
+	
+	<!--  4. 포인트 없애기 : 다운로드한 파일수만큼 - 5 감소 -->
 	<update id="deletePoint" parameterType="String">
 		UPDATE USERS
 			SET POINT = POINT -5
 		WHERE ID = #{id}
 	</update>
-
 	
+
 	<!--  # 첨부 전체 다운로드 -->
 	<!--  1. 첨부파일 전체 조회 -->
 	<!--  * 기존 코드를 그대로 사용 -->
@@ -123,6 +126,8 @@
 			SET	UPLOAD_TITLE = #{uploadTitle} , UPLOAD_CONTENT = #{uploadContent}
 		WHERE UPLOAD_NO = #{uploadNo}
 	</update>
+	
+	
 	
 	
 	<!--  # 첨부파일 삭제 -->
@@ -149,5 +154,41 @@
 		  FROM UPLOAD
 		 WHERE UPLOAD_NO = #{uploadNo}
 	</delete>
+	
+	<!--  # 인터셉터 -->
+	<!--  1. 게시글의 작성자 id 조회 -->
+	<select id="selectUserId" parameterType="int" resultType="String">
+		SELECT ID
+		FROM UPLOAD
+		WHERE UPLOAD_NO = #{uploadNo}
+	</select>
+	
+	<!--  2. 유저 포인트 조회 -->
+	<select id="selectUserPoint" parameterType="String" resultType="int">
+		SELECT POINT 
+		  FROM USERS
+		 WHERE ID = #{id}
+	</select>
+	
+	<!--  # 검색조회 
+		(1) 칼럼이 title, 또는 id인경우
+		(2) column(선택칼럼)과 query(검색어)가 동일한 경우	 -->
+	<select id="searchUploadCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(*) 
+			FROM UPLOAD
+		<where>
+			 <if test="column == 'TITLE' or column == 'ID'"> ${column} = #{query}</if>
+		</where>
+	</select>
+	
+	<select id="searchUpload" parameterType="Map" resultType="UploadDTO">
+		SELECT A.UPLOAD_NO, A.ID, A.UPLOAD_TITLE, A.UPLOAD_CONTENT, A.UPLOAD_CREATE_DATE, A.UPLOAD_LAST_MODIFY_DATE, A.UPLOAD_HIT, A.IP
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, UPLOAD_CREATE_DATE, UPLOAD_LAST_MODIFY_DATE, UPLOAD_HIT, IP
+				FROM UPLOAD) A
+		WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+		<where>
+			 <if test="column == 'TITLE' or column == 'ID'"> ${column} = #{query}</if>
+		</where>
+	</select>
 	
 </mapper>
