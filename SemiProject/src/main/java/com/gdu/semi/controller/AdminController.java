@@ -57,5 +57,11 @@ public class AdminController {
 		return adminService.sleepUser(map);
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/admin/galleryList", produces="application/json; charset=UTF-8")
+	public Map<String, Object> galleryList(HttpServletRequest request){
+		return adminService.getGalleryList(request);
+	}
+	
 	
 }
