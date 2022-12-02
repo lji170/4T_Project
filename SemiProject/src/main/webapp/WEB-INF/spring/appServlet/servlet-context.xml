@@ -36,11 +36,14 @@
 		</interceptor>
 		<!-- PreventLoginInterceptor : @Component로 컨테이너에 등록 -->
 		<interceptor>
-			<mapping path="/index/form"/>
+			
 			<mapping path="/user/join/write"/>
 			<mapping path="/user/agree"/>
 			<beans:bean class="com.gdu.semi.interceptor.PreventLoginInterceptor" />
 		</interceptor>
+		
+		<!-- <mapping path="/index/form"/> -->
+		
 		<!-- SleepUserCheckingInterceptor : @Component로 컨테이너에 등록 -->
 		<interceptor>
 			<mapping path="/user/login"/>
