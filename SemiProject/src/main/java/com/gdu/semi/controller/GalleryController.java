@@ -48,13 +48,7 @@ public class GalleryController {
 		galleryService.findGalleryList(request, model);
 		return "gallery/list";
 	}
-	
-	
-	@GetMapping("galley/detail")
-	public String detail() {
-		return "gallery/detail";
-	}
-	
+
 	@PostMapping(value="/gallery/write")
 	public String write() {
 		return "gallery/write";

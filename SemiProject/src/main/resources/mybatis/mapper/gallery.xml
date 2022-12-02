@@ -34,28 +34,14 @@
 	<select id="selectFindGalleryListCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
 		  FROM GALLERY
-		<where>
-		    <if test="column=='ID' or column=='GAL_TITLE'">
-		    	${column} LIKE '%' || #{query} || '%'
-		    </if>
-		    <if test="column=='GALLERY_CREATE_DATE'">
-		    	${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
-		    </if>
-		</where>
+		 WHERE ${column} LIKE '%' || #{query} || '%'
 	</select>
 	
 	
 	<select id="selectFindGalleryList" parameterType="Map" resultType="GalleryDTO">
 		SELECT *
 		  FROM GALLERY
-		<where>
-		  	<if test="column=='GAL_TITLE'">
-				${column} LIKE '%' || #{query} || '%'
-			</if>
-			<if test="column=='GALLERY_CREATE_DATE'">
-				${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
-			</if>
-		</where>
+		 WHERE ${column} LIKE '%' || #{query} || '%'
 	</select>
 	
 	<!-- 갤러리 작성

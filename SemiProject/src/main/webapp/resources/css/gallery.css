@@ -12,6 +12,14 @@ a {
 .blind {
 	display : none;
 }
+.page {
+	position:relative;
+	float: right;
+	margin-right: 40px;
+}
+#newLetter {
+	color: red;
+}
 #top_fixer {
 	top: 10px;
 	position:fixed;

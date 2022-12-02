@@ -21,18 +21,38 @@
 			location.href = '${contextPath}/gallery/change/list?recordPerPage=' + $(this).val();
 		});
 		
-		$.ajax({
-			type:'get',
-			url :'${contextPath}/gallery/attachedImage',
-			data:'galNo=${gallery.galNo}',
-			dataType:'json',
-			success :function(resData){
-				if(resData.isAttached > 0) {
-					$('#attachedImage')
-						.attr('src','${contextPath}/resources/images/ico_img.png');
+		function fn_list(){
+			$('#btn_list').click(function(){
+				location.href='${contextPath}/gallery/list';
+			});
+		}
+		
+		function fn_attachedImage(){
+			$.ajax({
+				type:'get',
+				url :'${contextPath}/gallery/attachedImage',
+				data:'galNo=${gallery.galNo}',
+				dataType:'json',
+				success :function(resData){
+					if(resData.isAttached > 0) {
+						$('#attachedImage')
+							.attr('src','${contextPath}/resources/images/ico_img.png');
+					}
 				}
+			});
+		}
+		
+		function fn_newLetter(){
+			let today = new Date();
+		    let hours = today.getHours();
+			if (hours == 0) {
+				$('#newLetter').addClass('blind');
+			} else if (hours == 11) {
+				$('#newLetter').addClass('blind');
+			} else if (hours == 12) {
+				$('#newLetter').addClass('blind');
 			}
-		});
+		}
 	});
 </script>
 </head>
@@ -70,13 +90,6 @@
 				</script>
 			</form>
 		</div>
-		<div>
-			<select name="recordPerPage" id="recordPerPage">
-				<option value="10">10</option>
-				<option value="15">15</option>
-				<option value="20">20</option>
-			</select>
-		</div>
 		<form action="${contextPath}/gallery/search">
 			<select name="column" id="column">
 				<option value="GAL_TITLE">제목</option>
@@ -85,7 +98,15 @@
 			<input type="text" name="query" id="query" list="auto_complete">
 			<datalist id="auto_complete"></datalist>
 			<input type="submit" value="조회">
+			<input id="btn_list" type="button" value="초기화">
 		</form>
+		<div class="page">
+			<select name="recordPerPage" id="recordPerPage">
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+			</select>
+		</div>
 		<div>
 			<table border="1">
 				<thead>
@@ -103,8 +124,8 @@
 							<td>${beginNo - vs.index}</td>
 							<td>
 								<a href="${contextPath}/gallery/increse/hit?galNo=${gallery.galNo}&id=${loginUser.id}">${gallery.galTitle}</a>
-								<img id="attachedImage">
-								
+								<img class="attachedImage">
+								<span class="newLetter">New</span>
 							</td>
 							<td>${gallery.galHit}</td>
 							<td>${gallery.id}</td>

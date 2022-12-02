@@ -118,15 +118,8 @@ public class GalleryServiceImpl implements GalleryService {
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		
 		String path = null;
-		switch(column) {
-		case "ID":
-		case "GAL_TITLE":
-			path = request.getContextPath() + "/gallery/search?column=" + column + "&query=" + query;
-			break;
-		case "HIRE_DATE":
-//			path = request.getContextPath() + "/gallery/search?column=" + column + "&start=" + start + "&stop=" + stop;
-			break;
-		}
+		path = request.getContextPath() + "/gallery/search?column=" + column + "&query=" + query;
+		
 		model.addAttribute("paging", pageUtil.getPaging(path));
 		
 	}
