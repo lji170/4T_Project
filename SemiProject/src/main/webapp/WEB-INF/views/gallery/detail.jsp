@@ -269,7 +269,10 @@
 						div += '<div>' + comment.commentTitle;
 						div += '<span class="writer">작성자</span>' + comment.id;
 						// 작성자만 삭제할 수 있도록 if 처리 필요
-						if (${loginUser.id ne null} && (${loginUser.id eq gallery.id} || ${loginUser.id eq 'admin'})) {
+						if (${loginUser.id ne null}) {
+							
+							var loginUser = '${loginUser.id}';
+							if(loginUser == comment.id || ${loginUser.id eq 'admin'})
 							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">'; 
 						}
 						div += '</div>';
