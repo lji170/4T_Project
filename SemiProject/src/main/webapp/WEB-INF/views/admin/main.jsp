@@ -188,11 +188,11 @@
 </head>
 <body>
 	<nav id="nav3">
-	    <a href="${contextPath}/admin/main">4Team_Admin</a>
+	    <a href="${contextPath}/move/index">4Team_Admin</a>
 	    <ul>
 	      <li><a id="btn_userList" onclick="fn_userList()">회원관리</a></li>
-	      <li><a href="${contextPath}/admin/bbs/agent">자유게시판관리</a></li>
-	      <li><a href="${contextPath}/admin/gallery/agent">갤러리게시판관리</a></li>
+	      <li><a >자유게시판관리</a></li>
+	      <li><a id="btn_galleryList" onclick="fn_galleryList()">갤러리게시판관리</a></li>
 	      <li><a href="${contextPath}/admin/upload/agent">업로드관리</a></li>
 	      <li><a href="${contextPath}/admin/down/agent">다운로드관리</a></li>
 	    </ul>
@@ -227,8 +227,19 @@ function fn_userList(){
 			    success: function(resData){  
 			    	
 			    	/*  $('#list_head').empty(); */
-			    	
-			       
+			    	$('#admin_content').empty();
+			    	$('#div1').empty();
+			       $('<div id="div1">')
+			       	.append('<h1>회원간략정보 및 회원검색</h1>')
+			       	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
+			       	.append('<input type="text" id="searchText" name="searchText">')
+			       	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
+			       	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
+			       	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
+			       	.append('<input type="button" id="btn_sleepUser" value="휴면">')
+			    	.prependTo('#frm_search')
+		
+						
 			       $('#list_head').empty();
 			       $('#list_body').empty();
 			       $('#list_foot').empty();
@@ -287,16 +298,105 @@ function fn_userList(){
 			    }   
 			 }); 
  	}
+ function fn_galleryList(){
+	 $('#admin_content').empty();
+ 	$('#div1').empty();
+    $('<div id="div1">')
+    	.append('<h1>회원간략정보 및 회원검색</h1>')
+    	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
+    	.append('<input type="text" id="searchText" name="searchText">')
+    	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
+    	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
+    	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
+    	.append('<input type="button" id="btn_sleepUser" value="휴면">')
+ 	.prependTo('#frm_search')
+
+	 $.ajax({
+		type: 'post',
+		url: '${contextPath}/admin/galleryList',
+		data: 'page=' + $('#page').val(),
+		dataType: 'json',
+		success: function(resData){
+			$('#list_head').empty();
+			$('#list_body').empty();
+			$('#list_foot').empty();
+			
+			
+			 $('<tr>')
+	    	  .append( $('<th>').text("갤러리번호") )
+	    	  .append( $('<th>').text("유저아이디") )
+	    	  .append( $('<th>').text("제목") )
+	    	  .append( $('<th>').text("작성일") )
+	    	  .append( $('<th>').text("수정일") )
+	    	  .append( $('<th>').text("조회수") )
+	    	  .append( $('<th>').text("좋아요") )
+	    	  .append( $('<th>').text("선택") )
+	    	  .appendTo('#list_head');
+			 $.each(resData.galleryList, function( index, gallery ) {
+				 $('<tr>')
+		          
+		          .append( $('<td>').text(gallery.galNo) )
+		          .append( $('<td>').append(gallery.id))
+		          .append( $('<td>').append('<a href="${contextPath}/gallery/detail?galNo='+ gallery.galNo + '">' + gallery.galTitle + '</a>') )
+		          .append( $('<td>' +  moment(gallery.galCreateDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+		          .append( $('<td>' +  moment(gallery.galLastModifyDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+		          .append( $('<td>').append(gallery.galHit))
+		          .append( $('<td>').append(gallery.likeCount))
+		          .append($('<td>').append($('<input type="checkbox" name="userCheck" value="'+ gallery.galNo +'">')))
+		          .appendTo('#list_body');
+				 
+			  });
+			 $('<tr>')
+		       .append($('<td id="paging" colspan="9"></td>'))
+		       .appendTo('#list_foot');
+		       
+		       
+		       $('#paging').empty();
+				var pageUtil = resData.pageUtil
+				var paging = '';
+				// 이전 블록
+				if(pageUtil.beginPage != 1){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+				}
+				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
+					if(p == $('#page').val()){
+						paging += '<strong>' + p + '</strong>';
+					} else {
+						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
+					}
+				}
+				// 다음블록
+				if(pageUtil.endPage != pageUtil.totalPage){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+				}
+				
+				$('#paging').append(paging);
+		}
+		
+		
+	 });
+ }
  
  function fn_findUser(){
-	 
+	 $('#admin_content').empty();
+ 	$('#div1').empty();
+    $('<div id="div1">')
+    	.append('<h1>회원간략정보 및 회원검색</h1>')
+    	.append('<select id="column" name="column"><option value="ID">아이디</option><option value="NAME">이름</option><option value="MOBILE">핸드폰</option></select>')
+    	.append('<input type="text" id="searchText" name="searchText">')
+    	.append('<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">')
+    	.append('<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">')
+    	.append('<input type="button" id="btn_retireUser" value="탈퇴">')
+    	.append('<input type="button" id="btn_sleepUser" value="휴면">')
+ 	.prependTo('#frm_search')
+
+		 
 		 $.ajax({
 			 type: 'post',
 			 url: '${contextPath}/admin/searchUser',
 			 data: 'column=' + $('#column').val() + '&searchText=' + $('#searchText').val() + '&page=' + $('#page').val(),
 			 dataType: 'json',
 			 success: function(resData){
-				 $('#searchText').val('');
 				 $('#list_head').empty();
 			     $('#list_body').empty();
 			     $('#list_foot').empty();
@@ -311,6 +411,7 @@ function fn_userList(){
 		    	  .append( $('<th>').text("포인트") )
 		    	  .append( $('<th>').text("선택") )
 		    	  .appendTo('#list_head');
+			     
 		       $.each(resData.findUserList, function( index, findUser ) {
 		    	   
 		          $('<tr>')
@@ -433,18 +534,7 @@ function fn_sleepUser(){
 <div>
 	 	<form id="frm_search">
 			
-			
-			<h1>회원간략정보 및 회원검색</h1>
-			<select id="column" name="column">
-				<option value="ID">아이디</option>
-				<option value="NAME">이름</option>
-				<option value="MOBILE">핸드폰</option>
-			</select>
-			<input type="text" id="searchText" name="searchText">
-			<input type="button" id="btn_search" value="검색" onclick="fn_findUser();">
-			<input type="button" id="btn_init" value="초기화" onclick="fn_userList();">
-			<input type="button" id="btn_retireUser" value="탈퇴">
-			<input type="button" id="btn_sleepUser" value="휴면">
+			<div id='admin_content'>상단 메뉴에서 원하시는 기능을 선택해주세요</div>
 			
 			<br><hr><br>
 			

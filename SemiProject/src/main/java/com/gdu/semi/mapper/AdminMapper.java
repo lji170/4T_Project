@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gdu.semi.domain.GalleryDTO;
 import com.gdu.semi.domain.UserDTO;
 
 @Mapper
@@ -17,4 +18,7 @@ public interface AdminMapper {
 	public List<UserDTO> selectUserByNo(Map<String, Object> userNo);
 	public int insertRetireUser(Map<String, Object> retireUserList);
 	public int insertSleepUser(Map<String, Object> sleepUserList);
+	
+	public int selectGalleryListCount();
+	public List<GalleryDTO> selectGalleryListByMap(Map<String, Object> map);
 }

@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		int userCount = adminMapper.selectUserListCount();
 		
-		pageUtil.setPageUtil(page, 3, userCount);
+		pageUtil.setPageUtil(page, 10, userCount);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin());
@@ -58,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		int userCount = adminMapper.selectUsersByQueryCount(userCountMap);
 		
-		pageUtil.setPageUtil(page, 3, userCount);
+		pageUtil.setPageUtil(page, 10, userCount);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin());
@@ -67,7 +67,11 @@ public class AdminServiceImpl implements AdminService {
 		map.put("searchText",searchText);
 		
 		Map<String, Object> result = new HashMap<>();
+		
+		
 		result.put("findUserList", adminMapper.selectUsersByQuery(map));
+		
+		
 		result.put("pageUtil", pageUtil);
 		
 		return result;
@@ -93,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
 		rUser.put("retireUsers", retireUserList);
 		int insertResult = adminMapper.insertRetireUser(rUser);
 		int deleteResult = adminMapper.deleteUserByNo(userNo);
-		
+
 		deleteUser.put("isRemove", deleteResult);
 		System.out.println(insertResult +"," + deleteResult);
 
@@ -148,6 +152,25 @@ public class AdminServiceImpl implements AdminService {
 			return sleepUser;
 		
 		
+	}
+	@Override
+	public Map<String, Object> getGalleryList(HttpServletRequest request) {
+		int page = Integer.parseInt(request.getParameter("page"));
+		
+		int galleryCount = adminMapper.selectGalleryListCount();
+		
+		pageUtil.setPageUtil(page, 10, galleryCount);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("galleryList", adminMapper.selectGalleryListByMap(map));
+		result.put("pageUtil", pageUtil);
+		
+		return result;
 	}
 	
 	
