@@ -15,6 +15,8 @@
 %>
 
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,14 +25,33 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script src="${contextPath}/resources/js/upload.js"></script>
 <link rel="stylesheet" href="${contextPath}/resources/css/upload.css">
+<style>
+
+.btn_add_logout {
+	
+	padding : 0 auto;
+	display : inline-block;
+	height : 30px;
+	line-height : 30px;
+	background-color: #dddddd;
+	border : 1px solid #888888;
+	border-radius: 3px;
+	margin: 10px 0;
+	
+	}
+
+
+
+</style>
 </head>
 <body>
 	<div class="container">
 		<div class="header">
 			<div class="title">
 				<h1>업로드 게시판</h1>
-				<div>
+				<div class="log_area">
 					<a id="header_login" class="btn_add_login" href="${contextPath}/index/form">로그인</a>
+					<a id="header_logout" class="dis_blind" href="${contextPath}/upload/logout">로그아웃</a>
 				</div>
 			</div>	
 		</div>

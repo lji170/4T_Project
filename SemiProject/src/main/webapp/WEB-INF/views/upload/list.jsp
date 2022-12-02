@@ -16,7 +16,7 @@
 		
 		block_btn_write();
 		block_btn_login();
-		
+		block_btn_logout();
 		
 	});
 		// # css : 작성버튼 가리기			전제 : 로그인 안한 상태
@@ -41,8 +41,19 @@
 			}
 		}		
 		
+		// # css : 로그아웃 버튼
+		// 기본 로그인 안하면 안보여줌
+		// 변화 : 로그인 하면 보여줌
+		function block_btn_logout() {
+			if('${loginUser}' != '') {
+				$('#header_logout').attr('class', 'none');
+				$('#header_logout').attr('class', 'btn_add_logout');
+			}
+		}
+		
 		
 </script>
+	
 	
 		
 		<%-- # page : 웰컴페이지 + 목록 --%>

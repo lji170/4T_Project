@@ -2,6 +2,7 @@ package com.gdu.semi.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -133,6 +134,16 @@ public class UploadController {
 		uploadService.selectUploadSearch(request, model);
 		return "upload/list";
 	}
+	
+	// # 로그아웃
+		@GetMapping("upload/logout")
+		public String uploadLogout(HttpServletRequest request, Model model) {
+			// * session에 올려둔 id값 없애고 목록 리다이렉트
+			// 실제로는 목록에서 추가한 임시계정이 없으니 문제없이 작동할듯
+			HttpSession session = request.getSession();
+			session.removeAttribute("loginUser");
+			return "redirect:/upload/list";
+		}
 	
 	
 	

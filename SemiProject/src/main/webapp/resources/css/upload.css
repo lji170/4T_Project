@@ -44,6 +44,8 @@ h1 {
 
 
 .title {
+	
+	height : 100px;
 	background: #93bf85;
 	margin : 10px 0;
 	padding-left : 10px;
@@ -139,8 +141,10 @@ a {
 	height : 30px;
 	line-height : 30px;
 	background-color: #dddddd;
-	border : 1px solid #333333;
+	border : 1px solid #888888;
 	border-radius: 3px;
+	margin: 10px 0;
+	
 }
 
 .dis_blind {
@@ -156,7 +160,7 @@ a {
 	height : 25px;
 	line-height : 25px;
 	background-color: #dddddd;
-	border : 1px solid #333333;
+	border : 1px solid #888888;
 	border-radius: 3px;
 	
 }
@@ -176,7 +180,7 @@ a {
 	height : 25px;
 	line-height : 25px;
 	background-color: #dddddd;
-	border : 1px solid #333333;
+	border : 1px solid #888888;
 	border-radius: 3px;
 	font-weight: 900;
 	
@@ -184,5 +188,3 @@ a {
 
 
 
-
-	
