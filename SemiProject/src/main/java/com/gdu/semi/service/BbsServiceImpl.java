@@ -6,12 +6,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gdu.semi.domain.BbsDTO;
+import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.BbsMapper;
 import com.gdu.semi.util.PageUtil;
 import com.gdu.semi.util.SecurityUtil;
@@ -65,12 +67,12 @@ public class BbsServiceImpl implements BbsService {
 		
 		String id = request.getParameter("id");
 		String bbsTitle = securityUtil.preventXSS(request.getParameter("bbsTitle"));
-		String content = securityUtil.preventXSS(request.getParameter("content"));
+		String ip = request.getRemoteAddr();
 		
 		BbsDTO bbs = new BbsDTO();
 		bbs.setId(id);
 		bbs.setBbsTitle(bbsTitle);
-		bbs.setContent(content);
+		bbs.setIp(ip);
 		
 		return bbsMapper.insertBbs(bbs);
 		
@@ -86,8 +88,12 @@ public class BbsServiceImpl implements BbsService {
 	@Override
 	public int addReply(HttpServletRequest request) {
 		
-		// 작성자, 제목
-		String id = securityUtil.sha256(request.getParameter("id"));
+		// 작성자
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		// 제목
 		String bbsTitle = securityUtil.preventXSS(request.getParameter("bbsTitle"));
 		
 		// IP
@@ -126,4 +132,27 @@ public class BbsServiceImpl implements BbsService {
 		return bbsMapper.deleteBbs(bbsNo);
 	}
 	
-}
+	@Override
+	public int modifyBbs(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		String bbsTitle = request.getParameter("bbsTitle");
+		int bbsNo = Integer.parseInt(request.getParameter("bbsNo"));
+		
+		BbsDTO bbs = BbsDTO.builder()
+				.id(id)
+				.bbsTitle(bbsTitle)
+				.bbsNo(bbsNo)
+				.build();
+		
+		int result = bbsMapper.updateBbsNo(bbs);
+
+		return result;
+		
+	}
+		
+	
+	}

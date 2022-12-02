@@ -78,9 +78,10 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Map<String, Object> removeUser(Map<String, Object> userNo) {
 		
+
 		Map<String,	Object> deleteUser = new HashMap<>();
 		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
-		
+
 		List<RetireUserDTO> retireUserList = new ArrayList<>();
 		for(int i = 0; i < users.size(); i ++) {
 			RetireUserDTO retireUser = new RetireUserDTO();
@@ -95,9 +96,9 @@ public class AdminServiceImpl implements AdminService {
 		
 		deleteUser.put("isRemove", deleteResult);
 		System.out.println(insertResult +"," + deleteResult);
+
 		
-		
-		return deleteUser;
+		return null;
 		
 	}
 	

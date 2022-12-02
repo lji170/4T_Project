@@ -20,7 +20,7 @@ $(function(){
 function ifNaverUser(){
 	$('#ifNaverUser').click(){
 		alert('네이버 간편가입회원은 이용하실 수 없습니다.');
-	}
+	};
 }
 
 

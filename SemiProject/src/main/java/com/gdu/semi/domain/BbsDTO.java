@@ -21,7 +21,5 @@ public class BbsDTO {
 	private int groupNo;
 	private int groupOrder;
 	private Date bbsLastModifyDate;
-	private String ip;
-	private String content;
-	
+	private String ip;	
 }

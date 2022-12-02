@@ -1,5 +1,15 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: nania
 Build-Jdk: 11.0.17
+=======
+<<<<<<< HEAD
+Built-By: User
+Build-Jdk: 11.0.15.1
+=======
+Built-By: GDJ54
+Build-Jdk: 11.0.13
+>>>>>>> main
+>>>>>>> main
 Created-By: Maven Integration for Eclipse
 
