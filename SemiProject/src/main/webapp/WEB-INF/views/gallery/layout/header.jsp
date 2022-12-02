@@ -21,5 +21,5 @@
 <body>
 
 	<div>
-		<h1>Welcome To My BLOG</h1>
+		<h1>Welcome To Gallery Board</h1>
 	</div>

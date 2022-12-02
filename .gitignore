@@ -25,3 +25,6 @@ hs_err_pid*
 # 프로퍼티
 *.properties
 /.metadata/
+
+# 충돌 원인인 pom.properties, 메이븐 실행 파일 깃이그노어에 추가합니다
+META-INF/

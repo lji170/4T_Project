@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
 import com.gdu.semi.domain.CommentDTO;
 import com.gdu.semi.mapper.CommentMapper;
 import com.gdu.semi.util.PageUtil;
+import com.gdu.semi.util.SecurityUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -20,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	private CommentMapper commentMapper;
 	private PageUtil pageUtil;
+	private SecurityUtil securityUtil;
 	
 
 	@Override
@@ -33,7 +36,11 @@ public class CommentServiceImpl implements CommentService {
 	public Map<String, Object> addComment(HttpServletRequest request) {
 		
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		String id = "인절미";
+		/*	세션으로 아이디를 받을 경우 :
+			B45DD51BD392A2BDFA1DC3A1F1D705FA
+			아이디 오류 발생
+		 */
+		String id = request.getParameter("id");
 		String commentTitle = request.getParameter("commentTitle");
 		
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
@@ -57,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 		int galNo = Integer.parseInt(request.getParameter("galNo"));
-		String id = "인절미";
+		String id = request.getParameter("id");
 		String commentTitle = request.getParameter("commentTitle");
 		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Fowarded-For"));
 		String ip = opt.orElse(request.getRemoteAddr());

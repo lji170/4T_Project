@@ -15,6 +15,8 @@ import com.gdu.semi.domain.LikeDTO;
 
 public interface GalleryService {
 	public void getGalleryList(HttpServletRequest request, Model model);
+	public void findGalleryList(HttpServletRequest request, Model model);
+	public Map<String, Object> checkAttachedImage(int galNo);
 	
 	// 1. 갤러리 작성
 	public void addGallery(HttpServletRequest request, HttpServletResponse response);

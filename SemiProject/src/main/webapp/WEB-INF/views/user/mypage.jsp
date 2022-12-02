@@ -12,6 +12,20 @@
 
 
 
+$(function(){
+	ifNaverUser();
+});
+
+
+function ifNaverUser(){
+	$('#ifNaverUser').click(){
+		alert('네이버 간편가입회원은 이용하실 수 없습니다.');
+	};
+}
+
+
+
+
 </script>
 </head>
 <body>
@@ -36,25 +50,43 @@
 		<div>
 		회원정보 : 
 			 <ul>
-			 <c:if test="${loginUser.snsType}">
+			 <c:if test="${loginUser.snsType eq 'naver'}">
 			 	<li>네이버 간편가입 회원</li>
 			 </c:if>
-			 	<li>성함 : ${name}</li>
-			 	<li>성별 : ${GENDER}</li>
-			 	<li>생년월일 : ${birthyear}.${birthday}</li>
-			 	<li>핸드폰번호 : ${mobile}</li>
-			 	<li>우편번호 : [${postcode}]</li>
-			 	<li>보유 포인트 : </li>
+			 	<li>성함 : ${loginUser.name}</li>
+			 	<li>이메일 : ${loginUser.email}</li>
+			<c:choose>
+				<c:when test="${loginUser.gender eq 'NO'}">
+					<li>성별 : 선택안함</li>
+				</c:when>
+				<c:otherwise>
+					<li>성별 : ${loginUser.gender}</li>
+				</c:otherwise>
+			</c:choose>
+			 	<li>생년월일 : ${loginUser.birthyear}.${loginUser.birthday}</li>
+			 	<li>핸드폰번호 : ${loginUser.mobile}</li>
+			 	<li>주소 : [${loginUser.postcode}]${loginUser.roadAddress}&nbsp;${loginUser.detailAddress}&nbsp;${loginUser.extraAddress}</li>
+			 	<li>보유 포인트 : ${loginUser.point}</li>
 			 </ul>
+			 <a href="${contextPath}/user/info/change/jsp">정보수정하기</a>
 		</div>
 		
 		<hr>
 		
 		
 		<div>
-			<a href="${contextPath}/user/check/move">보안설정</a>
+			<c:if test="${loginUser.snsType eq 'naver'}">
+				<a id="ifNaverUser">보안설정</a>
+			</c:if>
+			<c:if test="${loginUser.snsType eq null}">
+				<a href="${contextPath}/user/check/move">보안설정</a>
+			</c:if>
+
 		</div>
 	
+		<hr>
+		
+		<a href="${contextPath}/move/index">홈으로가기</a>
 	
 	</div>
 	

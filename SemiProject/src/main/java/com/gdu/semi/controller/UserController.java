@@ -126,6 +126,8 @@ public class UserController {
 	
 	@GetMapping("/user/check/move")
 	public String requiredLogin_securitymove() {
+		
+		
 		return "user/check";
 	}
 	
@@ -180,6 +182,16 @@ public class UserController {
 	public Map<String, Object> sendAuthCodeAndChangePw(@RequestParam(value="id") String id, @RequestParam(value="email") String email){
 		
 		return userService.sendAuthCodeAndChangePw(id,email);
+	}
+	
+	@GetMapping("/user/info/change/jsp")
+	public String userInfoChangeJsp() {
+		return "user/info";
+	}
+	
+	@PostMapping("/user/info/change")
+	public void userInfoChange(HttpServletRequest request, HttpServletResponse response) {
+		userService.updateUserInfo(request,response);
 	}
 	
 }
