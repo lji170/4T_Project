@@ -58,7 +58,7 @@
 		 WHERE BBS_NO = #{bbsNo}
 	</update>
 	
-	<update id="updateBbsByNo" parameterType="BbsDTO">
+	<update id="updateBbsNo" parameterType="BbsDTO">
 		UPDATE BBS
 		   SET BBS_TITLE = #{bbsTitle}, BBS_LAST_MODIFY_DATE = SYSDATE
 		 WHERE ID = #{id}

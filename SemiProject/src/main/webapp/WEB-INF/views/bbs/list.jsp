@@ -62,7 +62,8 @@
 					<td>번호</td>
 					<td>아이디</td>
 					<td>제목</td>
-					<td>작성일</td>					
+					<td>작성일</td>
+					<td>삭제</td>					
 					<td>수정</td>
 				</tr>
 		     </thead>
@@ -120,18 +121,20 @@
 								</script>
 							</td>
 							<td>
+							<c:if test="${loginUser != null}">
 								<form id="bbs_modify" action="${contextPath}/bbs/modify" method="get">
 									<input type="hidden" name="bbsNo" value="${bbs.bbsNo}">
 									<input type="hidden" name="bbsTitle" value="${bbs.bbsTitle}">
-									<button>수정하기</button>
+									<button>게시글 수정</button>
 								</form>
+							</c:if>	
 							</td>
 						</tr>
 						<tr class="reply_write_tr blind">
 							<td colspan="6">
 								<form method="post" action="${contextPath}/bbs/reply/add">
-									<div><input type="text" name="bbsTitle" placeholder="댓글" required></div>
-									<div><button>댓글달기</button></div>
+									<div><input type="text" name="bbsTitle" required></div>
+									<div><button>답글달기</button></div>
 									<input type="hidden" name="depth" value="${bbs.depth}">
 									<input type="hidden" name="groupNo" value="${bbs.groupNo}">
 									<input type="hidden" name="groupOrder" value="${bbs.groupOrder}">

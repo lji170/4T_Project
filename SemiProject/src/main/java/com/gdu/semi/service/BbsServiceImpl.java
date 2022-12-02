@@ -131,6 +131,7 @@ public class BbsServiceImpl implements BbsService {
 	public int removeBbs(int bbsNo) {
 		return bbsMapper.deleteBbs(bbsNo);
 	}
+	
 	@Override
 	public int modifyBbs(HttpServletRequest request) {
 		
@@ -147,10 +148,11 @@ public class BbsServiceImpl implements BbsService {
 				.bbsNo(bbsNo)
 				.build();
 		
-		int result = bbsMapper.updateBbsByNo(bbs);
-		
+		int result = bbsMapper.updateBbsNo(bbs);
+
 		return result;
 		
 	}
-
-}
+		
+	
+	}

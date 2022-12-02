@@ -50,6 +50,7 @@ public class BbsController {
 	public String modify(HttpServletRequest request) {
 		return "bbs/edit";
 	}
+	
 	@GetMapping("/bbs/edit")
 	public String edit(HttpServletRequest request) {
 		bbsService.modifyBbs(request);

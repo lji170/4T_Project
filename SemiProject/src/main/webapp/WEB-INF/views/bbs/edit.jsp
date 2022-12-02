@@ -21,7 +21,6 @@
 			alert($('#id').val());
 		});
 		
-		
 		const urlParams = new URL(location.href).searchParams;
 
 		const bbsNo = urlParams.get('bbsNo');
@@ -30,6 +29,7 @@
 		
 	});
 	
+		
 	
 	
 </script>
@@ -37,8 +37,8 @@
 <body>
 
 	<div>
-		<h1>작성 화면</h1>
-		<form id="frm_bbs" action="${contextPath}/bbs/edit" method="get">
+		<h1>수정 화면</h1>
+		<form id="bbs_modify" action="${contextPath}/bbs/edit" method="get">
 			<div>
 				<label for="bbsTitle">제목</label>
 				<input type="text" name="bbsTitle" id="bbsTitle">
@@ -48,8 +48,7 @@
 				<input type="text" name="id" id="id" value="${loginUser.id}" readonly>
 				<input type="hidden" id="bbsNo" name="bbsNo">
 			</div>
-			
-			<div>${bbs.bbsNo}</div>
+		
 			<div>
 				<button>작성완료</button>
 				<input type="reset" value="입력초기화">

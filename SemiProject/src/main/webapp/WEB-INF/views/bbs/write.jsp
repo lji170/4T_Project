@@ -38,6 +38,7 @@
 				<label for="id">작성자</label>
 				<input type="text" name="id" id="id" value="${loginUser.id}" readonly>
 			</div>
+		
 			<div>
 				<button>작성완료</button>
 				<input type="reset" value="입력초기화">
