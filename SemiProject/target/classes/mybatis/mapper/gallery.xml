@@ -23,17 +23,45 @@
 		  		FROM GALLERY) A
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
+	<select id="selectGallerySummmernote" parameterType="int" resultType="int">
+		SELECT COUNT(G.GAL_NO)
+		  FROM GALLERY G INNER JOIN SUMMERNOTE_IMAGE S
+			ON G.GAL_NO = S.GAL_NO
+		 WHERE G.GAL_NO = 26
+	</select>
 	
-	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
-		INSERT INTO SUMMERNOTE_IMAGE
-			(GAL_NO, FILESYSTEM)
-		VALUES
-			(#{galNo}, #{filesystem})
-	</insert>
+	
+	<select id="selectFindGalleryListCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM GALLERY
+		<where>
+		    <if test="column=='ID' or column=='GAL_TITLE'">
+		    	${column} LIKE '%' || #{query} || '%'
+		    </if>
+		    <if test="column=='GALLERY_CREATE_DATE'">
+		    	${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+		    </if>
+		</where>
+	</select>
+	
+	
+	<select id="selectFindGalleryList" parameterType="Map" resultType="GalleryDTO">
+		SELECT *
+		  FROM GALLERY
+		<where>
+		  	<if test="column=='GAL_TITLE'">
+				${column} LIKE '%' || #{query} || '%'
+			</if>
+			<if test="column=='GALLERY_CREATE_DATE'">
+				${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+			</if>
+		</where>
+	</select>
 	
 	<!-- 갤러리 작성
 		1. 글 작성 (gallery 테이블 추가)
 		2. 포인트 +10 증가 (user 테이블에서 point 증가)
+		3. 이미지 파일 업로드 시, SummernoteImage 테이블에 추가
 	-->
 	<insert id="insertGallery" parameterType="GalleryDTO">
 		INSERT INTO GALLERY
@@ -46,12 +74,16 @@
 		   SET POINT = POINT + 10
 		 WHERE ID = #{id}
 	</update>
-	
+	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
+		INSERT INTO SUMMERNOTE_IMAGE
+			(GAL_NO, FILESYSTEM)
+		VALUES
+			(GALLERY_SEQ.CURRVAL, #{filesystem})
+	</insert>
 	
 	<!-- 상세보기
 		1. 조회수 + 1
 		2. 디테일 보여주기
-		3. 좋아요 + 1
 	-->
 	<update id="updateHit" parameterType="int">
 		UPDATE GALLERY
@@ -100,15 +132,8 @@
 
 	<delete id="deleteLike" parameterType="LikeDTO">
 		DELETE FROM TBL_LIKE
-		<where>
-			<if test="id == 'admin'">
-				GAL_NO = #{galNo}
-			</if>
-			<if test="id != 'admin'">
-				AND ID = #{id}
-			</if>
-		</where>
-	</delete>	
+		 WHERE GAL_NO = #{galNo} AND ID = #{id}
+	</delete>
 	
 	
 	

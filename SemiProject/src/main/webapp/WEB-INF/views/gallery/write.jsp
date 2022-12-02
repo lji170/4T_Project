@@ -97,7 +97,8 @@
 			<label for="galContent">내용</label>
 			<textarea name="galContent" id="galContent"></textarea>				
 		</div>
-		
+		<!-- 써머노트에서 사용한 이미지 목록(등록 후 삭제한 이미지도 우선은 모두 올라감: 서비스단에서 지움) -->
+		<div id="summernote_image_list"></div>
 		<div>
 			<button>작성완료</button>
 			<input type="reset" value="입력초기화">

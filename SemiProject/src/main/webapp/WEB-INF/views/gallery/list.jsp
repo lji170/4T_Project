@@ -21,6 +21,18 @@
 			location.href = '${contextPath}/gallery/change/list?recordPerPage=' + $(this).val();
 		});
 		
+		$.ajax({
+			type:'get',
+			url :'${contextPath}/gallery/attachedImage',
+			data:'galNo=${gallery.galNo}',
+			dataType:'json',
+			success :function(resData){
+				if(resData.isAttached > 0) {
+					$('#attachedImage')
+						.attr('src','${contextPath}/resources/images/ico_img.png');
+				}
+			}
+		});
 	});
 </script>
 </head>
@@ -65,6 +77,15 @@
 				<option value="20">20</option>
 			</select>
 		</div>
+		<form action="${contextPath}/gallery/search">
+			<select name="column" id="column">
+				<option value="GAL_TITLE">제목</option>
+				<option value="ID">아이디</option>
+			</select>
+			<input type="text" name="query" id="query" list="auto_complete">
+			<datalist id="auto_complete"></datalist>
+			<input type="submit" value="조회">
+		</form>
 		<div>
 			<table border="1">
 				<thead>
@@ -80,7 +101,11 @@
 					<c:forEach items="${galleryList}" var="gallery" varStatus="vs">
 						<tr>
 							<td>${beginNo - vs.index}</td>
-							<td><a href="${contextPath}/gallery/increse/hit?galNo=${gallery.galNo}&id=${loginUser.id}">${gallery.galTitle}</a></td>
+							<td>
+								<a href="${contextPath}/gallery/increse/hit?galNo=${gallery.galNo}&id=${loginUser.id}">${gallery.galTitle}</a>
+								<img id="attachedImage">
+								
+							</td>
 							<td>${gallery.galHit}</td>
 							<td>${gallery.id}</td>
 							<td>${gallery.galCreateDate}</td>

@@ -76,7 +76,7 @@
 			
 			</script>
 			<c:if test="${loginUser eq null}">
-				<img id="unNamedLikeArea" src="${contextPath}/resources/image/dislike.png">
+				<img id="unNamedLikeArea" src="${contextPath}/resources/images/dislike.png">
 			</c:if>
 			<script>
 				$('#unNamedLikeArea').click(function(){
@@ -119,10 +119,10 @@
 					success : function(resData){
 						if (resData > 0) {
 							$('.likeArea')
-								.attr('src','${contextPath}/resources/image/like.png');
+								.attr('src','${contextPath}/resources/images/like.png');
 						} else {
 							$('.likeArea')
-								.attr('src','${contextPath}/resources/image/dislike.png')
+								.attr('src','${contextPath}/resources/images/dislike.png')
 						}						
 						fn_touchLike();
 					}
@@ -143,12 +143,12 @@
 								alert('좋아요를 누르셨습니다.');
 								$('.likeArea').empty();
 								$('.likeArea')
-									.attr('src','${contextPath}/resources/image/like.png');
+									.attr('src','${contextPath}/resources/images/like.png');
 							} else {
 								alert('좋아요가 취소되었습니다.');
 								$('.likeArea').empty();
 								$('.likeArea')
-								.attr('src','${contextPath}/resources/image/dislike.png');
+								.attr('src','${contextPath}/resources/images/dislike.png');
 							}
 							fn_getLikeCount();
 						},

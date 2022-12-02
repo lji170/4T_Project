@@ -15,6 +15,9 @@ public interface GalleryMapper {
 	public int selectGalleryListCount();
 	public List<GalleryDTO> selectGalleryList();
 	public List<GalleryDTO> selectGalleryListByMap(Map<String, Object> map);
+	public int selectFindGalleryListCount(Map<String, Object> map);
+	public List<GalleryDTO> selectFindGalleryList(Map<String, Object> map);
+	public int selectGallerySummmernote(int galNo);
 	
 	// 갤러리 작성
 	public int insertSummernoteImage(SummernoteImageDTO summernote);

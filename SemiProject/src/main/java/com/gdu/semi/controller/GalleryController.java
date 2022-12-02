@@ -23,19 +23,32 @@ public class GalleryController {
 	@Autowired
 	private GalleryService galleryService;
 	
+	// 목록 개수
 	@GetMapping("/gallery/change/list")
 	public String changeList(HttpServletRequest request, int recordPerPage) {
 		// 세션에 recordPerPage를 변경해서 올린 뒤 다시 목록으로 돌아감
 		request.getSession().setAttribute("recordPerPage", recordPerPage);
 		return "redirect:" + request.getHeader("referer");
 	}
-	
+	// 목록 뿌리기
 	@GetMapping("/gallery/list")
 	public String list(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		galleryService.getGalleryList(request, model);
 		return "gallery/list";
 	}
+	@ResponseBody
+	@GetMapping("/gallery/attachedImage")
+	public Map<String, Object> attachedImage(int galNo){
+		return galleryService.checkAttachedImage(galNo);
+	}
+	// 검색
+	@GetMapping("/gallery/search")
+	public String search(HttpServletRequest request, Model model) {
+		galleryService.findGalleryList(request, model);
+		return "gallery/list";
+	}
+	
 	
 	@GetMapping("galley/detail")
 	public String detail() {
