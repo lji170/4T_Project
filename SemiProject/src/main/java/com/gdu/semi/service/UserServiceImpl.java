@@ -1001,6 +1001,85 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 	
+	@Override
+	public void updateUserInfo(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 세션에 올려져있는 유저 아이디 가져오기
+		// update의 where절에 필요함
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		String email = request.getParameter("email");
+		String gender = request.getParameter("gender");
+		String mobile = request.getParameter("mobile");
+		
+		String postcode = request.getParameter("postcode");
+		String roadAddress = request.getParameter("roadAddress");
+		String jibunAddress = request.getParameter("jibunAddress");
+		String detailAddress = request.getParameter("detailAddress");
+		String extraAddress = request.getParameter("extraAddress");
+		
+		
+		detailAddress = securityUtil.preventXSS(detailAddress);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("email", email);
+		map.put("gender", gender);
+		map.put("mobile", mobile);
+		map.put("postcode", postcode);
+		map.put("roadAddress", roadAddress);
+		map.put("jibunAddress", jibunAddress);
+		map.put("detailAddress", detailAddress);
+		map.put("extraAddress", extraAddress);
+
+//### SQL: UPDATE USERS   SET GENDER=?,   MOBILE=?   WHERE ID = ?
+		
+		System.out.println(map);
+		
+		
+		int result = userMapper.updateUserInfo(map);
+		
+		//응답
+		
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 0) {
+				
+				out.println("<script>");
+				out.println("alert('정보수정이 완료되었습니다.');");
+				out.println("location.href='" + request.getContextPath()+"/user/check/form" + "';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('정보수정에 실패했습니다.');");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+
+		
+		
+		
+		
+		
+		
+
+	}
+	
 	
 	
 	

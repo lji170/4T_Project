@@ -15,11 +15,10 @@
 		usergender();
 		fn_join();
 		fn_mobileCheck();
+		
 	});
 	
-	// 서브밋 전 ! 지역변수를 통해서 검사
-	var useremail = false;
-	var mobilePass = false;
+	
 	
 	function fn_useremail(){
 		
@@ -48,35 +47,16 @@
 					// 기존 회원 정보에 등록된 이메일이라면 실패 처리
 					if(resData.isUser){
 						$('#msg_email').text('이미가입된 이메일입니다. ');
-						useremail = false;
 					} else {
 						$('#msg_email').text('사용 가능한 이메일입니다. ');
-						
 					}
 				}  // resData
 			});  // ajax
 		})  //$('#email').keyup
-		
 	}
 	
 	
-	// 서브밋 (회원가입)
-	function fn_join(){
-		
-		$('#frm_join').submit(function(event){
-			
-			if(useremail == false){
-				alert('이메일을 확인하세요.');
-				event.preventDefault();
-				return;
-			}else if(mobilePass==false){
-				alert('휴대폰번호를 확인하세요.');
-			}
-			
-		});  // submit
-		
-	}  // fn_join
-	
+
 	
 	function usergender(){
 		
@@ -101,7 +81,7 @@
 		$('#mobile').keyup(function(){
 			
 			// 입력한 휴대전화
-			let mobileValue = $(this).val();
+			let mobileValue = $('#mobile').val();
 			
 			// 휴대전화 정규식(010으로 시작, 하이픈 없이 전체 10~11자)
 			let regMobile = /^010[0-9]{7,8}$/;
@@ -109,15 +89,39 @@
 			// 정규식 검사
 			if(regMobile.test(mobileValue) == false){
 				$('#msg_mobile').text('휴대전화를 확인하세요.');
-				mobilePass = false;
 			} else {
 				$('#msg_mobile').text('');
-				mobilePass = true;
 			}
 			
 		});  // keyup
 		
 	}  // fn_mobileCheck
+	
+	
+	//주소
+	
+	
+	
+	// 서브밋 (회원가입)
+	function fn_join(){
+		
+		$('#frm_join').submit(function(event){
+			
+			var email = $('#email').val();
+			var gender = $('#gender').val();
+			var mobile = $('#mobile').val();
+			var postcode = $('#postcode').val();
+			var roadAddress = $('#roadAddress').val();
+			var jibunAddress = $('#jibunAddress').val();
+			var detailAddress = $('#detailAddress').val();
+			var extraAddress = $('#extraAddress').val();
+			
+		
+			
+		});  // submit
+		
+	}  // fn_join
+	
 	
 	
 	
@@ -133,17 +137,12 @@
 		
 		<hr>
 		
-		<form action="${context}/user/info/change" method="post" id="frm_join">
+		<form action="${contextPath}/user/info/change" method="post" id="frm_join">
 			<div>
 			회원정보 : 
 				 <ul>
-				 <c:if test="${loginUser.snsType eq 'naver'}">
-				 	<li>네이버 간편가입 회원</li>
-				 	<li>성함 : <input type="text" name="name" placeholder="${loginUser.name}" ></li>
-				 </c:if>
 				 	<li>이메일 : <input type="text" id="email" name="email" placeholder="${loginUser.email}"><span id="msg_email"></span></li>
 				 	<li>성별 : 
-				 	
 							<input type="radio" name="gender" id="none" value="NO">
 							<label for="none">선택 안함</label>
 							<input type="radio" name="gender" id="male" value="M">
@@ -152,7 +151,7 @@
 							<label for="female">여자</label>
 					</li>
 				 	<%-- <li>생년월일 : <input type="text" name="" placeholder="${loginUser.birthyear}.${loginUser.birthday}"></li> --%>
-				 	<li>핸드폰번호 : <input type="text" name="phone" placeholder="${loginUser.mobile}"></li>
+				 	<li>핸드폰번호 : <input type="text" name="mobile" id="mobile" placeholder="${loginUser.mobile}"><span id="msg_mobile"></span></li>
 				 	<li>주소 : 
 				 	<div>
 						<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호:${loginUser.postcode}" readonly="readonly">

@@ -173,7 +173,7 @@
       </div>
    </form>
    
-   
+   <a href="${contextPath}/move/index">로그인하러가기</a>
 
    
 

@@ -42,4 +42,7 @@ public interface UserService {
 	// 인증코드보내고 임시비밀번호로 업데이트
 	public Map<String, Object> sendAuthCodeAndChangePw(String id, String email);
 	
+	// 유저 정보 업데이트하기
+	public void updateUserInfo(HttpServletRequest request, HttpServletResponse response);
+	
 }
