@@ -11,6 +11,44 @@
 
 	<%-- # page : 게시글 추가화면 --%>
 
+
+<script>
+
+
+	$(function(){
+		
+		block_btn_login();
+		block_btn_logout();
+		
+		// # css : 로그인버튼			전제 : 로그인 안한 상태
+		// 기본 : 로그인 안하면 보여줌
+		// 변화 : 로그인 하면 안보여줌
+		
+		function block_btn_login() {
+			if('${loginUser}' != '') {
+				//${'#header_login'}.attr('class', 'none');
+				$('#header_login').attr('class', 'dis_blind');
+				
+			}
+		}		
+		
+		// # css : 로그아웃 버튼
+		// 기본 로그인 안하면 안보여줌
+		// 변화 : 로그인 하면 보여줌
+		function block_btn_logout() {
+			if('${loginUser}' != '') {
+				$('#header_logout').attr('class', 'none');
+				$('#header_logout').attr('class', 'btn_add_logout');
+			}
+		}
+	
+	
+		
+	});
+
+
+</script>
+	<%-- # page : 게시글 추가화면 --%>
 	
 	<h1>게시글 작성</h1>
 		

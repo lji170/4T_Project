@@ -81,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
 
 		Map<String,	Object> deleteUser = new HashMap<>();
 		List<UserDTO> users = adminMapper.selectUserByNo(userNo);
-		
+
 		List<RetireUserDTO> retireUserList = new ArrayList<>();
 		for(int i = 0; i < users.size(); i ++) {
 			RetireUserDTO retireUser = new RetireUserDTO();
